@@ -52,8 +52,31 @@
         <p class="attribution">Diseñado por Alex Saez Lara</p>
     </footer>
 
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
-    <script src="script.js"></script>
+    <!-- Firebase App (the core Firebase SDK) is always required and must be listed first -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-app.js";
+        import { getDatabase } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-database.js";
+
+        // Tu configuración de Firebase
+        const firebaseConfig = {
+            apiKey: "AIzaSyAPNPRMG8yJaaud9pJqHEaJP1HKxZgi8k4",
+            authDomain: "noticias-peru-1279b.firebaseapp.com",
+            projectId: "noticias-peru-1279b",
+            storageBucket: "noticias-peru-1279b.firebasestorage.app",
+            messagingSenderId: "189080838926",
+            appId: "1:189080838926:web:e58bfae5b0c0691ea2ad5f",
+            measurementId: "G-D7P48XBVJ4"
+        };
+
+        // Inicializar Firebase
+        const app = initializeApp(firebaseConfig);
+        const database = getDatabase(app);
+
+        // Hacer disponible la instancia de la base de datos globalmente
+        window.database = database;
+    </script>
+    
+    <!-- Tu script principal -->
+    <script type="module" src="script.js"></script>
 </body>
 </html>

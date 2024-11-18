@@ -1,6 +1,8 @@
+import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-app.js";
+import { getDatabase, ref, push, onValue, set } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-database.js";
+
 // Configuración de Firebase
 const firebaseConfig = {
-    // Reemplaza esto con tu configuración de Firebase
     apiKey: "AIzaSyAPNPRMG8yJaaud9pJqHEaJP1HKxZgi8k4",
     authDomain: "noticias-peru-1279b.firebaseapp.com",
     projectId: "noticias-peru-1279b",
@@ -11,8 +13,8 @@ const firebaseConfig = {
 };
 
 // Inicializar Firebase
-firebase.initializeApp(firebaseConfig);
-const database = firebase.database();
+const app = initializeApp(firebaseConfig);
+const database = getDatabase(app);
 
 document.addEventListener('DOMContentLoaded', () => {
     const loginForm = document.getElementById('loginForm');
@@ -138,7 +140,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function finalizePosts(post) {
-        database.ref('posts').push(post);
+        push(ref(database, 'posts'), post);
         clearFormFields();
     }
 
@@ -152,7 +154,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function loadPosts() {
-        database.ref('posts').on('value', (snapshot) => {
+        const postsRef = ref(database, 'posts');
+        onValue(postsRef, (snapshot) => {
             const posts = [];
             snapshot.forEach((childSnapshot) => {
                 posts.push({ ...childSnapshot.val(), key: childSnapshot.key });
@@ -162,6 +165,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function renderPosts(posts) {
+        console.log("Posts recibidos:", posts);
         postsContainer.innerHTML = '';
         posts.forEach(post => {
             const postElement = createPostElement(post);
@@ -226,7 +230,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     post.comments = [];
                 }
                 post.comments.push(comment);
-                database.ref(`posts/${post.key}/comments`).set(post.comments);
+                set(ref(database, `posts/${post.key}/comments`), post.comments);
                 commentInput.value = '';
             }
         });
