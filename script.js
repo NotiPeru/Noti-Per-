@@ -5,6 +5,7 @@ import { getDatabase, ref, push, onValue, set } from "https://www.gstatic.com/fi
 const firebaseConfig = {
     apiKey: "AIzaSyAPNPRMG8yJaaud9pJqHEaJP1HKxZgi8k4",
     authDomain: "noticias-peru-1279b.firebaseapp.com",
+    databaseURL: "https://noticias-peru-1279b-default-rtdb.firebaseio.com", // Añade esta línea
     projectId: "noticias-peru-1279b",
     storageBucket: "noticias-peru-1279b.firebasestorage.app",
     messagingSenderId: "189080838926",
