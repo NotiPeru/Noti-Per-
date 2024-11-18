@@ -1,3 +1,19 @@
+// Configuración de Firebase
+const firebaseConfig = {
+    // Reemplaza esto con tu configuración de Firebase
+    apiKey: "AIzaSyAPNPRMG8yJaaud9pJqHEaJP1HKxZgi8k4",
+    authDomain: "noticias-peru-1279b.firebaseapp.com",
+    projectId: "noticias-peru-1279b",
+    storageBucket: "noticias-peru-1279b.firebasestorage.app",
+    messagingSenderId: "189080838926",
+    appId: "1:189080838926:web:e58bfae5b0c0691ea2ad5f",
+    measurementId: "G-D7P48XBVJ4"
+};
+
+// Inicializar Firebase
+firebase.initializeApp(firebaseConfig);
+const database = firebase.database();
+
 document.addEventListener('DOMContentLoaded', () => {
     const loginForm = document.getElementById('loginForm');
     const welcomeSection = document.getElementById('welcome');
@@ -12,13 +28,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const logoutButton = document.getElementById('logoutButton');
 
     let currentUser = localStorage.getItem('currentUser');
-    let posts = JSON.parse(localStorage.getItem('posts')) || [];
-
-    // Asegurarse de que todos los posts tengan un array de comentarios
-    posts = posts.map(post => ({
-        ...post,
-        comments: Array.isArray(post.comments) ? post.comments : []
-    }));
 
     if (currentUser) {
         showContentSection();
@@ -77,7 +86,6 @@ document.addEventListener('DOMContentLoaded', () => {
         localStorage.removeItem('currentUser');
         currentUser = null;
         showWelcomeSection();
-        window.location.reload(); // Asegura una limpieza completa
     });
 
     function showWelcomeSection() {
@@ -94,7 +102,7 @@ document.addEventListener('DOMContentLoaded', () => {
         contentSection.classList.remove('hidden');
         logoutButton.classList.remove('hidden');
         contentSection.classList.add('fade-in');
-        renderPosts();
+        loadPosts();
     }
 
     function createPost(content, mediaFile, description) {
@@ -130,9 +138,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function finalizePosts(post) {
-        posts.unshift(post);
-        localStorage.setItem('posts', JSON.stringify(posts));
-        renderPosts();
+        database.ref('posts').push(post);
         clearFormFields();
     }
 
@@ -145,7 +151,17 @@ document.addEventListener('DOMContentLoaded', () => {
         mediaPreview.style.display = 'none';
     }
 
-    function renderPosts() {
+    function loadPosts() {
+        database.ref('posts').on('value', (snapshot) => {
+            const posts = [];
+            snapshot.forEach((childSnapshot) => {
+                posts.push({ ...childSnapshot.val(), key: childSnapshot.key });
+            });
+            renderPosts(posts.reverse());
+        });
+    }
+
+    function renderPosts(posts) {
         postsContainer.innerHTML = '';
         posts.forEach(post => {
             const postElement = createPostElement(post);
@@ -169,9 +185,6 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
 
-        // Asegurarse de que comments existe y es un array
-        const comments = Array.isArray(post.comments) ? post.comments : [];
-
         postElement.innerHTML = `
             <div class="post-header">
                 <span class="post-author">${post.author}</span>
@@ -185,7 +198,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     <button type="submit">Comentar</button>
                 </form>
                 <div class="comment-list"></div>
-                <button class="comment-toggle">Ver comentarios (${comments.length})</button>
+                <button class="comment-toggle">Ver comentarios (${post.comments ? post.comments.length : 0})</button>
             </div>
         `;
 
@@ -209,32 +222,27 @@ document.addEventListener('DOMContentLoaded', () => {
                         minute: '2-digit' 
                     })
                 };
-                if (!Array.isArray(post.comments)) {
+                if (!post.comments) {
                     post.comments = [];
                 }
                 post.comments.push(comment);
-                localStorage.setItem('posts', JSON.stringify(posts));
-                renderComments(commentList, post.comments);
+                database.ref(`posts/${post.key}/comments`).set(post.comments);
                 commentInput.value = '';
-                commentToggle.textContent = `Ver comentarios (${post.comments.length})`;
             }
         });
 
         commentToggle.addEventListener('click', () => {
             commentList.classList.toggle('hidden');
             commentToggle.textContent = commentList.classList.contains('hidden') 
-                ? `Ver comentarios (${comments.length})`
+                ? `Ver comentarios (${post.comments ? post.comments.length : 0})`
                 : 'Ocultar comentarios';
         });
 
-        renderComments(commentList, comments);
+        renderComments(commentList, post.comments || []);
         return postElement;
     }
 
     function renderComments(commentList, comments) {
-        if (!Array.isArray(comments)) {
-            comments = [];
-        }
         commentList.innerHTML = comments.map(comment => `
             <div class="comment">
                 <span class="comment-author">${comment.author}</span>
