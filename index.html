@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Noticias Perú</title>
+    <link rel="icon" href="iconperu.png" type="image/png">
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <!-- Reemplazando el CDN problemático con uno que funciona -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+</head>
+<body>
+    <!-- El resto del HTML permanece igual -->
+    <header>
+        <nav>
+            <div class="logo">Noticias Perú</div>
+            <div id="userInfo" class="user-info"></div>
+            <button id="logoutButton" class="logout-button hidden">
+                <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
+            </button>
+        </nav>
+    </header>
+
+    <main>
+        <section id="welcome" class="welcome-section">
+            <h1>Bienvenido a Noticias Perú</h1>
+            <p>Comparte las últimas noticias y eventos de Perú con el mundo.</p>
+            <form id="loginForm">
+                <input type="text" id="username" placeholder="Ingresa tu nombre de usuario" required>
+                <button type="submit">Ingresar</button>
+            </form>
+        </section>
+
+        <section id="content" class="content-section hidden">
+            <div class="post-form">
+                <textarea id="postContent" placeholder="¿Qué está pasando en Perú?"></textarea>
+                <div class="media-upload">
+                    <label for="mediaUpload" class="upload-label">
+                        <i class="fas fa-camera"></i> Añadir foto/video
+                    </label>
+                    <input type="file" id="mediaUpload" accept="image/*, video/*" hidden>
+                </div>
+                <div id="mediaPreview" class="media-preview"></div>
+                <textarea id="mediaDescription" placeholder="Añade una descripción a tu foto/video" class="hidden"></textarea>
+                <button id="postButton"><i class="fas fa-paper-plane"></i> Publicar</button>
+            </div>
+            <div id="posts" class="posts-container"></div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 Noticias Perú. Todos los derechos reservados.</p>
+        <p class="attribution">Diseñado por Alex Saez Lara</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
