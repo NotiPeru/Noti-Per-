@@ -41,6 +41,16 @@ body {
     display: flex;
     flex-direction: column;
     justify-content: center;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeInUp 0.5s ease forwards;
+}
+
+@keyframes fadeInUp {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 .site-title {
@@ -99,6 +109,8 @@ a:hover {
 
 .btn-primary:hover {
     background-color: var(--secondary-color);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .btn-secondary {
@@ -110,6 +122,8 @@ a:hover {
 .btn-secondary:hover {
     background-color: var(--primary-color);
     color: var(--white);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .button-container {
@@ -147,6 +161,12 @@ textarea:focus {
     max-width: 400px;
     margin: 0 auto;
     text-align: center;
+    transition: var(--transition);
+}
+
+.login-form:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
 }
 
 .login-form h2 {
@@ -188,6 +208,12 @@ header .site-title {
     border-radius: 10px;
     box-shadow: var(--shadow);
     margin-bottom: 40px;
+    transition: var(--transition);
+}
+
+.post-form:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
 }
 
 .posts-container {
@@ -238,17 +264,19 @@ header .site-title {
     margin-bottom: 20px;
 }
 
-.btn-like {
+.btn-like, .btn-comment {
     background-color: var(--light-gray);
     color: var(--dark-gray);
     padding: 8px 15px;
     border-radius: 20px;
     font-size: 0.9rem;
+    transition: var(--transition);
 }
 
-.btn-like:hover {
+.btn-like:hover, .btn-comment:hover {
     background-color: var(--gray);
     color: var(--white);
+    transform: translateY(-2px);
 }
 
 .comment-form {
@@ -262,11 +290,23 @@ header .site-title {
     margin-bottom: 0;
 }
 
+.comments {
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid var(--light-gray);
+}
+
 .comment {
     background-color: var(--light-gray);
     padding: 15px;
     border-radius: 8px;
-    margin-top: 15px;
+    margin-bottom: 15px;
+    transition: var(--transition);
+}
+
+.comment:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 .comment-author {
