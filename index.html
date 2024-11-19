@@ -1,47 +1,44 @@
-export default function Component() {
-    return (
-      <html lang="es">
-        <head>
-          <meta charset="UTF-8" />
-          <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-          <title>Foro Noticias Perú</title>
-          <link rel="stylesheet" href="styles.css" />
-        </head>
-        <body>
-          <div id="loginPage" class="page">
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Noticias Perú - Foro</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div id="loginPage" class="page">
+        <div class="container">
             <h1>Bienvenido al Foro de Noticias Perú</h1>
-            <div class="login-container">
-              <input type="text" id="usernameInput" placeholder="Ingrese su nombre de usuario" />
-              <button id="loginButton">INGRESAR</button>
+            <div class="login-form">
+                <input type="text" id="usernameInput" placeholder="Ingrese su nombre de usuario" required>
+                <button id="loginButton">Ingresar</button>
             </div>
-          </div>
-  
-          <div id="forumPage" class="page hidden">
-            <header>
-              <h1>NOTICIAS PERÚ</h1>
-              <button id="logoutButton">CERRAR SESIÓN</button>
-            </header>
-            <p>Comparte las últimas noticias, reseñas y eventos de Perú con el mundo.</p>
-            
+        </div>
+    </div>
+
+    <div id="forumPage" class="page hidden">
+        <header>
+            <h1>Noticias Perú</h1>
+            <button id="logoutButton">Cerrar Sesión</button>
+        </header>
+        <main class="container">
+            <div id="welcomeMessage"></div>
             <div class="post-form">
-              <textarea id="postContent" placeholder="Comparte una reseña o noticia sobre Perú"></textarea>
-              <input type="file" id="mediaUpload" accept="image/*,video/*" multiple />
-              <button id="postButton">Publicar</button>
+                <textarea id="postContent" placeholder="Comparte una reseña o noticia sobre Perú" required></textarea>
+                <button id="postButton">Publicar</button>
             </div>
-  
             <div id="posts"></div>
-          </div>
-  
-          <footer>
-            <small>Desarrollado por: Alex Sáez</small>
-          </footer>
-  
-          <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
-          <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
-          <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
-          <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-storage.js"></script>
-          <script src="app.js"></script>
-        </body>
-      </html>
-    )
-  }
+        </main>
+    </div>
+
+    <footer>
+        <p>&copy; 2024 Noticias Perú. Todos los derechos reservados.</p>
+    </footer>
+
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

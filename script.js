@@ -1,6 +1,3 @@
-import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-app.js";
-import { getDatabase, ref, push, onValue, set } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-database.js";
-
 // Configuración de Firebase
 const firebaseConfig = {
     apiKey: "AIzaSyBqSojtBrm6y7chI3399QQuYbwP6qTFi0s",
@@ -14,257 +11,154 @@ const firebaseConfig = {
 };
 
 // Inicializar Firebase
-const app = initializeApp(firebaseConfig);
-const database = getDatabase(app);
+firebase.initializeApp(firebaseConfig);
 
-document.addEventListener('DOMContentLoaded', () => {
-    const loginForm = document.getElementById('loginForm');
-    const welcomeSection = document.getElementById('welcome');
-    const contentSection = document.getElementById('content');
-    const userInfo = document.getElementById('userInfo');
-    const postButton = document.getElementById('postButton');
-    const postContent = document.getElementById('postContent');
-    const postsContainer = document.getElementById('posts');
-    const mediaUpload = document.getElementById('mediaUpload');
-    const mediaPreview = document.getElementById('mediaPreview');
-    const mediaDescription = document.getElementById('mediaDescription');
-    const logoutButton = document.getElementById('logoutButton');
+// Referencias a elementos del DOM
+const loginPage = document.getElementById('loginPage');
+const forumPage = document.getElementById('forumPage');
+const usernameInput = document.getElementById('usernameInput');
+const loginButton = document.getElementById('loginButton');
+const logoutButton = document.getElementById('logoutButton');
+const welcomeMessage = document.getElementById('welcomeMessage');
+const postContent = document.getElementById('postContent');
+const postButton = document.getElementById('postButton');
+const postsContainer = document.getElementById('posts');
 
-    let currentUser = localStorage.getItem('currentUser');
+let currentUser = null;
 
-    if (currentUser) {
-        showContentSection();
-    } else {
-        showWelcomeSection();
+// Función para iniciar sesión
+loginButton.addEventListener('click', () => {
+    const username = usernameInput.value.trim();
+    if (username) {
+        currentUser = username;
+        localStorage.setItem('currentUser', username);
+        showWelcomeMessage(username);
+        showForumPage();
     }
+});
 
-    loginForm.addEventListener('submit', (e) => {
-        e.preventDefault();
-        const username = document.getElementById('username').value.trim();
-        if (username) {
-            currentUser = username;
-            localStorage.setItem('currentUser', currentUser);
-            showContentSection();
-        }
-    });
+// Función para cerrar sesión
+logoutButton.addEventListener('click', () => {
+    currentUser = null;
+    localStorage.removeItem('currentUser');
+    showLoginPage();
+});
 
-    postButton.addEventListener('click', () => {
-        const content = postContent.value.trim();
-        const description = mediaDescription.value.trim();
-        const mediaFile = mediaUpload.files[0];
+// Función para mostrar mensaje de bienvenida
+function showWelcomeMessage(username) {
+    welcomeMessage.textContent = `Bienvenido, ${username}!`;
+    setTimeout(() => {
+        welcomeMessage.textContent = '';
+    }, 3000);
+}
 
-        // Validación para verificar si hay contenido o un archivo multimedia
-        if (!content && !mediaFile) {
-            alert('Por favor, añade contenido o una imagen/video para publicar.');
-            return;
-        }
+// Función para mostrar la página de inicio de sesión
+function showLoginPage() {
+    loginPage.classList.remove('hidden');
+    forumPage.classList.add('hidden');
+}
 
-        createPost(content, mediaFile, description);
-    });
+// Función para mostrar la página del foro
+function showForumPage() {
+    loginPage.classList.add('hidden');
+    forumPage.classList.remove('hidden');
+}
 
-    function updateMediaPreview(file) {
-        if (file) {
-            const reader = new FileReader();
-            reader.onload = (e) => {
-                mediaPreview.style.display = 'block';
-                if (file.type.startsWith('image/')) {
-                    mediaPreview.innerHTML = `<img src="${e.target.result}" alt="Vista previa">`;
-                } else if (file.type.startsWith('video/')) {
-                    mediaPreview.innerHTML = `<video src="${e.target.result}" controls></video>`;
-                }
-                mediaDescription.classList.remove('hidden');
-            };
-            reader.readAsDataURL(file);
-        } else {
-            mediaPreview.style.display = 'none';
-            mediaPreview.innerHTML = '';
-            mediaDescription.classList.add('hidden');
-        }
-    }
-
-    mediaUpload.addEventListener('change', (e) => {
-        updateMediaPreview(e.target.files[0]);
-    });
-
-    logoutButton.addEventListener('click', () => {
-        localStorage.removeItem('currentUser');
-        currentUser = null;
-        showWelcomeSection();
-    });
-
-    function showWelcomeSection() {
-        welcomeSection.classList.remove('hidden');
-        contentSection.classList.add('hidden');
-        logoutButton.classList.add('hidden');
-        clearFormFields();
-        userInfo.textContent = '';
-    }
-
-    function showContentSection() {
-        userInfo.textContent = `Bienvenido, ${currentUser}`;
-        welcomeSection.classList.add('hidden');
-        contentSection.classList.remove('hidden');
-        logoutButton.classList.remove('hidden');
-        contentSection.classList.add('fade-in');
-        loadPosts();
-    }
-
-    function createPost(content, mediaFile, description) {
+// Función para publicar contenido
+postButton.addEventListener('click', () => {
+    const content = postContent.value.trim();
+    if (content && currentUser) {
         const post = {
-            id: Date.now(),
             author: currentUser,
             content: content,
-            description: description,
-            date: new Date().toLocaleString('es-PE', { 
-                year: 'numeric', 
-                month: 'long', 
-                day: 'numeric', 
-                hour: '2-digit', 
-                minute: '2-digit' 
-            }),
-            media: null,
-            comments: []
+            timestamp: firebase.database.ServerValue.TIMESTAMP
         };
-
-        if (mediaFile) {
-            const reader = new FileReader();
-            reader.onload = (e) => {
-                post.media = {
-                    type: mediaFile.type.startsWith('image/') ? 'image' : 'video',
-                    data: e.target.result
-                };
-                finalizePosts(post);
-            };
-            reader.readAsDataURL(mediaFile);
-        } else {
-            finalizePosts(post);
-        }
-    }
-
-    function finalizePosts(post) {
-        push(ref(database, 'posts'), post);
-        clearFormFields();
-    }
-
-    function clearFormFields() {
+        firebase.database().ref('posts').push(post);
         postContent.value = '';
-        mediaPreview.innerHTML = '';
-        mediaUpload.value = '';
-        mediaDescription.value = '';
-        mediaDescription.classList.add('hidden');
-        mediaPreview.style.display = 'none';
     }
+});
 
-    function loadPosts() {
-        const postsRef = ref(database, 'posts');
-        onValue(postsRef, (snapshot) => {
-            const posts = [];
-            snapshot.forEach((childSnapshot) => {
-                posts.push({ ...childSnapshot.val(), key: childSnapshot.key });
-            });
-            renderPosts(posts.reverse());
-        });
-    }
-
-    function renderPosts(posts) {
-        console.log("Posts recibidos:", posts);
+// Función para cargar y mostrar publicaciones en tiempo real
+function loadPosts() {
+    const postsRef = firebase.database().ref('posts');
+    postsRef.on('value', (snapshot) => {
         postsContainer.innerHTML = '';
-        posts.forEach(post => {
-            const postElement = createPostElement(post);
-            postsContainer.appendChild(postElement);
-
-            // Escuchar los comentarios en tiempo real
-            const commentsRef = ref(database, `posts/${post.key}/comments`);
-            onValue(commentsRef, (snapshot) => {
-                const comments = snapshot.val() || [];
-                renderComments(postElement.querySelector('.comment-list'), comments);
-            });
+        const posts = [];
+        snapshot.forEach((childSnapshot) => {
+            posts.push({ id: childSnapshot.key, ...childSnapshot.val() });
         });
-    }
+        posts.reverse().forEach(createPostElement);
+    });
+}
 
-    function createPostElement(post) {
-        const postElement = document.createElement('div');
-        postElement.classList.add('post', 'fade-in');
-        
-        let mediaHTML = '';
-        if (post.media) {
-            if (post.description) {
-                mediaHTML += `<p class="post-description">${post.description}</p>`;
-            }
-            if (post.media.type === 'image') {
-                mediaHTML += `<img src="${post.media.data}" alt="Imagen publicada" class="post-media">`;
-            } else if (post.media.type === 'video') {
-                mediaHTML += `<video src="${post.media.data}" controls class="post-media"></video>`;
-            }
+// Función para crear elemento de publicación
+function createPostElement(post) {
+    const postElement = document.createElement('div');
+    postElement.classList.add('post');
+    
+    const date = new Date(post.timestamp);
+    
+    postElement.innerHTML = `
+        <div class="post-header">
+            <span class="post-author">${post.author}</span>
+            <span class="post-date">${date.toLocaleString()}</span>
+        </div>
+        <p class="post-content">${post.content}</p>
+        <div class="comments"></div>
+        <form class="comment-form">
+            <input type="text" placeholder="Añade un comentario..." required>
+            <button type="submit">Comentar</button>
+        </form>
+    `;
+
+    const commentForm = postElement.querySelector('.comment-form');
+    const commentsContainer = postElement.querySelector('.comments');
+
+    // Cargar comentarios existentes
+    loadComments(post.id, commentsContainer);
+
+    // Manejar nuevos comentarios
+    commentForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const commentInput = commentForm.querySelector('input');
+        const commentContent = commentInput.value.trim();
+        if (commentContent && currentUser) {
+            const comment = {
+                author: currentUser,
+                content: commentContent,
+                timestamp: firebase.database.ServerValue.TIMESTAMP
+            };
+            firebase.database().ref(`comments/${post.id}`).push(comment);
+            commentInput.value = '';
         }
+    });
 
-        postElement.innerHTML = `
-            <div class="post-header">
-                <span class="post-author">${post.author}</span>
-                <span class="post-date">${post.date}</span>
-            </div>
-            ${post.content ? `<p class="post-content">${post.content}</p>` : ''}
-            ${mediaHTML}
-            <div class="comment-section">
-                <form class="comment-form">
-                    <input type="text" placeholder="Añade un comentario..." required>
-                    <button type="submit">Comentar</button>
-                </form>
-                <div class="comment-list"></div>
-                <button class="comment-toggle">Ver comentarios (${post.comments ? post.comments.length : 0})</button>
-            </div>
+    postsContainer.appendChild(postElement);
+}
+
+// Función para cargar comentarios en tiempo real
+function loadComments(postId, container) {
+    const commentsRef = firebase.database().ref(`comments/${postId}`);
+    commentsRef.on('child_added', (snapshot) => {
+        const comment = snapshot.val();
+        const commentElement = document.createElement('div');
+        commentElement.classList.add('comment');
+        commentElement.innerHTML = `
+            <strong>${comment.author}:</strong> ${comment.content}
         `;
+        container.appendChild(commentElement);
+    });
+}
 
-        const commentForm = postElement.querySelector('.comment-form');
-        const commentList = postElement.querySelector('.comment-list');
-        const commentToggle = postElement.querySelector('.comment-toggle');
-
-        commentForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            const commentInput = commentForm.querySelector('input');
-            const commentContent = commentInput.value.trim();
-            if (commentContent) {
-                const comment = {
-                    author: currentUser,
-                    content: commentContent,
-                    date: new Date().toLocaleString('es-PE', { 
-                        year: 'numeric', 
-                        month: 'long', 
-                        day: 'numeric', 
-                        hour: '2-digit', 
-                        minute: '2-digit' 
-                    })
-                };
-                if (!post.comments) {
-                    post.comments = [];
-                }
-                post.comments.push(comment);
-                set(ref(database, `posts/${post.key}/comments`), post.comments);
-                commentInput.value = '';
-            }
-        });
-
-        commentToggle.addEventListener('click', () => {
-            commentList.classList.toggle('hidden');
-            commentToggle.textContent = commentList.classList.contains('hidden') 
-                ? `Ver comentarios (${post.comments ? post.comments.length : 0})`
-                : `Ocultar comentarios (${post.comments ? post.comments.length : 0})`;
-        });
-
-        return postElement;
+// Verificar si hay un usuario guardado en localStorage al cargar la página
+window.addEventListener('load', () => {
+    const savedUser = localStorage.getItem('currentUser');
+    if (savedUser) {
+        currentUser = savedUser;
+        showWelcomeMessage(savedUser);
+        showForumPage();
+    } else {
+        showLoginPage();
     }
-
-    function renderComments(commentList, comments) {
-        commentList.innerHTML = '';
-        comments.forEach(comment => {
-            const commentElement = document.createElement('div');
-            commentElement.classList.add('comment');
-            commentElement.innerHTML = `
-                <span class="comment-author">${comment.author}</span>
-                <span class="comment-date">${comment.date}</span>
-                <p class="comment-content">${comment.content}</p>
-            `;
-            commentList.appendChild(commentElement);
-        });
-    }
+    loadPosts();
 });
