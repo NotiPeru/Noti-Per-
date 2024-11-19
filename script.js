@@ -121,25 +121,44 @@ async function handlePost() {
     }
 }
 
-function loadPosts() {
+async function loadPosts() {
     const postsRef = window.databaseRef(window.database, 'posts');
-    window.databaseOnValue(postsRef, (snapshot) => {
-        postsContainer.innerHTML = '';
+    const commentsRef = window.databaseRef(window.database, 'comments');
+    
+    try {
+        const [postsSnapshot, commentsSnapshot] = await Promise.all([
+            window.databaseGet(postsRef),
+            window.databaseGet(commentsRef)
+        ]);
+
         const posts = [];
-        snapshot.forEach((childSnapshot) => {
+        postsSnapshot.forEach((childSnapshot) => {
             posts.push({
                 id: childSnapshot.key,
-                ...childSnapshot.val()
+                ...childSnapshot.val(),
+                commentCount: 0
             });
+        });
+
+        commentsSnapshot.forEach((childSnapshot) => {
+            const postId = childSnapshot.key;
+            const commentCount = Object.keys(childSnapshot.val()).length;
+            const post = posts.find(p => p.id === postId);
+            if (post) {
+                post.commentCount = commentCount;
+            }
         });
 
         posts.sort((a, b) => b.timestamp - a.timestamp);
 
+        postsContainer.innerHTML = '';
         posts.forEach(post => {
             const postElement = createPostElement(post);
             postsContainer.appendChild(postElement);
         });
-    });
+    } catch (error) {
+        console.error('Error al cargar los posts:', error);
+    }
 }
 
 function createPostElement(post) {
@@ -159,7 +178,7 @@ function createPostElement(post) {
                 <i class="fas fa-thumbs-up"></i> <span class="like-count">${post.likes || 0}</span>
             </button>
             <button class="btn btn-comment" data-post-id="${post.id}">
-                <i class="fas fa-comment"></i> <span class="comment-count">0</span> Comentarios
+                <i class="fas fa-comment"></i> <span class="comment-count">${post.commentCount}</span> Comentarios
             </button>
         </div>
         <div class="comments hidden"></div>
@@ -277,4 +296,8 @@ function updateCommentCount(postId) {
             countElement.textContent = commentCount;
         }
     });
+}
+
+export default function Component() {
+  return null; // Este componente no renderiza nada, solo contiene el script
 }
