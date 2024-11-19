@@ -109,7 +109,8 @@ async function handlePost() {
                 author: currentUser,
                 content: content,
                 timestamp: Date.now(),
-                likes: 0
+                likes: 0,
+                commentCount: 0
             });
             postContent.value = '';
             console.log('Post publicado exitosamente');
@@ -157,8 +158,9 @@ function createPostElement(post) {
             <button class="btn btn-like" data-post-id="${post.id}">
                 <i class="fas fa-thumbs-up"></i> <span class="like-count">${post.likes || 0}</span>
             </button>
+            <span class="comment-count">${post.commentCount || 0} Comentarios</span>
         </div>
-        <div class="comments"></div>
+        <div class="comments hidden"></div>
         <form class="comment-form">
             <input type="text" placeholder="Añade un comentario..." required>
             <button type="submit" class="btn btn-primary">Comentar</button>
@@ -170,8 +172,14 @@ function createPostElement(post) {
 
     const commentForm = postElement.querySelector('.comment-form');
     const commentsContainer = postElement.querySelector('.comments');
+    const commentCountSpan = postElement.querySelector('.comment-count');
 
-    loadComments(post.id, commentsContainer);
+    commentCountSpan.addEventListener('click', () => {
+        commentsContainer.classList.toggle('hidden');
+        if (!commentsContainer.classList.contains('hidden')) {
+            loadComments(post.id, commentsContainer);
+        }
+    });
 
     commentForm.addEventListener('submit', (e) => {
         e.preventDefault();
@@ -189,11 +197,24 @@ function createPostElement(post) {
 async function handleLike(postId) {
     if (currentUser) {
         const postRef = window.databaseRef(window.database, `posts/${postId}`);
+        const userLikesRef = window.databaseRef(window.database, `userLikes/${currentUser}/${postId}`);
+        
         try {
-            const snapshot = await window.databaseGet(postRef);
-            const post = snapshot.val();
-            const newLikes = (post.likes || 0) + 1;
-            await window.databaseUpdate(postRef, { likes: newLikes });
+            const [postSnapshot, userLikeSnapshot] = await Promise.all([
+                window.databaseGet(postRef),
+                window.databaseGet(userLikesRef)
+            ]);
+            
+            const post = postSnapshot.val();
+            const hasLiked = userLikeSnapshot.exists();
+            
+            if (!hasLiked) {
+                const newLikes = (post.likes || 0) + 1;
+                await Promise.all([
+                    window.databaseUpdate(postRef, { likes: newLikes }),
+                    window.databaseUpdate(userLikesRef, true)
+                ]);
+            }
         } catch (error) {
             console.error('Error al dar like:', error);
         }
@@ -204,11 +225,21 @@ async function handleComment(postId, content) {
     if (currentUser) {
         try {
             const commentsRef = window.databaseRef(window.database, `comments/${postId}`);
+            const postRef = window.databaseRef(window.database, `posts/${postId}`);
+            
             await window.databasePush(commentsRef, {
                 author: currentUser,
                 content: content,
                 timestamp: Date.now()
             });
+            
+            const postSnapshot = await window.databaseGet(postRef);
+            const post = postSnapshot.val();
+            const newCommentCount = (post.commentCount || 0) + 1;
+            await window.databaseUpdate(postRef, { commentCount: newCommentCount });
+            
+            const commentCountSpan = document.querySelector(`[data-post-id="${postId}"]`).closest('.post').querySelector('.comment-count');
+            commentCountSpan.textContent = `${newCommentCount} Comentarios`;
         } catch (error) {
             console.error('Error al comentar:', error);
             alert('Error al publicar el comentario. Por favor, intente nuevamente.');
