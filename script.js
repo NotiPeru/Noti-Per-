@@ -179,3 +179,5 @@ if (savedUser) {
 
 // Iniciar la carga de posts
 loadPosts();
+
+
