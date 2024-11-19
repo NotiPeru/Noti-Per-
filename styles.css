@@ -251,6 +251,18 @@ header .site-title {
     color: var(--white);
 }
 
+.btn-like.liked {
+    color: #1e88e5;
+}
+
+.comment-count {
+    cursor: pointer;
+}
+
+.comment-count:hover {
+    text-decoration: underline;
+}
+
 .comment-form {
     display: flex;
     margin-top: 20px;
