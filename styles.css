@@ -257,10 +257,13 @@ header .site-title {
 
 .comment-count {
     cursor: pointer;
+    color: var(--primary-color);
+    transition: var(--transition);
 }
 
 .comment-count:hover {
     text-decoration: underline;
+    opacity: 0.8;
 }
 
 .comment-form {
