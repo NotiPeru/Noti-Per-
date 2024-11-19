@@ -1,4 +1,20 @@
-// Obtener elementos del DOM
+// Configuración de Firebase
+const firebaseConfig = {
+    apiKey: "AIzaSyBqSojtBrm6y7chI3399QQuYbwP6qTFi0s",
+    authDomain: "mi-foro-peru.firebaseapp.com",
+    databaseURL: "https://mi-foro-peru-default-rtdb.firebaseio.com/",
+    projectId: "mi-foro-peru",
+    storageBucket: "mi-foro-peru.firebasestorage.app",
+    messagingSenderId: "544806448309",
+    appId: "1:544806448309:web:ce80b2e855d46264b5a2fc",
+    measurementId: "G-DKBGP9LFZX"
+};
+
+// Inicializar Firebase
+firebase.initializeApp(firebaseConfig);
+const database = firebase.database();
+
+// Variables de elementos del DOM
 const loginPage = document.getElementById('loginPage');
 const forumPage = document.getElementById('forumPage');
 const usernameInput = document.getElementById('usernameInput');
@@ -32,13 +48,8 @@ logoutButton.addEventListener('click', () => {
 // Mostrar mensaje de bienvenida
 function showWelcomeMessage(username) {
     welcomeMessage.textContent = `¡Bienvenido, ${username}!`;
-    welcomeMessage.style.display = 'block';
     setTimeout(() => {
-        welcomeMessage.style.opacity = '0';
-        setTimeout(() => {
-            welcomeMessage.style.display = 'none';
-            welcomeMessage.style.opacity = '1';
-        }, 500);
+        welcomeMessage.textContent = '';
     }, 3000);
 }
 
@@ -59,12 +70,11 @@ postButton.addEventListener('click', async () => {
     const content = postContent.value.trim();
     if (content && currentUser) {
         try {
-            const postsRef = window.database.ref('posts');
+            const postsRef = database.ref('posts');
             await postsRef.push({
                 author: currentUser,
                 content: content,
-                timestamp: Date.now(),
-                likes: 0
+                timestamp: Date.now()
             });
             postContent.value = '';
             console.log('Post publicado exitosamente');
@@ -77,7 +87,7 @@ postButton.addEventListener('click', async () => {
 
 // Cargar publicaciones en tiempo real
 function loadPosts() {
-    const postsRef = window.database.ref('posts');
+    const postsRef = database.ref('posts');
     postsRef.on('value', (snapshot) => {
         postsContainer.innerHTML = '';
         const posts = [];
@@ -111,23 +121,12 @@ function createPostElement(post) {
             <span class="post-date">${date.toLocaleString('es-PE')}</span>
         </div>
         <p class="post-content">${post.content}</p>
-        <div class="post-actions">
-            <button class="btn btn-like" data-post-id="${post.id}">
-                <i class="fas fa-thumbs-up"></i> <span class="like-count">${post.likes || 0}</span>
-            </button>
-            <button class="btn btn-comment" data-post-id="${post.id}">
-                <i class="fas fa-comment"></i> Comentar
-            </button>
-        </div>
         <div class="comments"></div>
         <form class="comment-form">
             <input type="text" placeholder="Añade un comentario..." required>
-            <button type="submit" class="btn btn-primary">Comentar</button>
+            <button type="submit">Comentar</button>
         </form>
     `;
-
-    const likeButton = postElement.querySelector('.btn-like');
-    likeButton.addEventListener('click', () => handleLike(post.id));
 
     const commentForm = postElement.querySelector('.comment-form');
     const commentsContainer = postElement.querySelector('.comments');
@@ -142,7 +141,7 @@ function createPostElement(post) {
         const commentContent = commentInput.value.trim();
         if (commentContent && currentUser) {
             try {
-                const commentsRef = window.database.ref(`comments/${post.id}`);
+                const commentsRef = database.ref(`comments/${post.id}`);
                 await commentsRef.push({
                     author: currentUser,
                     content: commentContent,
@@ -159,24 +158,9 @@ function createPostElement(post) {
     return postElement;
 }
 
-// Manejar likes
-async function handleLike(postId) {
-    if (currentUser) {
-        const postRef = window.database.ref(`posts/${postId}`);
-        try {
-            const snapshot = await postRef.once('value');
-            const post = snapshot.val();
-            const newLikes = (post.likes || 0) + 1;
-            await postRef.update({ likes: newLikes });
-        } catch (error) {
-            console.error('Error al dar like:', error);
-        }
-    }
-}
-
 // Cargar comentarios en tiempo real
 function loadComments(postId, container) {
-    const commentsRef = window.database.ref(`comments/${postId}`);
+    const commentsRef = database.ref(`comments/${postId}`);
     commentsRef.on('value', (snapshot) => {
         container.innerHTML = '';
         const comments = [];
@@ -191,8 +175,7 @@ function loadComments(postId, container) {
             const commentElement = document.createElement('div');
             commentElement.classList.add('comment');
             commentElement.innerHTML = `
-                <strong class="comment-author">${comment.author}:</strong>
-                <span class="comment-content">${comment.content}</span>
+                <strong>${comment.author}:</strong> ${comment.content}
                 <span class="comment-date">${new Date(comment.timestamp).toLocaleString('es-PE')}</span>
             `;
             container.appendChild(commentElement);
