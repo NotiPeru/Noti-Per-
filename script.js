@@ -53,6 +53,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const description = mediaDescription.value.trim();
         const mediaFile = mediaUpload.files[0];
 
+        // Validación para verificar si hay contenido o un archivo multimedia
         if (!content && !mediaFile) {
             alert('Por favor, añade contenido o una imagen/video para publicar.');
             return;
@@ -171,6 +172,13 @@ document.addEventListener('DOMContentLoaded', () => {
         posts.forEach(post => {
             const postElement = createPostElement(post);
             postsContainer.appendChild(postElement);
+
+            // Escuchar los comentarios en tiempo real
+            const commentsRef = ref(database, `posts/${post.key}/comments`);
+            onValue(commentsRef, (snapshot) => {
+                const comments = snapshot.val() || [];
+                renderComments(postElement.querySelector('.comment-list'), comments);
+            });
         });
     }
 
@@ -240,20 +248,23 @@ document.addEventListener('DOMContentLoaded', () => {
             commentList.classList.toggle('hidden');
             commentToggle.textContent = commentList.classList.contains('hidden') 
                 ? `Ver comentarios (${post.comments ? post.comments.length : 0})`
-                : 'Ocultar comentarios';
+                : `Ocultar comentarios (${post.comments ? post.comments.length : 0})`;
         });
 
-        renderComments(commentList, post.comments || []);
         return postElement;
     }
 
     function renderComments(commentList, comments) {
-        commentList.innerHTML = comments.map(comment => `
-            <div class="comment">
+        commentList.innerHTML = '';
+        comments.forEach(comment => {
+            const commentElement = document.createElement('div');
+            commentElement.classList.add('comment');
+            commentElement.innerHTML = `
                 <span class="comment-author">${comment.author}</span>
                 <span class="comment-date">${comment.date}</span>
                 <p class="comment-content">${comment.content}</p>
-            </div>
-        `).join('');
+            `;
+            commentList.appendChild(commentElement);
+        });
     }
 });
