@@ -109,8 +109,7 @@ async function handlePost() {
                 author: currentUser,
                 content: content,
                 timestamp: Date.now(),
-                likes: 0,
-                likedBy: {}
+                likes: 0
             });
             postContent.value = '';
             console.log('Post publicado exitosamente');
@@ -158,12 +157,9 @@ function createPostElement(post) {
             <button class="btn btn-like" data-post-id="${post.id}">
                 <i class="fas fa-thumbs-up"></i> <span class="like-count">${post.likes || 0}</span>
             </button>
-            <button class="btn btn-comment" data-post-id="${post.id}">
-                <i class="fas fa-comment"></i> <span class="comment-count">0</span> Comentarios
-            </button>
         </div>
-        <div class="comments hidden"></div>
-        <form class="comment-form hidden">
+        <div class="comments"></div>
+        <form class="comment-form">
             <input type="text" placeholder="Añade un comentario..." required>
             <button type="submit" class="btn btn-primary">Comentar</button>
         </form>
@@ -172,17 +168,10 @@ function createPostElement(post) {
     const likeButton = postElement.querySelector('.btn-like');
     likeButton.addEventListener('click', () => handleLike(post.id));
 
-    const commentButton = postElement.querySelector('.btn-comment');
-    const commentsContainer = postElement.querySelector('.comments');
     const commentForm = postElement.querySelector('.comment-form');
+    const commentsContainer = postElement.querySelector('.comments');
 
-    commentButton.addEventListener('click', () => {
-        commentsContainer.classList.toggle('hidden');
-        commentForm.classList.toggle('hidden');
-        if (!commentsContainer.classList.contains('hidden')) {
-            loadComments(post.id, commentsContainer);
-        }
-    });
+    loadComments(post.id, commentsContainer);
 
     commentForm.addEventListener('submit', (e) => {
         e.preventDefault();
@@ -203,25 +192,10 @@ async function handleLike(postId) {
         try {
             const snapshot = await window.databaseGet(postRef);
             const post = snapshot.val();
-            const likedBy = post.likedBy || {};
-            
-            if (likedBy[currentUser]) {
-                // Usuario ya dio like, quitar el like
-                delete likedBy[currentUser];
-                await window.databaseUpdate(postRef, { 
-                    likes: post.likes - 1,
-                    likedBy: likedBy
-                });
-            } else {
-                // Usuario no ha dado like, agregar el like
-                likedBy[currentUser] = true;
-                await window.databaseUpdate(postRef, { 
-                    likes: (post.likes || 0) + 1,
-                    likedBy: likedBy
-                });
-            }
+            const newLikes = (post.likes || 0) + 1;
+            await window.databaseUpdate(postRef, { likes: newLikes });
         } catch (error) {
-            console.error('Error al dar/quitar like:', error);
+            console.error('Error al dar like:', error);
         }
     }
 }
@@ -235,7 +209,6 @@ async function handleComment(postId, content) {
                 content: content,
                 timestamp: Date.now()
             });
-            updateCommentCount(postId);
         } catch (error) {
             console.error('Error al comentar:', error);
             alert('Error al publicar el comentario. Por favor, intente nuevamente.');
@@ -264,17 +237,5 @@ function loadComments(postId, container) {
             `;
             container.appendChild(commentElement);
         });
-        updateCommentCount(postId);
-    });
-}
-
-function updateCommentCount(postId) {
-    const commentsRef = window.databaseRef(window.database, `comments/${postId}`);
-    window.databaseGet(commentsRef).then((snapshot) => {
-        const commentCount = snapshot.size;
-        const countElement = document.querySelector(`[data-post-id="${postId}"] .comment-count`);
-        if (countElement) {
-            countElement.textContent = commentCount;
-        }
     });
 }
