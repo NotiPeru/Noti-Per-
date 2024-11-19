@@ -3,19 +3,39 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Noticias Perú - Foro</title>
+    <title>Foro de Noticias Perú</title>
     <link rel="stylesheet" href="styles.css">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
-    <script src="https://kit.fontawesome.com/your-fontawesome-kit.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-    <div id="loginPage" class="page">
+    <div id="homePage" class="page">
         <div class="container">
-            <h1 class="site-title">Noticias Perú</h1>
+            <h1 class="site-title">Foro de Noticias Perú</h1>
+            <div class="button-container">
+                <button id="adminButton" class="btn btn-primary">Admin</button>
+                <button id="userButton" class="btn btn-secondary">Usuario</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="adminLoginPage" class="page hidden">
+        <div class="container">
+            <h1 class="site-title">Acceso de Administrador</h1>
             <div class="login-form">
-                <h2>Bienvenido al Foro</h2>
-                <input type="text" id="usernameInput" placeholder="Ingrese su nombre de usuario" required>
-                <button id="loginButton">Ingresar <i class="fas fa-sign-in-alt"></i></button>
+                <input type="text" id="adminUsername" placeholder="Nombre de usuario" required>
+                <input type="password" id="adminPassword" placeholder="Contraseña" required>
+                <button id="adminLoginButton" class="btn btn-primary">Ingresar</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="userLoginPage" class="page hidden">
+        <div class="container">
+            <h1 class="site-title">Acceso de Usuario</h1>
+            <div class="login-form">
+                <input type="text" id="userUsername" placeholder="Nombre de usuario" required>
+                <button id="userLoginButton" class="btn btn-primary">Acceder</button>
             </div>
         </div>
     </div>
@@ -23,30 +43,34 @@
     <div id="forumPage" class="page hidden">
         <header>
             <div class="container header-content">
-                <h1 class="site-title">Noticias Perú</h1>
-                <button id="logoutButton">Cerrar Sesión <i class="fas fa-sign-out-alt"></i></button>
+                <h1 class="site-title">Foro de Noticias Perú</h1>
+                <div>
+                    <span id="welcomeMessage" class="welcome-message"></span>
+                    <button id="logoutButton" class="btn btn-secondary">Cerrar Sesión</button>
+                </div>
             </div>
         </header>
         <main class="container">
-            <div id="welcomeMessage" class="welcome-message"></div>
-            <div class="post-form">
-                <h2>Comparte una noticia</h2>
-                <textarea id="postContent" placeholder="Comparte una reseña o noticia sobre Perú" required></textarea>
-                <button id="postButton">Publicar <i class="fas fa-paper-plane"></i></button>
+            <div id="adminControls" class="hidden">
+                <div class="post-form">
+                    <h2>Publicar una nueva noticia</h2>
+                    <textarea id="postContent" placeholder="Escribe tu noticia aquí..." required></textarea>
+                    <button id="postButton" class="btn btn-primary">Publicar</button>
+                </div>
             </div>
             <div id="posts" class="posts-container"></div>
         </main>
+        <footer>
+            <div class="container">
+                <p>&copy; 2024 Foro de Noticias Perú. Todos los derechos reservados.</p>
+                <p class="developer-credit">Desarrollado por: Alex Saez</p>
+            </div>
+        </footer>
     </div>
-
-    <footer>
-        <div class="container">
-            <p>&copy; 2024 Noticias Perú. Todos los derechos reservados.</p>
-        </div>
-    </footer>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-app.js";
-        import { getDatabase } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-database.js";
+        import { getDatabase, ref, push, onValue, update, get } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-database.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyBqSojtBrm6y7chI3399QQuYbwP6qTFi0s",
@@ -63,7 +87,12 @@
         const database = getDatabase(app);
 
         window.database = database;
+        window.databaseRef = ref;
+        window.databasePush = push;
+        window.databaseOnValue = onValue;
+        window.databaseUpdate = update;
+        window.databaseGet = get;
     </script>
-    <script src="script.js" type="module"></script>
+    <script src="script.js"></script>
 </body>
 </html>
