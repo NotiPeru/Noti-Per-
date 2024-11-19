@@ -3,19 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Noticias Perú - Foro</title>
+    <title>Noticias Perú - Foro Profesional</title>
     <link rel="stylesheet" href="styles.css">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
-    <script src="https://kit.fontawesome.com/your-fontawesome-kit.js" crossorigin="anonymous"></script>
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
 </head>
 <body>
     <div id="loginPage" class="page">
         <div class="container">
             <h1 class="site-title">Noticias Perú</h1>
             <div class="login-form">
-                <h2>Bienvenido al Foro</h2>
+                <h2>Bienvenido al Foro Profesional</h2>
                 <input type="text" id="usernameInput" placeholder="Ingrese su nombre de usuario" required>
-                <button id="loginButton">Ingresar <i class="fas fa-sign-in-alt"></i></button>
+                <button id="loginButton" class="btn btn-primary">Ingresar <i class="fas fa-sign-in-alt"></i></button>
             </div>
         </div>
     </div>
@@ -24,7 +24,7 @@
         <header>
             <div class="container header-content">
                 <h1 class="site-title">Noticias Perú</h1>
-                <button id="logoutButton">Cerrar Sesión <i class="fas fa-sign-out-alt"></i></button>
+                <button id="logoutButton" class="btn btn-secondary">Cerrar Sesión <i class="fas fa-sign-out-alt"></i></button>
             </div>
         </header>
         <main class="container">
@@ -32,17 +32,17 @@
             <div class="post-form">
                 <h2>Comparte una noticia</h2>
                 <textarea id="postContent" placeholder="Comparte una reseña o noticia sobre Perú" required></textarea>
-                <button id="postButton">Publicar <i class="fas fa-paper-plane"></i></button>
+                <button id="postButton" class="btn btn-primary">Publicar <i class="fas fa-paper-plane"></i></button>
             </div>
             <div id="posts" class="posts-container"></div>
         </main>
+        <footer>
+            <div class="container">
+                <p>&copy; 2024 Noticias Perú. Todos los derechos reservados.</p>
+                <p class="developer-credit">Desarrollado por: Alex Saez</p>
+            </div>
+        </footer>
     </div>
-
-    <footer>
-        <div class="container">
-            <p>&copy; 2024 Noticias Perú. Todos los derechos reservados.</p>
-        </div>
-    </footer>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-app.js";
