@@ -5,40 +5,65 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Noticias Perú - Foro</title>
     <link rel="stylesheet" href="styles.css">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/your-fontawesome-kit.js" crossorigin="anonymous"></script>
 </head>
 <body>
     <div id="loginPage" class="page">
         <div class="container">
-            <h1>Bienvenido al Foro de Noticias Perú</h1>
+            <h1 class="site-title">Noticias Perú</h1>
             <div class="login-form">
+                <h2>Bienvenido al Foro</h2>
                 <input type="text" id="usernameInput" placeholder="Ingrese su nombre de usuario" required>
-                <button id="loginButton">Ingresar</button>
+                <button id="loginButton">Ingresar <i class="fas fa-sign-in-alt"></i></button>
             </div>
         </div>
     </div>
 
     <div id="forumPage" class="page hidden">
         <header>
-            <h1>Noticias Perú</h1>
-            <button id="logoutButton">Cerrar Sesión</button>
+            <div class="container header-content">
+                <h1 class="site-title">Noticias Perú</h1>
+                <button id="logoutButton">Cerrar Sesión <i class="fas fa-sign-out-alt"></i></button>
+            </div>
         </header>
         <main class="container">
-            <div id="welcomeMessage"></div>
+            <div id="welcomeMessage" class="welcome-message"></div>
             <div class="post-form">
+                <h2>Comparte una noticia</h2>
                 <textarea id="postContent" placeholder="Comparte una reseña o noticia sobre Perú" required></textarea>
-                <button id="postButton">Publicar</button>
+                <button id="postButton">Publicar <i class="fas fa-paper-plane"></i></button>
             </div>
-            <div id="posts"></div>
+            <div id="posts" class="posts-container"></div>
         </main>
     </div>
 
     <footer>
-        <p>&copy; 2024 Noticias Perú. Todos los derechos reservados.</p>
+        <div class="container">
+            <p>&copy; 2024 Noticias Perú. Todos los derechos reservados.</p>
+        </div>
     </footer>
 
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
-    <script src="script.js"></script>
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-app.js";
+        import { getDatabase } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-database.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyBqSojtBrm6y7chI3399QQuYbwP6qTFi0s",
+            authDomain: "mi-foro-peru.firebaseapp.com",
+            databaseURL: "https://mi-foro-peru-default-rtdb.firebaseio.com/",
+            projectId: "mi-foro-peru",
+            storageBucket: "mi-foro-peru.firebasestorage.app",
+            messagingSenderId: "544806448309",
+            appId: "1:544806448309:web:ce80b2e855d46264b5a2fc",
+            measurementId: "G-DKBGP9LFZX"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const database = getDatabase(app);
+
+        window.database = database;
+    </script>
+    <script src="script.js" type="module"></script>
 </body>
 </html>
