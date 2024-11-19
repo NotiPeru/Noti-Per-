@@ -25,20 +25,20 @@ let currentUser = null;
 let isAdmin = false;
 
 // Eventos de los botones
-adminButton.addEventListener('click', () => showPage(adminLoginPage));
-userButton.addEventListener('click', () => showPage(userLoginPage));
-adminLoginButton.addEventListener('click', handleAdminLogin);
-userLoginButton.addEventListener('click', handleUserLogin);
-logoutButton.addEventListener('click', handleLogout);
-postButton.addEventListener('click', handlePost);
+adminButton?.addEventListener('click', () => showPage(adminLoginPage));
+userButton?.addEventListener('click', () => showPage(userLoginPage));
+adminLoginButton?.addEventListener('click', handleAdminLogin);
+userLoginButton?.addEventListener('click', handleUserLogin);
+logoutButton?.addEventListener('click', handleLogout);
+postButton?.addEventListener('click', handlePost);
 
 // Verificar sesión al cargar la página
 window.addEventListener('load', checkSession);
 
 // Funciones de manejo de páginas
 function showPage(page) {
-    [homePage, adminLoginPage, userLoginPage, forumPage].forEach(p => p.classList.add('hidden'));
-    page.classList.remove('hidden');
+    [homePage, adminLoginPage, userLoginPage, forumPage].forEach(p => p?.classList.add('hidden'));
+    page?.classList.remove('hidden');
 }
 
 function handleAdminLogin() {
@@ -68,9 +68,15 @@ function handleUserLogin() {
 
 function showForumPage() {
     showPage(forumPage);
-    welcomeMessage.textContent = `Bienvenido, ${currentUser}`;
-    adminControls.classList.toggle('hidden', !isAdmin);
+    if (welcomeMessage) {
+        welcomeMessage.textContent = `Bienvenido, ${currentUser}`;
+    }
+    if (adminControls) {
+        adminControls.classList.toggle('hidden', !isAdmin);
+    }
     loadPosts();
+    // Configurar escucha en tiempo real para actualizaciones
+    setupRealtimeUpdates();
 }
 
 function handleLogout() {
@@ -83,7 +89,7 @@ function handleLogout() {
 // Funciones de manejo de sesión
 function saveSession() {
     localStorage.setItem('currentUser', currentUser);
-    localStorage.setItem('isAdmin', isAdmin);
+    localStorage.setItem('isAdmin', isAdmin.toString());
 }
 
 function clearSession() {
@@ -99,9 +105,17 @@ function checkSession() {
     }
 }
 
+// Configuración de actualizaciones en tiempo real
+function setupRealtimeUpdates() {
+    const postsRef = window.databaseRef(window.database, 'posts');
+    window.databaseOnValue(postsRef, (snapshot) => {
+        loadPosts(); // Recargar posts cuando hay cambios
+    });
+}
+
 // Funciones de manejo de posts
 async function handlePost() {
-    const content = postContent.value.trim();
+    const content = postContent?.value.trim();
     if (content && isAdmin) {
         try {
             const postsRef = window.databaseRef(window.database, 'posts');
@@ -112,7 +126,9 @@ async function handlePost() {
                 likes: 0,
                 likedBy: {}
             });
-            postContent.value = '';
+            if (postContent) {
+                postContent.value = '';
+            }
             console.log('Post publicado exitosamente');
         } catch (error) {
             console.error('Error al publicar:', error);
@@ -122,6 +138,8 @@ async function handlePost() {
 }
 
 async function loadPosts() {
+    if (!postsContainer) return;
+
     const postsRef = window.databaseRef(window.database, 'posts');
     const commentsRef = window.databaseRef(window.database, 'comments');
     
@@ -133,24 +151,19 @@ async function loadPosts() {
 
         const posts = [];
         postsSnapshot.forEach((childSnapshot) => {
+            const postData = childSnapshot.val();
+            const commentData = commentsSnapshot.child(childSnapshot.key).val();
+            const commentCount = commentData ? Object.keys(commentData).length : 0;
+            
             posts.push({
                 id: childSnapshot.key,
-                ...childSnapshot.val(),
-                commentCount: 0
+                ...postData,
+                commentCount
             });
         });
 
-        commentsSnapshot.forEach((childSnapshot) => {
-            const postId = childSnapshot.key;
-            const commentCount = Object.keys(childSnapshot.val()).length;
-            const post = posts.find(p => p.id === postId);
-            if (post) {
-                post.commentCount = commentCount;
-            }
-        });
-
         posts.sort((a, b) => b.timestamp - a.timestamp);
-
+        
         postsContainer.innerHTML = '';
         posts.forEach(post => {
             const postElement = createPostElement(post);
@@ -174,7 +187,7 @@ function createPostElement(post) {
         </div>
         <p class="post-content">${post.content}</p>
         <div class="post-actions">
-            <button class="btn btn-like" data-post-id="${post.id}">
+            <button class="btn btn-like ${post.likedBy?.[currentUser] ? 'liked' : ''}" data-post-id="${post.id}">
                 <i class="fas fa-thumbs-up"></i> <span class="like-count">${post.likes || 0}</span>
             </button>
             <button class="btn btn-comment" data-post-id="${post.id}">
@@ -189,23 +202,25 @@ function createPostElement(post) {
     `;
 
     const likeButton = postElement.querySelector('.btn-like');
-    likeButton.addEventListener('click', () => handleLike(post.id));
+    likeButton?.addEventListener('click', () => handleLike(post.id));
 
     const commentButton = postElement.querySelector('.btn-comment');
     const commentsContainer = postElement.querySelector('.comments');
     const commentForm = postElement.querySelector('.comment-form');
 
-    commentButton.addEventListener('click', () => {
-        commentsContainer.classList.toggle('hidden');
-        commentForm.classList.toggle('hidden');
-        if (!commentsContainer.classList.contains('hidden')) {
+    commentButton?.addEventListener('click', () => {
+        commentsContainer?.classList.toggle('hidden');
+        commentForm?.classList.toggle('hidden');
+        if (commentsContainer && !commentsContainer.classList.contains('hidden')) {
             loadComments(post.id, commentsContainer);
         }
     });
 
-    commentForm.addEventListener('submit', (e) => {
+    commentForm?.addEventListener('submit', (e) => {
         e.preventDefault();
         const commentInput = commentForm.querySelector('input');
+        if (!commentInput) return;
+        
         const commentContent = commentInput.value.trim();
         if (commentContent && currentUser) {
             handleComment(post.id, commentContent);
@@ -217,58 +232,75 @@ function createPostElement(post) {
 }
 
 async function handleLike(postId) {
-    if (currentUser) {
-        const postRef = window.databaseRef(window.database, `posts/${postId}`);
-        try {
-            const snapshot = await window.databaseGet(postRef);
-            const post = snapshot.val();
-            const likedBy = post.likedBy || {};
-            
-            if (likedBy[currentUser]) {
-                // Usuario ya dio like, quitar el like
-                delete likedBy[currentUser];
-                await window.databaseUpdate(postRef, { 
-                    likes: post.likes - 1,
-                    likedBy: likedBy
-                });
-            } else {
-                // Usuario no ha dado like, agregar el like
-                likedBy[currentUser] = true;
-                await window.databaseUpdate(postRef, { 
-                    likes: (post.likes || 0) + 1,
-                    likedBy: likedBy
-                });
-            }
-        } catch (error) {
-            console.error('Error al dar/quitar like:', error);
+    if (!currentUser) return;
+
+    const postRef = window.databaseRef(window.database, `posts/${postId}`);
+    try {
+        const snapshot = await window.databaseGet(postRef);
+        const post = snapshot.val();
+        if (!post) return;
+
+        const likedBy = post.likedBy || {};
+        const newLikes = likedBy[currentUser] ? (post.likes || 1) - 1 : (post.likes || 0) + 1;
+        
+        if (likedBy[currentUser]) {
+            delete likedBy[currentUser];
+        } else {
+            likedBy[currentUser] = true;
         }
+
+        await window.databaseUpdate(postRef, { 
+            likes: newLikes,
+            likedBy: likedBy
+        });
+
+        // Actualizar UI inmediatamente
+        const likeButton = document.querySelector(`.btn-like[data-post-id="${postId}"]`);
+        const likeCount = likeButton?.querySelector('.like-count');
+        if (likeCount) {
+            likeCount.textContent = newLikes;
+        }
+        likeButton?.classList.toggle('liked', likedBy[currentUser]);
+    } catch (error) {
+        console.error('Error al dar/quitar like:', error);
     }
 }
 
 async function handleComment(postId, content) {
-    if (currentUser) {
-        try {
-            const commentsRef = window.databaseRef(window.database, `comments/${postId}`);
-            await window.databasePush(commentsRef, {
-                author: currentUser,
-                content: content,
-                timestamp: Date.now()
-            });
-            updateCommentCount(postId);
-        } catch (error) {
-            console.error('Error al comentar:', error);
-            alert('Error al publicar el comentario. Por favor, intente nuevamente.');
+    if (!currentUser) return;
+
+    try {
+        const commentsRef = window.databaseRef(window.database, `comments/${postId}`);
+        await window.databasePush(commentsRef, {
+            author: currentUser,
+            content: content,
+            timestamp: Date.now()
+        });
+        
+        // Actualizar el contador de comentarios inmediatamente
+        const commentCountElement = document.querySelector(`[data-post-id="${postId}"] .comment-count`);
+        if (commentCountElement) {
+            const currentCount = parseInt(commentCountElement.textContent || '0');
+            commentCountElement.textContent = currentCount + 1;
         }
+    } catch (error) {
+        console.error('Error al comentar:', error);
+        alert('Error al publicar el comentario. Por favor, intente nuevamente.');
     }
 }
 
 function loadComments(postId, container) {
+    if (!container) return;
+
     const commentsRef = window.databaseRef(window.database, `comments/${postId}`);
     window.databaseOnValue(commentsRef, (snapshot) => {
         container.innerHTML = '';
         const comments = [];
         snapshot.forEach((childSnapshot) => {
-            comments.push(childSnapshot.val());
+            comments.push({
+                id: childSnapshot.key,
+                ...childSnapshot.val()
+            });
         });
 
         comments.sort((a, b) => a.timestamp - b.timestamp);
@@ -283,14 +315,9 @@ function loadComments(postId, container) {
             `;
             container.appendChild(commentElement);
         });
-        updateCommentCount(postId);
-    });
-}
 
-function updateCommentCount(postId) {
-    const commentsRef = window.databaseRef(window.database, `comments/${postId}`);
-    window.databaseGet(commentsRef).then((snapshot) => {
-        const commentCount = snapshot.size;
+        // Actualizar contador de comentarios
+        const commentCount = comments.length;
         const countElement = document.querySelector(`[data-post-id="${postId}"] .comment-count`);
         if (countElement) {
             countElement.textContent = commentCount;
@@ -298,6 +325,7 @@ function updateCommentCount(postId) {
     });
 }
 
+// Exportar el componente (requerido para el sistema)
 export default function Component() {
-  return null; // Este componente no renderiza nada, solo contiene el script
+    return null;
 }
