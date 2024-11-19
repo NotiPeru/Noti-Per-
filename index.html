@@ -1,82 +1,47 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Noticias Perú</title>
-    <link rel="icon" href="iconperu.png" type="image/png">
-    <link rel="stylesheet" href="styles.css">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-</head>
-<body>
-    <header>
-        <nav>
-            <div class="logo">Noticias Perú</div>
-            <div id="userInfo" class="user-info"></div>
-            <button id="logoutButton" class="logout-button hidden">
-                <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
-            </button>
-        </nav>
-    </header>
-
-    <main>
-        <section id="welcome" class="welcome-section">
-            <h1>Bienvenido a Noticias Perú</h1>
-            <p>Comparte las últimas noticias y eventos de Perú con el mundo.</p>
-            <form id="loginForm">
-                <input type="text" id="username" placeholder="Ingresa tu nombre de usuario" required>
-                <button type="submit">Ingresar</button>
-            </form>
-        </section>
-
-        <section id="content" class="content-section hidden">
-            <div class="post-form">
-                <textarea id="postContent" placeholder="¿Qué está pasando en Perú?"></textarea>
-                <div class="media-upload">
-                    <label for="mediaUpload" class="upload-label">
-                        <i class="fas fa-camera"></i> Añadir foto/video
-                    </label>
-                    <input type="file" id="mediaUpload" accept="image/*, video/*" hidden>
-                </div>
-                <div id="mediaPreview" class="media-preview"></div>
-                <textarea id="mediaDescription" placeholder="Añade una descripción a tu foto/video" class="hidden"></textarea>
-                <button id="postButton"><i class="fas fa-paper-plane"></i> Publicar</button>
+export default function Component() {
+    return (
+      <html lang="es">
+        <head>
+          <meta charset="UTF-8" />
+          <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+          <title>Foro Noticias Perú</title>
+          <link rel="stylesheet" href="styles.css" />
+        </head>
+        <body>
+          <div id="loginPage" class="page">
+            <h1>Bienvenido al Foro de Noticias Perú</h1>
+            <div class="login-container">
+              <input type="text" id="usernameInput" placeholder="Ingrese su nombre de usuario" />
+              <button id="loginButton">INGRESAR</button>
             </div>
-            <div id="posts" class="posts-container"></div>
-        </section>
-    </main>
-
-    <footer>
-        <p>&copy; 2024 Noticias Perú. Todos los derechos reservados.</p>
-        <p class="attribution">Diseñado por Alex Saez Lara</p>
-    </footer>
-
-    <!-- Firebase App (the core Firebase SDK) is always required and must be listed first -->
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-app.js";
-        import { getDatabase } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-database.js";
-
-        // Tu configuración de Firebase
-        const firebaseConfig = {
-            apiKey: "AIzaSyAPNPRMG8yJaaud9pJqHEaJP1HKxZgi8k4",
-            authDomain: "noticias-peru-1279b.firebaseapp.com",
-            projectId: "noticias-peru-1279b",
-            storageBucket: "noticias-peru-1279b.firebasestorage.app",
-            messagingSenderId: "189080838926",
-            appId: "1:189080838926:web:e58bfae5b0c0691ea2ad5f",
-            measurementId: "G-D7P48XBVJ4"
-        };
-
-        // Inicializar Firebase
-        const app = initializeApp(firebaseConfig);
-        const database = getDatabase(app);
-
-        // Hacer disponible la instancia de la base de datos globalmente
-        window.database = database;
-    </script>
-    
-    <!-- Tu script principal -->
-    <script type="module" src="script.js"></script>
-</body>
-</html>
+          </div>
+  
+          <div id="forumPage" class="page hidden">
+            <header>
+              <h1>NOTICIAS PERÚ</h1>
+              <button id="logoutButton">CERRAR SESIÓN</button>
+            </header>
+            <p>Comparte las últimas noticias, reseñas y eventos de Perú con el mundo.</p>
+            
+            <div class="post-form">
+              <textarea id="postContent" placeholder="Comparte una reseña o noticia sobre Perú"></textarea>
+              <input type="file" id="mediaUpload" accept="image/*,video/*" multiple />
+              <button id="postButton">Publicar</button>
+            </div>
+  
+            <div id="posts"></div>
+          </div>
+  
+          <footer>
+            <small>Desarrollado por: Alex Sáez</small>
+          </footer>
+  
+          <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+          <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+          <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+          <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-storage.js"></script>
+          <script src="app.js"></script>
+        </body>
+      </html>
+    )
+  }

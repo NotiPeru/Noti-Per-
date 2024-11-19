@@ -3,14 +3,14 @@ import { getDatabase, ref, push, onValue, set } from "https://www.gstatic.com/fi
 
 // Configuración de Firebase
 const firebaseConfig = {
-    apiKey: "AIzaSyAPNPRMG8yJaaud9pJqHEaJP1HKxZgi8k4",
-    authDomain: "noticias-peru-1279b.firebaseapp.com",
-    databaseURL: "https://noticias-peru-1279b-default-rtdb.firebaseio.com", // Añade esta línea
-    projectId: "noticias-peru-1279b",
-    storageBucket: "noticias-peru-1279b.firebasestorage.app",
-    messagingSenderId: "189080838926",
-    appId: "1:189080838926:web:e58bfae5b0c0691ea2ad5f",
-    measurementId: "G-D7P48XBVJ4"
+    apiKey: "AIzaSyBqSojtBrm6y7chI3399QQuYbwP6qTFi0s",
+    authDomain: "mi-foro-peru.firebaseapp.com",
+    databaseURL: "https://mi-foro-peru-default-rtdb.firebaseio.com/",
+    projectId: "mi-foro-peru",
+    storageBucket: "mi-foro-peru.firebasestorage.app",
+    messagingSenderId: "544806448309",
+    appId: "1:544806448309:web:ce80b2e855d46264b5a2fc",
+    measurementId: "G-DKBGP9LFZX"
 };
 
 // Inicializar Firebase
