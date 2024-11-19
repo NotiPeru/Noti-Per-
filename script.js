@@ -32,8 +32,13 @@ logoutButton.addEventListener('click', () => {
 // Mostrar mensaje de bienvenida
 function showWelcomeMessage(username) {
     welcomeMessage.textContent = `¡Bienvenido, ${username}!`;
+    welcomeMessage.style.display = 'block';
     setTimeout(() => {
-        welcomeMessage.textContent = '';
+        welcomeMessage.style.opacity = '0';
+        setTimeout(() => {
+            welcomeMessage.style.display = 'none';
+            welcomeMessage.style.opacity = '1';
+        }, 500);
     }, 3000);
 }
 
@@ -58,7 +63,8 @@ postButton.addEventListener('click', async () => {
             await postsRef.push({
                 author: currentUser,
                 content: content,
-                timestamp: Date.now()
+                timestamp: Date.now(),
+                likes: 0
             });
             postContent.value = '';
             console.log('Post publicado exitosamente');
@@ -105,12 +111,23 @@ function createPostElement(post) {
             <span class="post-date">${date.toLocaleString('es-PE')}</span>
         </div>
         <p class="post-content">${post.content}</p>
+        <div class="post-actions">
+            <button class="btn btn-like" data-post-id="${post.id}">
+                <i class="fas fa-thumbs-up"></i> <span class="like-count">${post.likes || 0}</span>
+            </button>
+            <button class="btn btn-comment" data-post-id="${post.id}">
+                <i class="fas fa-comment"></i> Comentar
+            </button>
+        </div>
         <div class="comments"></div>
         <form class="comment-form">
             <input type="text" placeholder="Añade un comentario..." required>
-            <button type="submit">Comentar</button>
+            <button type="submit" class="btn btn-primary">Comentar</button>
         </form>
     `;
+
+    const likeButton = postElement.querySelector('.btn-like');
+    likeButton.addEventListener('click', () => handleLike(post.id));
 
     const commentForm = postElement.querySelector('.comment-form');
     const commentsContainer = postElement.querySelector('.comments');
@@ -142,6 +159,21 @@ function createPostElement(post) {
     return postElement;
 }
 
+// Manejar likes
+async function handleLike(postId) {
+    if (currentUser) {
+        const postRef = window.database.ref(`posts/${postId}`);
+        try {
+            const snapshot = await postRef.once('value');
+            const post = snapshot.val();
+            const newLikes = (post.likes || 0) + 1;
+            await postRef.update({ likes: newLikes });
+        } catch (error) {
+            console.error('Error al dar like:', error);
+        }
+    }
+}
+
 // Cargar comentarios en tiempo real
 function loadComments(postId, container) {
     const commentsRef = window.database.ref(`comments/${postId}`);
@@ -159,7 +191,8 @@ function loadComments(postId, container) {
             const commentElement = document.createElement('div');
             commentElement.classList.add('comment');
             commentElement.innerHTML = `
-                <strong>${comment.author}:</strong> ${comment.content}
+                <strong class="comment-author">${comment.author}:</strong>
+                <span class="comment-content">${comment.content}</span>
                 <span class="comment-date">${new Date(comment.timestamp).toLocaleString('es-PE')}</span>
             `;
             container.appendChild(commentElement);
@@ -179,5 +212,3 @@ if (savedUser) {
 
 // Iniciar la carga de posts
 loadPosts();
-
-
