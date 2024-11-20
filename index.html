@@ -5,9 +5,408 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Foro de Noticias Perú</title>
     <link rel="icon" href="iconperu.png" type="image/png">
-    <link rel="stylesheet" href="styles.css">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #1a5f7a;
+            --secondary-color: #159895;
+            --accent-color: #57c5b6;
+            --text-color: #333333;
+            --background-color: #f8f9fa;
+            --white: #ffffff;
+            --gray: #6c757d;
+            --light-gray: #e9ecef;
+            --dark-gray: #343a40;
+            --success: #28a745;
+            --danger: #dc3545;
+            --warning: #ffc107;
+            --info: #17a2b8;
+            --shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            font-size: 16px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .page {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .site-title {
+            font-family: 'Playfair Display', serif;
+            color: var(--primary-color);
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 3rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-weight: 700;
+            line-height: 1.2;
+            margin-bottom: 15px;
+        }
+
+        h1 { font-size: 2.5rem; }
+        h2 { font-size: 2rem; }
+        h3 { font-size: 1.75rem; }
+        h4 { font-size: 1.5rem; }
+        h5 { font-size: 1.25rem; }
+        h6 { font-size: 1rem; }
+
+        p {
+            margin-bottom: 15px;
+        }
+
+        a {
+            color: var(--primary-color);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        a:hover {
+            color: var(--secondary-color);
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            text-align: center;
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: var(--white);
+        }
+
+        .btn-primary:hover {
+            background-color: var(--secondary-color);
+        }
+
+        .btn-secondary {
+            background-color: var(--white);
+            color: var(--primary-color);
+            border: 2px solid var(--primary-color);
+        }
+
+        .btn-secondary:hover {
+            background-color: var(--primary-color);
+            color: var(--white);
+        }
+
+        .btn-danger {
+            background-color: var(--danger);
+            color: var(--white);
+        }
+
+        .btn-danger:hover {
+            background-color: #c82333;
+        }
+
+        .button-container {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        input[type="text"],
+        input[type="password"],
+        input[type="file"],
+        textarea {
+            width: 100%;
+            padding: 12px 15px;
+            margin-bottom: 20px;
+            border: 1px solid var(--gray);
+            border-radius: 5px;
+            font-size: 1rem;
+            transition: var(--transition);
+        }
+
+        input[type="text"]:focus,
+        input[type="password"]:focus,
+        input[type="file"]:focus,
+        textarea:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 2px rgba(26, 95, 122, 0.2);
+        }
+
+        .login-form {
+            background-color: var(--white);
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: var(--shadow);
+            max-width: 400px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .login-form h2 {
+            margin-bottom: 30px;
+            color: var(--primary-color);
+        }
+
+        header {
+            background-color: var(--primary-color);
+            color: var(--white);
+            padding: 20px 0;
+            box-shadow: var(--shadow);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        header .site-title {
+            color: var(--white);
+            margin-bottom: 0;
+            font-size: 2rem;
+        }
+
+        .welcome-message {
+            background-color: var(--success);
+            color: var(--white);
+            padding: 5px 10px;
+            border-radius: 5px;
+            margin-right: 10px;
+            font-weight: bold;
+        }
+
+        .post-form, .media-form {
+            background-color: var(--white);
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: var(--shadow);
+            margin-bottom: 40px;
+        }
+
+        .posts-container {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+
+        .post {
+            background-color: var(--white);
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+        }
+
+        .post:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .post-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            align-items: center;
+        }
+
+        .post-author {
+            font-weight: bold;
+            color: var(--primary-color);
+            font-size: 1.1rem;
+        }
+
+        .post-date {
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+
+        .post-content {
+            margin-bottom: 20px;
+            line-height: 1.8;
+        }
+
+        .post-media {
+            max-width: 100%;
+            height: auto;
+            margin-bottom: 20px;
+            border-radius: 5px;
+        }
+
+        .post-actions {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .btn-like {
+            background-color: var(--light-gray);
+            color: var(--dark-gray);
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+        }
+
+        .btn-like:hover {
+            background-color: var(--gray);
+            color: var(--white);
+        }
+
+        .btn-like.liked {
+            color: #1e88e5;
+        }
+
+        .comment-count {
+            cursor: pointer;
+            color: var(--primary-color);
+            transition: var(--transition);
+        }
+
+        .comment-count:hover {
+            text-decoration: underline;
+            opacity: 0.8;
+        }
+
+        .comment-form {
+            display: flex;
+            margin-top: 20px;
+            gap: 10px;
+        }
+
+        .comment-form input {
+            flex-grow: 1;
+            margin-bottom: 0;
+        }
+
+        .comment {
+            background-color: var(--light-gray);
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+        }
+
+        .comment-author {
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+
+        .comment-content {
+            margin-top: 5px;
+        }
+
+        .comment-date {
+            font-size: 0.8rem;
+            color: var(--gray);
+            margin-top: 5px;
+            display: block;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        footer {
+            background-color: var(--primary-color);
+            color: var(--white);
+            text-align: center;
+            padding: 20px 0;
+            margin-top: auto;
+        }
+
+        .developer-credit {
+            margin-top: 10px;
+            font-style: italic;
+            opacity: 0.8;
+        }
+
+        .upload-container {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .preview-container {
+            max-width: 300px;
+            margin: 10px 0;
+        }
+
+        .preview-container img {
+            width: 100%;
+            height: auto;
+            border-radius: 5px;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 15px;
+            }
+
+            .site-title {
+                font-size: 2.2rem;
+            }
+
+            .login-form,
+            .post-form,
+            .media-form,
+            .post {
+                padding: 20px;
+            }
+
+            .btn {
+                width: 100%;
+                margin-bottom: 10px;
+            }
+
+            .header-content {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .post-actions {
+                flex-direction: column;
+            }
+
+            .button-container {
+                flex-direction: column;
+            }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .post, .comment {
+            animation: fadeIn 0.5s ease-out;
+        }
+    </style>
 </head>
 <body>
     <div id="homePage" class="page">
@@ -46,6 +445,10 @@
         <header>
             <div class="container header-content">
                 <h1 class="site-title">Foro de Noticias Perú</h1>
+                <nav>
+                    <button id="showTextPosts" class="btn btn-secondary">Noticias</button>
+                    <button id="showMediaPosts" class="btn btn-secondary">Fotos y Videos</button>
+                </nav>
                 <div>
                     <span id="welcomeMessage" class="welcome-message"></span>
                     <button id="logoutButton" class="btn btn-secondary">Cerrar Sesión</button>
@@ -54,13 +457,26 @@
         </header>
         <main class="container">
             <div id="adminControls" class="hidden">
-                <div class="post-form">
+                <div id="newsForm" class="post-form">
                     <h2>Publicar una nueva noticia</h2>
                     <textarea id="postContent" placeholder="Escribe tu noticia aquí..." required></textarea>
                     <button id="postButton" class="btn btn-primary">Publicar</button>
                 </div>
+                
+                <div id="mediaForm" class="media-form hidden">
+                    <h2>Subir foto o video</h2>
+                    <div class="upload-container">
+                        <input type="file" id="mediaUpload" accept="image/*,video/*" required>
+                        <textarea id="mediaDescription" placeholder="Describe la foto o video..." required></textarea>
+                        <div class="preview-container hidden">
+                            <img id="mediaPreview" src="" alt="Vista previa">
+                        </div>
+                        <button id="uploadMediaButton" class="btn btn-primary">Subir medio</button>
+                    </div>
+                </div>
             </div>
             <div id="posts" class="posts-container"></div>
+            <div id="mediaPosts" class="posts-container hidden"></div>
         </main>
         <footer>
             <div class="container">
@@ -72,7 +488,7 @@
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-app.js";
-        import { getDatabase, ref, push, onValue, update, get } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-database.js";
+        import { getDatabase, ref, push, onValue, update, get, remove } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-database.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyBqSojtBrm6y7chI3399QQuYbwP6qTFi0s",
@@ -94,7 +510,480 @@
         window.databaseOnValue = onValue;
         window.databaseUpdate = update;
         window.databaseGet = get;
+        window.databaseRemove = remove;
     </script>
-    <script src="script.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script>
+        // Elementos del DOM
+        const homePage = document.getElementById('homePage');
+        const adminLoginPage = document.getElementById('adminLoginPage');
+        const userLoginPage = document.getElementById('userLoginPage');
+        const forumPage = document.getElementById('forumPage');
+        const adminControls = document.getElementById('adminControls');
+        const welcomeMessage = document.getElementById('welcomeMessage');
+        const postsContainer = document.getElementById('posts');
+        const mediaPostsContainer = document.getElementById('mediaPosts');
+
+        // Botones
+        const adminButton = document.getElementById('adminButton');
+        const userButton = document.getElementById('userButton');
+        const adminLoginButton = document.getElementById('adminLoginButton');
+        const userLoginButton = document.getElementById('userLoginButton');
+        const logoutButton = document.getElementById('logoutButton');
+        const postButton = document.getElementById('postButton');
+        const uploadMediaButton = document.getElementById('uploadMediaButton');
+        const showTextPostsButton = document.getElementById('showTextPosts');
+        const showMediaPostsButton = document.getElementById('showMediaPosts');
+
+        // Inputs
+        const adminUsername = document.getElementById('adminUsername');
+        const adminPassword = document.getElementById('adminPassword');
+        const userUsername = document.getElementById('userUsername');
+        const postContent = document.getElementById('postContent');
+        const mediaUpload = document.getElementById('mediaUpload');
+        const mediaDescription = document.getElementById('mediaDescription');
+
+        // Referencias adicionales
+        const newsForm = document.getElementById('newsForm');
+        const mediaForm = document.getElementById('mediaForm');
+        const mediaPreview = document.getElementById('mediaPreview');
+        const previewContainer = document.querySelector('.preview-container');
+
+        let currentUser = null;
+        let isAdmin = false;
+
+        // Eventos de los botones
+        adminButton.addEventListener('click', () => showPage(adminLoginPage));
+        userButton.addEventListener('click', () => showPage(userLoginPage));
+        adminLoginButton.addEventListener('click', handleAdminLogin);
+        userLoginButton.addEventListener('click', handleUserLogin);
+        logoutButton.addEventListener('click', handleLogout);
+        postButton.addEventListener('click', handlePost);
+        uploadMediaButton.addEventListener('click', handleMediaUpload);
+        showTextPostsButton.addEventListener('click', () => {
+            postsContainer.classList.remove('hidden');
+            mediaPostsContainer.classList.add('hidden');
+            if (isAdmin) {
+                newsForm.classList.remove('hidden');
+                mediaForm.classList.add('hidden');
+            }
+        });
+        showMediaPostsButton.addEventListener('click', () => {
+            postsContainer.classList.add('hidden');
+            mediaPostsContainer.classList.remove('hidden');
+            if (isAdmin) {
+                newsForm.classList.add('hidden');
+                mediaForm.classList.remove('hidden');
+            }
+        });
+
+        // Vista previa de imagen
+        mediaUpload.addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    mediaPreview.src = e.target.result;
+                    previewContainer.classList.remove('hidden');
+                }
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // Verificar sesión al cargar la página
+        window.addEventListener('load', checkSession);
+
+        // Funciones de manejo de páginas
+        function showPage(page) {
+            [homePage, adminLoginPage, userLoginPage, forumPage].forEach(p => p.classList.add('hidden'));
+            page.classList.remove('hidden');
+        }
+
+        function handleAdminLogin() {
+            const username = adminUsername.value.trim();
+            const password = adminPassword.value;
+            if (username === 'admin' && password === 'password') {
+                currentUser = username;
+                isAdmin = true;
+                saveSession();
+                showForumPage();
+            } else {
+                alert('Credenciales incorrectas');
+            }
+        }
+
+        function handleUserLogin() {
+            const username = userUsername.value.trim();
+            if (username) {
+                currentUser = username;
+                isAdmin = false;
+                saveSession();
+                showForumPage();
+            } else {
+                alert('Por favor, ingrese un nombre de usuario');
+            }
+        }
+
+        function showForumPage() {
+            showPage(forumPage);
+            welcomeMessage.textContent = `Bienvenido, ${currentUser}`;
+            adminControls.classList.toggle('hidden', !isAdmin);
+            
+            // Mostrar el formulario correcto según la sección actual
+            if (isAdmin) {
+                if (mediaPostsContainer.classList.contains('hidden')) {
+                    newsForm.classList.remove('hidden');
+                    mediaForm.classList.add('hidden');
+                } else {
+                    newsForm.classList.add('hidden');
+                    mediaForm.classList.remove('hidden');
+                }
+            }
+            
+            loadPosts();
+            loadMediaPosts();
+        }
+
+        function handleLogout() {
+            currentUser = null;
+            isAdmin = false;
+            clearSession();
+            showPage(homePage);
+        }
+
+        // Funciones de manejo de sesión
+        function saveSession() {
+            localStorage.setItem('currentUser', currentUser);
+            localStorage.setItem('isAdmin', isAdmin);
+        }
+
+        function clearSession() {
+            localStorage.removeItem('currentUser');
+            localStorage.removeItem('isAdmin');
+        }
+
+        function checkSession() {
+            currentUser = localStorage.getItem('currentUser');
+            isAdmin = localStorage.getItem('isAdmin') === 'true';
+            if (currentUser) {
+                showForumPage();
+            }
+        }
+
+        // Funciones de manejo de posts
+        async function handlePost() {
+            const content = postContent.value.trim();
+            if (content && isAdmin) {
+                try {
+                    const postsRef = window.databaseRef(window.database, 'posts');
+                    await window.databasePush(postsRef, {
+                        author: currentUser,
+                        content: content,
+                        timestamp: Date.now(),
+                        likes: 0,
+                        commentCount: 0
+                    });
+                    postContent.value = '';
+                    console.log('Post publicado exitosamente');
+                } catch (error) {
+                    console.error('Error al publicar:', error);
+                    alert('Error al publicar el contenido. Por favor, intente nuevamente.');
+                }
+            }
+        }
+
+        async function handleMediaUpload() {
+            const file = mediaUpload.files[0];
+            const description = mediaDescription.value.trim();
+            if (file && description && isAdmin) {
+                try {
+                    const imageUrl = await uploadToImgBB(file);
+                    const mediaPostsRef = window.databaseRef(window.database, 'mediaPosts');
+                    await window.databasePush(mediaPostsRef, {
+                        author: currentUser,
+                        imageUrl: imageUrl,
+                        description: description,
+                        timestamp: Date.now(),
+                        likes: 0,
+                        commentCount: 0
+                    });
+                    mediaUpload.value = '';
+                    mediaDescription.value = '';
+                    previewContainer.classList.add('hidden');
+                    console.log('Medio subido exitosamente');
+                } catch (error) {
+                    console.error('Error al subir el medio:', error);
+                    alert('Error al subir el medio. Por favor, intente nuevamente.');
+                }
+            }
+        }
+
+        async function uploadToImgBB(file) {
+            const formData = new FormData();
+            formData.append('image', file);
+
+            try {
+                const response = await axios.post('https://api.imgbb.com/1/upload', formData, {
+                    params: {
+                        key: 'aee5d439a16eb18e37abe885f35d3c7b'  // Reemplaza esto con tu API key de ImgBB
+                    }
+                });
+                return response.data.data.url;
+            } catch (error) {
+                console.error('Error al subir la imagen a ImgBB:', error);
+                throw error;
+            }
+        }
+
+        function loadPosts() {
+            const postsRef = window.databaseRef(window.database, 'posts');
+            window.databaseOnValue(postsRef, (snapshot) => {
+                postsContainer.innerHTML = '';
+                const posts = [];
+                snapshot.forEach((childSnapshot) => {
+                    posts.push({
+                        id: childSnapshot.key,
+                        ...childSnapshot.val()
+                    });
+                });
+
+                posts.sort((a, b) => b.timestamp - a.timestamp);
+
+                posts.forEach(post => {
+                    const postElement = createPostElement(post, 'posts');
+                    postsContainer.appendChild(postElement);
+                });
+            });
+        }
+
+        function loadMediaPosts() {
+            const mediaPostsRef = window.databaseRef(window.database, 'mediaPosts');
+            window.databaseOnValue(mediaPostsRef, (snapshot) => {
+                mediaPostsContainer.innerHTML = '';
+                const mediaPosts = [];
+                snapshot.forEach((childSnapshot) => {
+                    mediaPosts.push({
+                        id: childSnapshot.key,
+                        ...childSnapshot.val()
+                    });
+                });
+
+                mediaPosts.sort((a, b) => b.timestamp - a.timestamp);
+
+                mediaPosts.forEach(post => {
+                    const postElement = createPostElement(post, 'mediaPosts');
+                    mediaPostsContainer.appendChild(postElement);
+                });
+            });
+        }
+
+        function createPostElement(post, postType) {
+            const postElement = document.createElement('div');
+            postElement.classList.add('post');
+            postElement.id = `post-${post.id}`;
+
+            const date = new Date(post.timestamp);
+
+            let mediaContent = '';
+            if (postType === 'mediaPosts') {
+                mediaContent = `<img src="${post.imageUrl}" alt="${post.description}" class="post-media">`;
+            }
+
+            postElement.innerHTML = `
+                <div class="post-header">
+                    <span class="post-author">${post.author}</span>
+                    <span class="post-date">${date.toLocaleString('es-PE')}</span>
+                </div>
+                ${mediaContent}
+                <p class="post-content">${postType === 'posts' ? post.content : post.description}</p>
+                <div class="post-actions">
+                    <button class="btn btn-like" data-post-id="${post.id}">
+                        <i class="fas fa-thumbs-up"></i> <span class="like-count">${post.likes || 0}</span>
+                    </button>
+                    <span class="comment-count">${post.commentCount || 0} Comentarios</span>
+                    ${isAdmin ? `<button class="btn btn-danger btn-delete-post" data-post-id="${post.id}">Eliminar</button>` : ''}
+                </div>
+                <div class="comments hidden"></div>
+                <form class="comment-form">
+                    <input type="text" placeholder="Añade un comentario..." required>
+                    <button type="submit" class="btn btn-primary">Comentar</button>
+                </form>
+            `;
+
+            const likeButton = postElement.querySelector('.btn-like');
+            likeButton.addEventListener('click', () => handleLike(post.id, postType));
+
+            const commentForm = postElement.querySelector('.comment-form');
+            const commentsContainer = postElement.querySelector('.comments');
+            const commentCountSpan = postElement.querySelector('.comment-count');
+
+            commentCountSpan.addEventListener('click', () => {
+                commentsContainer.classList.toggle('hidden');
+                if (!commentsContainer.classList.contains('hidden')) {
+                    loadComments(post.id, commentsContainer, postType);
+                }
+            });
+
+            commentForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const commentInput = commentForm.querySelector('input');
+                const commentContent = commentInput.value.trim();
+                if (commentContent && currentUser) {
+                    handleComment(post.id, commentContent, postType);
+                    commentInput.value = '';
+                }
+            });
+
+            if (isAdmin) {
+                const deleteButton = postElement.querySelector('.btn-delete-post');
+                deleteButton.addEventListener('click', () => handleDeletePost(post.id, postType));
+            }
+
+            return postElement;
+        }
+
+        async function handleLike(postId, postType) {
+            if (currentUser) {
+                const postRef = window.databaseRef(window.database, `${postType}/${postId}`);
+                const userLikesRef = window.databaseRef(window.database, `userLikes/${currentUser}/${postType}/${postId}`);
+                
+                try {
+                    const [postSnapshot, userLikeSnapshot] = await Promise.all([
+                        window.databaseGet(postRef),
+                        window.databaseGet(userLikesRef)
+                    ]);
+                    
+                    const post = postSnapshot.val();
+                    const hasLiked = userLikeSnapshot.exists();
+                    
+                    if (!hasLiked) {
+                        const newLikes = (post.likes || 0) + 1;
+                        await Promise.all([
+                            window.databaseUpdate(postRef, { likes: newLikes }),
+                            window.databaseUpdate(userLikesRef, true)
+                        ]);
+                    }
+                } catch (error) {
+                    console.error('Error al dar like:', error);
+                }
+            }
+        }
+
+        async function handleComment(postId, content, postType) {
+            if (currentUser) {
+                try {
+                    const commentsRef = window.databaseRef(window.database, `comments/${postType}/${postId}`);
+                    const postRef = window.databaseRef(window.database, `${postType}/${postId}`);
+                    
+                    const newCommentRef = await window.databasePush(commentsRef, {
+                        author: currentUser,
+                        content: content,
+                        timestamp: Date.now()
+                    });
+                    
+                    const postSnapshot = await window.databaseGet(postRef);
+                    const post = postSnapshot.val();
+                    const newCommentCount = (post.commentCount || 0) + 1;
+                    await window.databaseUpdate(postRef, { commentCount: newCommentCount });
+                    
+                    const commentCountSpan = document.querySelector(`#post-${postId} .comment-count`);
+                    commentCountSpan.textContent = `${newCommentCount} Comentarios`;
+
+                    // Actualizar la vista de comentarios en tiempo real
+                    const commentsContainer = document.querySelector(`#post-${postId} .comments`);
+                    if (!commentsContainer.classList.contains('hidden')) {
+                        loadComments(postId, commentsContainer, postType);
+                    }
+                } catch (error) {
+                    console.error('Error al comentar:', error);
+                    alert('Error al publicar el comentario. Por favor, intente nuevamente.');
+                }
+            }
+        }
+
+        function loadComments(postId, container, postType) {
+            const commentsRef = window.databaseRef(window.database, `comments/${postType}/${postId}`);
+            window.databaseOnValue(commentsRef, (snapshot) => {
+                container.innerHTML = '';
+                const comments = [];
+                snapshot.forEach((childSnapshot) => {
+                    comments.push({
+                        id: childSnapshot.key,
+                        ...childSnapshot.val()
+                    });
+                });
+
+                comments.sort((a, b) => a.timestamp - b.timestamp);
+
+                comments.forEach(comment => {
+                    const commentElement = document.createElement('div');
+                    commentElement.classList.add('comment');
+                    commentElement.innerHTML = `
+                        <strong class="comment-author">${comment.author}:</strong>
+                        <span class="comment-content">${comment.content}</span>
+                        <span class="comment-date">${new Date(comment.timestamp).toLocaleString('es-PE')}</span>
+                        ${isAdmin ? `<button class="btn btn-danger btn-delete-comment" data-comment-id="${comment.id}">Eliminar</button>` : ''}
+                    `;
+                    container.appendChild(commentElement);
+
+                    if (isAdmin) {
+                        const deleteCommentButton = commentElement.querySelector('.btn-delete-comment');
+                        deleteCommentButton.addEventListener('click', () => handleDeleteComment(postId, comment.id, postType));
+                    }
+                });
+            });
+        }
+
+        async function handleDeletePost(postId, postType) {
+            if (isAdmin) {
+                if (confirm('¿Estás seguro de que quieres eliminar esta publicación?')) {
+                    try {
+                        const postRef = window.databaseRef(window.database, `${postType}/${postId}`);
+                        const commentsRef = window.databaseRef(window.database, `comments/${postType}/${postId}`);
+                        
+                        await Promise.all([
+                            window.databaseRemove(postRef),
+                            window.databaseRemove(commentsRef)
+                        ]);
+
+                        console.log('Publicación eliminada exitosamente');
+                    } catch (error) {
+                        console.error('Error al eliminar la publicación:', error);
+                        alert('Error al eliminar la publicación. Por favor, intente nuevamente.');
+                    }
+                }
+            }
+        }
+
+        async function handleDeleteComment(postId, commentId, postType) {
+            if (isAdmin) {
+                if (confirm('¿Estás seguro de que quieres eliminar este comentario?')) {
+                    try {
+                        const commentRef = window.databaseRef(window.database, `comments/${postType}/${postId}/${commentId}`);
+                        const postRef = window.databaseRef(window.database, `${postType}/${postId}`);
+                        
+                        await window.databaseRemove(commentRef);
+                        
+                        const postSnapshot = await window.databaseGet(postRef);
+                        const post = postSnapshot.val();
+                        const newCommentCount = Math.max((post.commentCount || 0) - 1, 0);
+                        await window.databaseUpdate(postRef, { commentCount: newCommentCount });
+                        
+                        const commentCountSpan = document.querySelector(`#post-${postId} .comment-count`);
+                        commentCountSpan.textContent = `${newCommentCount} Comentarios`;
+
+                        console.log('Comentario eliminado exitosamente');
+                    } catch (error) {
+                        console.error('Error al eliminar el comentario:', error);
+                        alert('Error al eliminar el comentario. Por favor, intente nuevamente.');
+                    }
+                }
+            }
+        }
+
+        // Iniciar la carga de posts
+        loadPosts();
+        loadMediaPosts();
+    </script>
 </body>
 </html>
