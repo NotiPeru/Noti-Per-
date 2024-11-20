@@ -427,6 +427,7 @@
                 <input type="text" id="adminUsername" placeholder="Nombre de usuario" required>
                 <input type="password" id="adminPassword" placeholder="Contraseña" required>
                 <button id="adminLoginButton" class="btn btn-primary">Ingresar</button>
+                <button id="adminBackButton" class="btn btn-secondary">Atrás</button>
             </div>
         </div>
     </div>
@@ -437,6 +438,7 @@
             <div class="login-form">
                 <input type="text" id="userUsername" placeholder="Nombre de usuario" required>
                 <button id="userLoginButton" class="btn btn-primary">Acceder</button>
+                <button id="userBackButton" class="btn btn-secondary">Atrás</button>
             </div>
         </div>
     </div>
@@ -534,6 +536,8 @@
         const uploadMediaButton = document.getElementById('uploadMediaButton');
         const showTextPostsButton = document.getElementById('showTextPosts');
         const showMediaPostsButton = document.getElementById('showMediaPosts');
+        const adminBackButton = document.getElementById('adminBackButton');
+        const userBackButton = document.getElementById('userBackButton');
 
         // Inputs
         const adminUsername = document.getElementById('adminUsername');
@@ -576,6 +580,8 @@
                 mediaForm.classList.remove('hidden');
             }
         });
+        adminBackButton.addEventListener('click', () => showPage(homePage));
+        userBackButton.addEventListener('click', () => showPage(homePage));
 
         // Vista previa de imagen
         mediaUpload.addEventListener('change', function(e) {
