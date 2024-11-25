@@ -228,14 +228,8 @@ function setTheme(isDark) {
     themeToggle.innerHTML = isDark ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
     localStorage.setItem('theme', isDark ? 'dark' : 'light');
 }
-
 function toggleTheme() {
     isDarkTheme = !isDarkTheme;
     setTheme(isDarkTheme);
 }
-
 themeToggle.addEventListener('click', toggleTheme);
-
-
-
-

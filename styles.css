@@ -487,7 +487,6 @@ footer {
       margin-top: 20px;
   }
 }
-
 /* Asegurar que todo el texto sea blanco */
 body, h1, h2, h3, p, a, .news-description h3, .news-description p, .most-viewed h3, .most-viewed-item p {
     color: #ffffff !important;
