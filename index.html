@@ -3,379 +3,847 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Perú Noticias - Últimas noticias del Perú y el mundo</title>
-    <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <title>Noticias Perú</title>
+    <link rel="icon" href="iconperu.png" type="image/png">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        /* Estilo adicional para el pie de página */
-        footer {
-            background-color: #333;
+        :root {
+            --color-primario: #1a237e;
+            --color-secundario: #c62828;
+            --color-texto: #333;
+            --color-fondo: rgba(255, 255, 255, 0.9);
+            --color-hover: #0d47a1;
+            --sombra: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            transition: all 0.3s ease;
+        }
+        
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: var(--color-fondo);
+            color: var(--color-texto);
+            line-height: 1.6;
+            min-height: 100vh;
+            background-image: url('https://img.freepik.com/fotos-premium/fondo-noticias-abstracto-grafico-suelo-estudio-vacio-fondo-tema-rojo-azul-ilustracion-3d_665346-6466.jpg?semt=ais_hybrid');
+            background-attachment: fixed;
+            background-size: cover;
+            background-position: center;
+        }
+        
+        .container {
+            width: 95%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 10px;
+        }
+        
+        header {
+            background: linear-gradient(135deg, var(--color-primario), var(--color-secundario));
             color: white;
-            padding: 20px 0;
+            padding: 10px 0;
+            box-shadow: var(--sombra);
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            transition: transform 0.3s ease;
+        }
+        
+        header.hidden {
+            transform: translateY(-100%);
+        }
+        
+        header .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2em;
+            font-weight: 700;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+        
+        .login-button, .logout-button {
+            background-color: white;
+            color: var(--color-primario);
+            border: none;
+            padding: 8px 16px;
+            font-size: 0.9em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-radius: 50px;
+            font-weight: 500;
+            box-shadow: var(--sombra);
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .login-button:hover, .logout-button:hover {
+            background-color: var(--color-hover);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+        }
+        
+        .welcome-message {
+            background: linear-gradient(135deg, rgba(255,255,255,0.9), rgba(255,255,255,0.7));
+            color: var(--color-primario);
+            text-align: center;
+            padding: 40px 20px;
+            margin: 80px 0 20px;
+            border-radius: 20px;
+            box-shadow: var(--sombra);
+        }
+        
+        .welcome-message h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5em;
+            margin-bottom: 20px;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+        }
+        
+        .categories {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            margin: 40px 0;
+        }
+        
+        .category {
+            background-color: var(--color-fondo);
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: var(--sombra);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            text-decoration: none;
+            color: var(--color-texto);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .category:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 15px rgba(0,0,0,0.2);
+            background-color: rgba(255,255,255,0.95);
+        }
+        
+        .category h3 {
+            color: var(--color-primario);
+            margin: 15px 0;
+            font-size: 1.4em;
+            font-family: 'Playfair Display', serif;
             text-align: center;
         }
-        footer a {
-            color: #fff;
-            text-decoration: none;
-            margin: 0 10px;
+        
+        .category-image {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 10px;
+            margin-bottom: 15px;
         }
-        footer a:hover {
-            text-decoration: underline;
-        }
-        /* Estilos para el modal de login y edición */
+        
         .modal {
             display: none;
             position: fixed;
-            z-index: 1000;
+            z-index: 1100;
             left: 0;
             top: 0;
             width: 100%;
             height: 100%;
-            overflow: auto;
-            background-color: rgba(0,0,0,0.4);
+            background-color: rgba(0,0,0,0.5);
+            backdrop-filter: blur(5px);
         }
+        
         .modal-content {
-            background-color: #fefefe;
-            margin: 15% auto;
-            padding: 20px;
-            border: 1px solid #888;
-            width: 300px;
-            border-radius: 5px;
+            background-color: white;
+            margin: 10% auto;
+            padding: 40px;
+            border-radius: 20px;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+            transform: translateY(0);
+            animation: modalSlide 0.3s ease;
         }
+        
+        @keyframes modalSlide {
+            from {
+                transform: translateY(-100px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+        
         .close {
-            color: #aaa;
+            color: var(--color-secundario);
             float: right;
             font-size: 28px;
             font-weight: bold;
             cursor: pointer;
+            transition: all 0.3s ease;
         }
-        .close:hover,
-        .close:focus {
-            color: black;
+        
+        .close:hover {
+            color: var(--color-hover);
+            transform: rotate(90deg);
+        }
+        
+        #adminPanel {
+            display: none;
+            background: linear-gradient(135deg, rgba(255,255,255,0.9), rgba(255,255,255,0.7));
+            padding: 30px;
+            margin-top: 30px;
+            border-radius: 20px;
+            box-shadow: var(--sombra);
+        }
+        
+        .news-item {
+            background-color: var(--color-fondo);
+            border-radius: 20px;
+            padding: 30px;
+            margin: 30px 0;
+            box-shadow: var(--sombra);
+            animation: newsAppear 0.5s ease;
+            position: relative;
+        }
+        
+        @keyframes newsAppear {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .news-item img {
+            width: 100%;
+            max-width: 800px;
+            height: auto;
+            max-height: 600px;
+            border-radius: 10px;
+            margin: 20px auto;
+            display: block;
+            box-shadow: var(--sombra);
+            cursor: pointer;
+            transition: transform 0.3s ease;
+            object-fit: contain;
+        }
+        
+        .news-item img:hover {
+            transform: scale(1.05);
+        }
+        
+        .delete-news {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: var(--color-secundario);
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .delete-news:hover {
+            background-color: var(--color-hover);
+        }
+        
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        input, textarea, select {
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            font-size: 1em;
+            transition: all 0.3s ease;
+        }
+        
+        input:focus, textarea:focus, select:focus {
+            border-color: var(--color-primario);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(26, 35, 126, 0.1);
+        }
+        
+        input[type="submit"] {
+            background-color: var(--color-primario);
+            color: white;
+            cursor: pointer;
+            font-weight: 500;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        
+        input[type="submit"]:hover {
+            background-color: var(--color-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+        
+        .category-page {
+            display: none;
+            padding: 20px;
+            margin-top: 80px;
+            background-color: var(--color-fondo);
+            border-radius: 20px;
+            box-shadow: var(--sombra);
+        }
+        
+        .category-page.active {
+            display: block;
+        }
+        
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background-color: var(--color-primario);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 50px;
+            text-decoration: none;
+            margin-bottom: 20px;
+            box-shadow: var(--sombra);
+        }
+        
+        .back-button:hover {
+            background-color: var(--color-hover);
+            transform: translateX(-5px);
+        }
+        
+        footer {
+            background: linear-gradient(135deg, var(--color-primario), var(--color-secundario));
+            color: white;
+            text-align: center;
+            padding: 30px 0;
+            margin-top: 60px;
+            box-shadow: 0 -4px 6px rgba(0,0,0,0.1);
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                width: 95%;
+                padding: 10px;
+            }
+            
+            h1 {
+                font-size: 1.5em;
+            }
+            
+            .welcome-message h2 {
+                font-size: 1.8em;
+            }
+            
+            .modal-content {
+                width: 95%;
+                margin: 5% auto;
+                padding: 20px;
+            }
+        }
+        
+        #imagePreview {
+            max-width: 100%;
+            max-height: 400px;
+            width: auto;
+            height: auto;
+            margin: 20px 0;
+            display: none;
+            border-radius: 10px;
+            box-shadow: var(--sombra);
+            object-fit: contain;
+        }
+        
+        .loading {
+            display: none;
+            text-align: center;
+            margin-top: 10px;
+        }
+        
+        .loading::after {
+            content: "Cargando...";
+            display: inline-block;
+            animation: ellipsis 1.5s infinite;
+        }
+        
+        @keyframes ellipsis {
+            0% { content: "Cargando"; }
+            25% { content: "Cargando."; }
+            50% { content: "Cargando.."; }
+            75% { content: "Cargando..."; }
+        }
+        
+        .news-count {
+            background-color: var(--color-secundario);
+            color: white;
+            padding: 2px 8px;
+            border-radius: 50%;
+            font-size: 0.8em;
+            margin-left: 10px;
+        }
+        
+        .fullscreen-image {
+            display: none;
+            position: fixed;
+            z-index: 1200;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.9);
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .fullscreen-image img {
+            max-width: 90%;
+            max-height: 90%;
+            object-fit: contain;
+        }
+        
+        .fullscreen-image .close {
+            position: absolute;
+            top: 15px;
+            right: 35px;
+            color: white;
+            font-size: 40px;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+        
+        .fullscreen-image .close:hover,
+        .fullscreen-image .close:focus {
+            color: #bbb;
             text-decoration: none;
             cursor: pointer;
         }
-        .login-form input[type="password"],
-        .edit-form input[type="text"],
-        .edit-form textarea,
-        .upload-form input[type="text"],
-        .upload-form textarea {
-            width: 100%;
-            padding: 12px 20px;
-            margin: 8px 0;
-            display: inline-block;
-            border: 1px solid #ccc;
-            box-sizing: border-box;
-        }
-        .login-form button,
-        .edit-form button,
-        .upload-form button {
-            background-color: #4CAF50;
-            color: white;
-            padding: 14px 20px;
-            margin: 8px 0;
-            border: none;
-            cursor: pointer;
-            width: 100%;
-        }
-        .login-form button:hover,
-        .edit-form button:hover,
-        .upload-form button:hover {
-            opacity: 0.8;
-        }
-
-        .editable {
-            border: 1px dashed #ccc;
-            padding: 5px;
-            margin: 5px 0;
-        }
-        .editable:hover {
-            background-color: #f0f0f0;
-        }
-        #welcomeMessage {
-            display: none;
-            background-color: #4CAF50;
-            color: white;
+        
+        .category-description {
             text-align: center;
-            padding: 10px;
-            margin-bottom: 10px;
-        }
-        #uploadButton {
-            display: none;
-            margin-top: 10px;
-            padding: 10px;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            cursor: pointer;
-            width: 100%;
-        }
-        #uploadButton:hover {
-            opacity: 0.8;
-        }
-        /* Nuevo estilo para el mensaje de bienvenida */
-        #welcomeMessage {
-            display: none;
-            background-color: #4CAF50;
-            color: white;
-            text-align: center;
-            padding: 10px;
-            margin-bottom: 10px;
-        }
-        .news-item img {
-        width: 100%; /* Ajusta el ancho al contenedor */
-        height: auto; /* Mantiene la proporción */
-        object-fit: cover; /* Recorta la imagen para llenar el contenedor */
-        border-radius: 5px; /* Opcional: redondea las esquinas */
-        }
-        .news-item iframe {
-        width: 100%; /* Ajusta el ancho al contenedor */
-        height: auto; /* Mantiene la proporción adecuada */
-        object-fit: cover; /* Ajusta el contenido para que llene el contenedor */
-        border-radius: 5px; /* Redondea las esquinas del video */
+            font-style: italic;
+            margin-bottom: 15px;
+            color: var(--color-texto);
         }
     </style>
 </head>
 <body>
-    <div class="top-bar">
+    <header id="header">
         <div class="container">
-            <div class="social-icons">
-                <a href="https://www.facebook.com/TuPaginaDeFacebook" target="_blank" rel="noopener noreferrer">
-                    <i class="fab fa-facebook-f"></i>
-                </a>
-                <a href="https://twitter.com/TuUsuarioDeTwitter" target="_blank" rel="noopener noreferrer">
-                    <i class="fab fa-twitter"></i>
-                </a>
-                <a href="https://www.youtube.com/channel/TuCanalDeYoutube" target="_blank" rel="noopener noreferrer">
-                    <i class="fab fa-youtube"></i>
-                </a>
-                <a href="https://www.instagram.com/elas.89/" target="_blank" rel="noopener noreferrer">
-                    <i class="fab fa-instagram"></i>
-                </a>
-                <a href="https://www.tiktok.com/@TuUsuarioDeTikTok" target="_blank" rel="noopener noreferrer">
-                    <i class="fab fa-tiktok"></i>
-                </a>
-            </div>
-            <div class="current-date">
-                <span>Últimas noticias del Perú y el mundo</span>
-                <span id="current-date"></span>
-            </div>
-            <div class="theme-toggle">
-                <i class="fas fa-moon"></i>
-            </div>
-        </div>
-    </div>
-    <header>
-        <div class="container">
-            <button class="menu-toggle">
-                <i class="fas fa-bars"></i>
-            </button>
-            <div class="logo">
-                <a href="index.html">
-                    <h1>Ayni.com</h1>
-                </a>
-            </div>
-            
+            <h1>NOTICIAS PERÚ</h1>
+            <button id="loginBtn" class="login-button"><i class="fas fa-user"></i> Acceso</button>
         </div>
     </header>
-    <!-- Nuevo elemento para el mensaje de bienvenida -->
-    <div id="welcomeMessage" class="container"></div>
-    <nav class="main-nav">
-        <div class="container">
-            <ul>
-                <li><a href="index.html">Inicio</a></li>
-                <li><a href="politica.html">Política</a></li>
-                <li><a href="deportes.html">Deportes</a></li>
-                <li><a href="espectaculos.html">Espectáculos</a></li>
-                <li><a href="mundo.html">Mundo</a></li>
-                <li><a href="economia.html">Economía</a></li>
-            </ul>
+
+    <div class="container" id="mainContent">
+        <div class="welcome-message">
+            <h2>BIENVENIDO A PERÚ NOTICIAS</h2>
+            <p>MANTENTE INFORMADO SOBRE LA ACTUALIDAD DE NUESTRO QUERIDO PERÚ</p>
         </div>
-    </nav>
-    <main class="container">
-        <div class="news-slider">
-            <div class="slider-container" id="newsSlider">
-                <!-- Las noticias se cargarán dinámicamente aquí -->
-                <div class="news-item">
-                    <img src="https://caretas.pe/wp-content/uploads/2024/11/nicanor-boluarte-585x329.jpeg">
-                    <div class="news-description">
-                        <h3>Nicanor Boluarte</h3>
-                        <p>Es afectado solo porque es hermano de la presidenta": los argumentos de los ministros en defensa de Nicanor Boluarte</p>
-                    </div>
-                </div>
-                <div class="news-item">
-                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRltLy0LAU5avz5CqtgM7cPJbKTbxVWuwMgFQ&s">
-                    <div class="news-description">
-                        <h3>Amenza por negarse en aportar</h3>
-                        <p>Ex militantes denuncia que tras negarse a seguir contribuyendo económicamente al partido político han sido victimas de actos de violentos y lideres amenaza de muerte por parte de lideres y miembros del Perú libre </p>
-                    </div>
-                </div>
-                <div class="news-item">
-                    <img src="https://www.infobae.com/new-resizer/Tql5saMd7rIiGa-VAmjx9aFOJfs=/arc-anglerfish-arc2-prod-infobae/public/L44Z7ERQY5CQBPCAQYE4JK23MA.jpg">
-                    <div class="news-description">
-                        <h3>Asesinato de 8 balazos</h3>
-                        <p>En este distrito ya suman 15 homicidios con arma de guego en lo que va del estado de emergencia decretado por el ministro de interior del Perú</p>
-                    </div>
-                </div>
-                <div style="text-align: center; margin: 20px;">
-                    <!-- Título del video -->
-                    <h3 style="font-family: Arial, sans-serif; color: #333;">Asaltan a hoteleros en el norte del país</h3>
-                    <!-- Descripción del video -->
-                    <p style="font-family: Arial, sans-serif; color: #555; font-size: 14px; line-height: 1.5;">
-                        Un grupo de delincuentes asaltó un reconocido hotel en el norte del país. 
-                        Este video muestra detalles del incidente y cómo los afectados intentan recuperarse tras el hecho.
-                    </p>
-                    <!-- Video incrustado -->
-                    <iframe width="560" height="315" 
-                            src="https://www.youtube.com/embed/TAE1w6C2kWI" 
-                            title="Asaltan a hoteleros" 
-                            frameborder="0" 
-                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                            allowfullscreen>
-                    </iframe>
-                </div>
-            </div>
-            <button class="slider-nav prev"><i class="fas fa-chevron-left"></i></button>
-            <button class="slider-nav next"><i class="fas fa-chevron-right"></i></button>
+
+        <div class="categories" id="categoriesList">
+            <!-- Las categorías se cargarán dinámicamente con JavaScript -->
         </div>
-        <div class="main-content">
-            <div class="news-grid" id="newsGrid">
-                <!-- Las noticias principales se cargarán dinámicamente aquí -->
-                <div class="news-item">
-                    <img src="https://caretas.pe/wp-content/uploads/2024/11/nicanor-boluarte-585x329.jpeg">
-                    <div class="news-description">
-                        <h3>"Es afectado solo porque es hermano de la presidenta": los argumentos de los ministros en defensa de Nicanor Boluarte</h3>
-                        <p>Gustavo Adrianzén y otros miembros del Gabinete han cuestionado los 36 meses de prisión contra el hermano de Dina Boluarte. Diversos integrantes del Gabinete ministerial, incluyendo a Gustavo Adrianzén y miembros representantes de diferentes sectores, se han pronunciado en contra de la orden de prisión preseventiva dictada contra el hermano de Dina Boluarte, Nicanor Boluarte, quien sigue prófugo de la justicia desde el martes</p>
-                    </div>
-                </div>
-                <div class="news-item">
-                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRltLy0LAU5avz5CqtgM7cPJbKTbxVWuwMgFQ&s">
-                    <div class="news-description">
-                        <h3>Ex militantes de Perú libre afirman han sido amenazado por
-                            negarse a seguir aportando</h3>
-                        <p>Ex militantes denuncia que tras negarse a seguir contribuyendo económicamente al partido político han sido victimas de actos de violentos y lideres amenaza de muerte por parte de lideres y miembros del Perú libre confirma que el partido utilizo carteles de tren de Aragua para intimidarlo por no alinearse con la exigencia de la organización</p>
-                    </div>
-                </div>
-                <div class="news-item">
-                    <img src="https://www.infobae.com/new-resizer/Tql5saMd7rIiGa-VAmjx9aFOJfs=/arc-anglerfish-arc2-prod-infobae/public/L44Z7ERQY5CQBPCAQYE4JK23MA.jpg">
-                    <div class="news-description">
-                        <h3>Crimen en Ate: Sicarios asesisan de ocho balazos a hombre que se encontraba dentro de su vehiculo</h3>
-                        <p>En este distrito ya suman 15 homicidios con arma de guego en lo que va del estado de emergencia decretado por el ministro de interior del Perú.
-                            Un Patrullero de serenazgo que estaba en el área intentó transladar a Chávez Montés al Hospital de Emergencia de Ate Vitarte. Sim Embargo, debido a la gravedad de sus heridad, el hombre llegó sin signos vitales al centro de salud.
-                            Testimonios de familiares confirman que semanas antes del homicidio estuvo amenzada por sicarios extranjeros encomendados por miembros internos del partido Perú Libre.
-                            Tras negativa a dar aportes que exigía dicho partido político izquierdista, en circunstancias que aún son parte de la investigacion policial.
-                            El distrito de Ate nuevamente fue escenario de otro asesinato con arma de fuego. La noche del último 7 de noviembre, ocurrió un crimen que acabó con la vida de un hombre de 41 años, identifcado como Jason Eduardo Chávez.
-                            De acuerdo a la información dada por Exitosa Noticias, la victima recibió hasta ocho disparos cuando se encontraba dentro de su vehículo en la calle Corazón de Jesus.
-                            Se conoció que el hecho se produjo cuando ex militante de Perú Libre Eduardo Chávez estaba lavando su vehículo. Testigos en la zona relataron que un automóvil negro se detuvo frente a él, y de él descendieron dos sujetos armados quienes dispararon a quemarropa antes de huir rápidamente hacia la avenida la Esperanza.
-                        </p>
-                    </div>
-                </div>
-                <div style="text-align: center; margin: 20px;">
-                    <!-- Título del video -->
-                    <h3 style="font-family: Arial, sans-serif; color: #333;">Asaltan a hoteleros en el norte del país</h3>
-                    <!-- Descripción del video -->
-                    <p style="font-family: Arial, sans-serif; color: #555; font-size: 14px; line-height: 1.5;">
-                        Un grupo de delincuentes asaltó un reconocido hotel en el norte del país. 
-                        Este video muestra detalles del incidente y cómo los afectados intentan recuperarse tras el hecho.
-                    </p>
-                    <!-- Video incrustado -->
-                    <iframe width="560" height="315" 
-                            src="https://www.youtube.com/embed/TAE1w6C2kWI" 
-                            title="Asaltan a hoteleros" 
-                            frameborder="0" 
-                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                            allowfullscreen>
-                    </iframe>
-                </div>
-                <div class="news-item">
-                    <div class="news-description">
-                        <img src="https://fpp.org.pe/wp-content/uploads/2024/10/PORTADA-ATQUE-7.png">
-                        <h3>Testimonio desgarrador: dueño de botica se enfrent a extorsionadores y ahora teme por su vida</h3>
-                        <p>Testimonio desgarrador: dueño de botica se enfrenta a extorsionadores y ahora teme por su vida  El dueño de una botica, ubicada en la cuadra 13 de la avenida Perú en San Martín de Porres, ha denunciado públicamente que es víctima de extorsionadores. Con voz entrecortada y lágrimas en los ojos, el empresario, quien lleva 25 años trabajando en la zona, expresó su desesperación y temor ante la posibilidad de una venganza en su contra por haberse negado a seguir pagando los cupos exigidos por estos criminales. "Lo único que quiero es auxilio, que se fijen en mi caso, antes de que termine en un ataúd", declaró el dueño del negocio, quien lleva seis meses pagando 1000 soles semanales a una banda de criminales. Según la víctima, estos sujetos, a quienes identifica como colombianos, comenzaron exigiendo 30 000 soles para dejarlo trabajar en paz. Al no acceder, lo coaccionaron para que pagara la suma de 1 000 soles de manera continua y puntual todos los sábados. 
-                            El último sábado, luego de meses de soportar las amenazas, el empresario decidió enfrentarse a los extorsionadores. "Me cansé, no les di nada, les dije que me maten si querían", relató. Las cámaras de seguridad de la botica captaron el momento en que el boticario, visiblemente agotado, se defendió de los criminales. "Agarré un serrucho y les dije que, si me iban a matar, que lo hagan, pero no les voy a dar el gusto de cerrar mi local", recordó.
-                    </div>
-                </div>
-                <div class="news-item">
-                    <img src="https://img.epicentro.tv/upload/2024/06/17161D504C43426D17100F55594945741F17161859414271.jpg">
-                    <div class="news-description">
-                        <h3>EL   fraude electoral tras declaración de Salatiel Marrufo </h3>
-                        <p>Las revelaciones del exjefe de asesores del Ministerio de Vivienda han desatado una ola de interrogantes sobre el supuesto fraude en la segunda vuelta del 2021. Marrufo acusa a Perú Libre y a Dina Boluarte de manipular votos en el Jurado JNE para asegurar la victoria de Pedro Castillo. 
-                            La teoría de un presunto fraude electoral ha resurgido en el país luego de la publicación de las declaraciones de Salatiel Marrufo, exjefe del Gabinete de Asesores del Ministerio de Vivienda durante el gobierno de Pedro Castillo, quien ha señalado que Perú Libre, a través de Dina Boluarte, habría manipulado las impugnaciones presentadas tras la segunda vuelta electoral por Fuerza Popular en el Jurado Nacional de Elecciones (JNE) para ganar las últimas elecciones presidenciales. 
-                            Marrufo es investigado por el caso ´Fondo Mi Vivienda´, por presuntamente haber recibido 4 millones de soles de la empresaria Sada Goray. Un juez había dictado contra él prisión preventiva pero a fines de mayo pasado salió en libertad, presuntamente acogido a proceso de colaboración eficaz. Ahora, tras la publicación de su declaración en el programa Punto Final, el fantasma del fraude ha vuelto a rondar. 
-                            6 y 7 de junio del 2021 
-                            Para comprender mejor debemos remontarnos a la segunda vuelta de las elecciones presidenciales, el 6 de junio del 2021, cuando tras una diferencia mínima de votos, Pedro Castillo superó a Keiko Fujimori. Sin embargo, la lideresa de Fuerza Popular denunció la existencia de fraude , por lo que dio inicio a un proceso de revisión y pedido de anulación de actas. Perú Libre hizo lo propio, pero con una cantidad menor de solicitudes 
-                        </p>
-                    </div>
-                </div>
-                <div class="news-item">
-                    <img src="https://statics.exitosanoticias.pe/2024/11/674461dfad16f.jpg ">
-                    <div class="news-description">
-                        <h3>Denuncian que Freddy Hinojosa, vocero de Dina Boluarte, usa auto presidencial de manera irregular </h3>
-                        <p>Según Punto final, el auto sería utilizado como movilidad personal del vocero presidencial, pese a que hay una normativa que se lo prohíbe. 
-                        El vocero del despacho presidencial, Fredy Hinojosa, utiliza un auto exclusivo para la Presidencia de la República como su movilidad personal que lo traslada desde su domicilio hasta Palacio de Gobierno. Así lo informó este domingo el programa Punto final.  
-                        En un reportaje emitido por el dominical, se mostró que Hinojosa fue trasladado en dicho auto los días 11 de octubre, 16 de octubre, 5 de noviembre, 8 de noviembre, 14 de noviembre, 20 de noviembre y el 21 de noviembre. Esto pese a que, según la directiva N°008-2017 de los lineamientos para la administración de vehículos en el despacho presidencial, no le corresponde al vocero usar esta unidad para que lo lleve a su centro de labores
-                        </p>
-                    </div>
-                </div>
-            </div>
-            <aside class="sidebar">
-                <div class="most-viewed">
-                    <h3>Más Visitados</h3>
-                    <div class="most-viewed-list" id="mostViewedList">
-                        <!-- Las noticias más vistas se cargarán dinámicamente aquí -->
-                        <div class="most-viewed-item">
-                            <img src="https://caretas.pe/wp-content/uploads/2024/11/nicanor-boluarte-585x329.jpeg">
-                            <p>Nicanor Boluarte</p>
-                        </div>
-                        <div class="most-viewed-item">
-                            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRltLy0LAU5avz5CqtgM7cPJbKTbxVWuwMgFQ&s">
-                            <p>amenaza por negarse en aportar</p>
-                        </div>
-                        <div class="most-viewed-item">
-                            <img src="https://www.infobae.com/new-resizer/Tql5saMd7rIiGa-VAmjx9aFOJfs=/arc-anglerfish-arc2-prod-infobae/public/L44Z7ERQY5CQBPCAQYE4JK23MA.jpg">
-                            <p>Asesinato de 8 balazos</p>
-                        </div>
-                    </div>
-                </div>
-            </aside>
+
+        <div id="categoryPages">
+            <!-- Las páginas de categorías se cargarán dinámicamente con JavaScript -->
         </div>
-    </main>
+
+        <div id="adminPanel">
+            <h2>Panel de Administrador</h2>
+            <form id="newsForm">
+                <input type="text" id="newsTitle" name="newsTitle" placeholder="Título de la noticia" required>
+                <textarea id="newsDescription" name="newsDescription" placeholder="Descripción de la noticia" required></textarea>
+                <input type="file" id="newsImage" name="newsImage" accept="image/*" required>
+                <img id="imagePreview" src="" alt="Vista previa de la imagen">
+                <select id="newsCategory" name="newsCategory" required>
+                    <option value="">Selecciona una categoría</option>
+                    <option value="robo">Robo a mano armada</option>
+                    <option value="secuestros">Secuestros</option>
+                    <option value="estafas">Estafas</option>
+                    <option value="corrupcion">Corrupción</option>
+                    <option value="narcotrafico">Narcotráfico</option>
+                    <option value="ciberdelincuencia">Ciberdelincuencia</option>
+                    <option value="extorsiones">Extorsiones</option>
+                </select>
+                <input type="submit" value="Publicar noticia">
+            </form>
+            <div class="loading"></div>
+        </div>
+    </div>
+
+    <div id="loginModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Acceso de Administrador</h2>
+            <form id="loginForm">
+                <input type="text" id="username" name="username" placeholder="Usuario" required>
+                <input type="password" id="password" name="password" placeholder="Contraseña" required>
+                <input type="submit" value="Iniciar sesión">
+            </form>
+        </div>
+    </div>
+
+    <div id="fullscreenImage" class="fullscreen-image">
+        <span class="close">&times;</span>
+        <img src="" alt="Imagen en pantalla completa">
+    </div>
+
     <footer>
         <div class="container">
-            <div class="footer-content">
-                <div class="footer-left">
-                    <img src="iconperu.png" alt="Logo Perú Noticias">
-                    <p>&copy; 2024 Perú Noticias - Todos los derechos reservados</p>
-                </div>
-                <div class="footer-right">
-                    <p>Síguenos en nuestras redes sociales:</p>
-                    <div class="social-icons">
-                        <a href="https://www.facebook.com/TuPaginaDeFacebook" target="_blank" rel="noopener noreferrer">
-                            <i class="fab fa-facebook-f"></i>
-                        </a>
-                        <a href="https://twitter.com/TuUsuarioDeTwitter" target="_blank" rel="noopener noreferrer">
-                            <i class="fab fa-twitter"></i>
-                        </a>
-                        <a href="https://www.youtube.com/channel/TuCanalDeYoutube" target="_blank" rel="noopener noreferrer">
-                            <i class="fab fa-youtube"></i>
-                        </a>
-                        <a href="https://www.instagram.com/elas.89/" target="_blank" rel="noopener noreferrer">
-                            <i class="fab fa-instagram"></i>
-                        </a>
-                        <a href="https://www.tiktok.com/@TuUsuarioDeTikTok" target="_blank" rel="noopener noreferrer">
-                            <i class="fab fa-tiktok"></i>
-                        </a>
-                    </div>
-                </div>
-            </div>
+            <p>&copy; 2024 Noticias Perú. Todos los derechos reservados.</p>
+            <p class="developer-credit">Desarrollado por: Alex Saez</p>
         </div>
     </footer>
-    <script src="script.js"></script>
+
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script>
-        // Mostrar la fecha actual
-        const currentDateElement = document.getElementById('current-date');
-        const currentDate = new Date();
-        currentDateElement.textContent = currentDate.toLocaleDateString('es-PE', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+        // Configuración de Firebase
+        const firebaseConfig = {
+            apiKey: "AIzaSyBqSojtBrm6y7chI3399QQuYbwP6qTFi0s",
+            authDomain: "mi-foro-peru.firebaseapp.com",
+            databaseURL: "https://mi-foro-peru-default-rtdb.firebaseio.com/",
+            projectId: "mi-foro-peru",
+            storageBucket: "mi-foro-peru.firebasestorage.app",
+            messagingSenderId: "544806448309",
+            appId: "1:544806448309:web:ce80b2e855d46264b5a2fc",
+            measurementId: "G-DKBGP9LFZX"
+        };
+
+        // Clave de API de ImgBB
+        const imgBBApiKey = 'aee5d439a16eb18e37abe885f35d3c7b';
+
+        // Inicialización de Firebase
+        firebase.initializeApp(firebaseConfig);
+        const database = firebase.database();
+
+        // Variables globales
+        const modal = document.getElementById("loginModal");
+        const loginBtn = document.getElementById("loginBtn");
+        const span = document.getElementsByClassName("close")[0];
+        const mainContent = document.getElementById("mainContent");
+        const categoryPages = document.getElementById("categoryPages");
+        const categoriesList = document.getElementById("categoriesList");
+        let isLoggedIn = false;
+        
+        // Definición de categorías
+        const categories = [
+            { id: "robo", name: "Robo a mano armada", image: "https://cloudfront-us-east-1.images.arcpublishing.com/infobae/42FTKT6SEVAB5NWZOXCGCNR4PE.png", description: "Información sobre robos con armas de fuego en diferentes regiones del Perú." },
+            { id: "secuestros", name: "Secuestros", image: "https://cloudfront-us-east-1.images.arcpublishing.com/infobae/BQACZWXT3ZFBJGIIZPIYCQ4DAM.jpg", description: "Casos recientes de secuestros y medidas de prevención." },
+            { id: "estafas", name: "Estafas", image: "https://imgmedia.larepublica.pe/640x371/larepublica/migration/images/NQVUFUX6ORHAZL6GDLY2ZPJDWI.webp", description: "Alertas sobre nuevas modalidades de estafa y cómo protegerse." },
+            { id: "corrupcion", name: "Corrupción", image: "https://cdn.www.gob.pe/uploads/document/file/192216/MINJUSDH_DL_1385.jpg", description: "Noticias sobre casos de corrupción en el gobierno y sector privado." },
+            { id: "narcotrafico", name: "Narcotráfico", image: "https://elmontonero.pe/upload/uploads_images/editorial_economia_558.jpg", description: "Información sobre operativos contra el narcotráfico en el país." },
+            { id: "ciberdelincuencia", name: "Ciberdelincuencia", image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSgIHszzldN1cjb4AX-Gu-WzNYW71KJbAwNYA&s", description: "Alertas sobre fraudes en línea y medidas de seguridad digital." },
+            { id: "extorsiones", name: "Extorsiones", image: "https://elcomercio.pe/resizer/v2/R4VFTDW6OZB2TCO7VIYINYXCKY.jpg?auth=7e1a58a309f13e52aae80f269049baa631809339f2ea043014fedc65aaa57a2d&width=1980&height=1080&quality=75&smart=true", description: "Información sobre casos de extorsión y cómo prevenirlos." },
+        ];
+
+        // Función para crear elementos de categoría
+        function createCategoryElement(category) {
+            const categoryElement = document.createElement('div');
+            categoryElement.className = 'category';
+            categoryElement.dataset.category = category.id;
+            categoryElement.innerHTML = `
+                <img src="${category.image}" alt="${category.name}" class="category-image">
+                <h3>${category.name}</h3>
+                <p class="category-description">${category.description}</p>
+                <span class="news-count">0</span>
+            `;
+            categoryElement.addEventListener('click', () => showCategory(category.id));
+            return categoryElement;
+        }
+
+        // Función para crear páginas de categoría
+        function createCategoryPage(category) {
+            const categoryPage = document.createElement('div');
+            categoryPage.id = category.id;
+            categoryPage.className = 'category-page';
+            categoryPage.innerHTML = `
+                <a href="#" class="back-button" onclick="showMainContent()"><i class="fas fa-arrow-left"></i> Volver</a>
+                <h2>Noticias sobre ${category.name}</h2>
+                <div class="news-container"></div>
+            `;
+            return categoryPage;
+        }
+
+        // Inicializar categorías y páginas de categoría
+        function initializeCategoriesAndPages() {
+            categories.forEach(category => {
+                categoriesList.appendChild(createCategoryElement(category));
+                categoryPages.appendChild(createCategoryPage(category));
+            });
+        }
+
+        // Mostrar/ocultar modal
+        loginBtn.onclick = () => {
+            if (isLoggedIn) {
+                logout();
+            } else {
+                modal.style.display = "block";
+            }
+        };
+        span.onclick = () => modal.style.display = "none";
+        window.onclick = (event) => {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+
+        // Función para mostrar el contenido principal
+        function showMainContent() {
+            document.querySelectorAll('.category-page').forEach(page => {
+                page.classList.remove('active');
+            });
+            categoriesList.style.display = 'grid';
+            document.querySelector('.welcome-message').style.display = 'block';
+        }
+
+        // Función para mostrar una categoría específica
+        function showCategory(categoryId) {
+            categoriesList.style.display = 'none';
+            document.querySelector('.welcome-message').style.display = 'none';
+            document.querySelectorAll('.category-page').forEach(page => {
+                page.classList.remove('active');
+            });
+            document.getElementById(categoryId).classList.add('active');
+        }
+
+        // Login
+        document.getElementById("loginForm").addEventListener("submit", function(e) {
+            e.preventDefault();
+            const username = document.getElementById("username").value;
+            const password = document.getElementById("password").value;
+            if (username === "noticiasperu" && password === "password") {
+                isLoggedIn = true;
+                localStorage.setItem('isLoggedIn', 'true');
+                alert("Inicio de sesión exitoso");
+                document.getElementById("adminPanel").style.display = "block";
+                modal.style.display = "none";
+                loginBtn.innerHTML = '<i class="fas fa-sign-out-alt"></i> Cerrar sesión';
+                loginBtn.classList.remove("login-button");
+                loginBtn.classList.add("logout-button");
+            } else {
+                alert("Usuario o contraseña incorrectos");
+            }
+        });
+
+        // Logout
+        function logout() {
+            isLoggedIn = false;
+            localStorage.removeItem('isLoggedIn');
+            document.getElementById("adminPanel").style.display = "none";
+            loginBtn.innerHTML = '<i class="fas fa-user"></i> Acceso';
+            loginBtn.classList.remove("logout-button");
+            loginBtn.classList.add("login-button");
+            alert("Sesión cerrada exitosamente");
+        }
+
+        // Función para cargar imagen a imgBB
+        async function uploadImage(file) {
+            const formData = new FormData();
+            formData.append('image', file);
+
+            try {
+                const response = await axios.post('https://api.imgbb.com/1/upload', formData, {
+                    params: {
+                        key: imgBBApiKey
+                    }
+                });
+                return response.data.data.url;
+            } catch (error) {
+                console.error('Error al subir la imagen a ImgBB:', error);
+                throw error;
+            }
+        }
+
+        // Mostrar vista previa de la imagen
+        document.getElementById('newsImage').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            const reader = new FileReader();
+
+            reader.onload = function(event) {
+                const img = document.getElementById('imagePreview');
+                img.src = event.target.result;
+                img.style.display = 'block';
+            }
+
+            reader.readAsDataURL(file);
+        });
+
+        // Publicar noticias
+        document.getElementById("newsForm").addEventListener("submit", async function(e) {
+            e.preventDefault();
+            const title = document.getElementById("newsTitle").value;
+            const description = document.getElementById("newsDescription").value;
+            const imageFile = document.getElementById("newsImage").files[0];
+            const category = document.getElementById("newsCategory").value;
+
+            // Mostrar indicador de carga
+            document.querySelector('.loading').style.display = 'block';
+
+            try {
+                // Subir imagen a imgBB
+                const imageUrl = await uploadImage(imageFile);
+
+                // Guardar noticia en Firebase
+                const newNewsRef = database.ref('news').push();
+                await newNewsRef.set({
+                    title: title,
+                    description: description,
+                    imageUrl: imageUrl,
+                    category: category,
+                    timestamp: firebase.database.ServerValue.TIMESTAMP
+                });
+
+                // Limpiar el formulario
+                document.getElementById("newsForm").reset();
+                document.getElementById('imagePreview').style.display = 'none';
+                alert("Noticia publicada con éxito en la categoría seleccionada");
+
+                // Actualizar en tiempo real
+                updateCategoryCount(category);
+            } catch (error) {
+                console.error('Error al publicar la noticia:', error);
+                alert("Hubo un error al publicar la noticia. Por favor, inténtalo de nuevo.");
+            } finally {
+                // Ocultar indicador de carga
+                document.querySelector('.loading').style.display = 'none';
+            }
+        });
+
+        // Función para actualizar el contador de noticias en tiempo real
+        function updateCategoryCount(category) {
+            database.ref('news').orderByChild('category').equalTo(category).once('value', snapshot => {
+                const count = snapshot.numChildren();
+                const categoryElement = document.querySelector(`.category[data-category="${category}"]`);
+                if (categoryElement) {
+                    const countElement = categoryElement.querySelector('.news-count');
+                    if (countElement) {
+                        countElement.textContent = count;
+                    }
+                }
+            });
+        }
+
+        // Cargar noticias desde Firebase
+        function loadNews() {
+            database.ref('news').on('value', snapshot => {
+                const news = snapshot.val();
+                categories.forEach(category => {
+                    const newsContainer = document.querySelector(`#${category.id} .news-container`);
+                    newsContainer.innerHTML = '';
+                    let count = 0;
+                    for (let id in news) {
+                        if (news[id].category === category.id) {
+                            count++;
+                            const newsItem = createNewsItem(id, news[id]);
+                            newsContainer.appendChild(newsItem);
+                        }
+                    }
+                    updateCategoryCount(category.id);
+                });
+            });
+        }
+
+        // Crear elemento de noticia
+        function createNewsItem(id, news) {
+            const newsItem = document.createElement('div');
+            newsItem.className = 'news-item';
+            newsItem.innerHTML = `
+                <h3>${news.title}</h3>
+                <p>${news.description}</p>
+                <img src="${news.imageUrl}" alt="${news.title}" onclick="openFullscreenImage('${news.imageUrl}')">
+                ${isLoggedIn ? `<button class="delete-news" data-id="${id}"><i class="fas fa-trash"></i></button>` : ''}
+            `;
+
+            if (isLoggedIn) {
+                const deleteButton = newsItem.querySelector('.delete-news');
+                deleteButton.addEventListener('click', () => deleteNews(id, news.imageUrl));
+            }
+
+            return newsItem;
+        }
+
+        // Función para abrir imagen en pantalla completa
+        function openFullscreenImage(imageUrl) {
+            const fullscreenImage = document.getElementById('fullscreenImage');
+            const fullscreenImg = fullscreenImage.querySelector('img');
+            fullscreenImg.src = imageUrl;
+            fullscreenImage.style.display = 'flex';
+        }
+
+        // Cerrar imagen en pantalla completa
+        document.querySelector('#fullscreenImage .close').addEventListener('click', () => {
+            document.getElementById('fullscreenImage').style.display = 'none';
+        });
+
+        // Función para eliminar noticias
+        function deleteNews(id, imageUrl) {
+            if (confirm('¿Estás seguro de que quieres eliminar esta noticia?')) {
+                database.ref('news/' + id).remove()
+                    .then(() => {
+                        console.log("Noticia eliminada con éxito");
+                        // Aquí puedes agregar código para eliminar la imagen de ImgBB si es necesario
+                    })
+                    .catch((error) => {
+                        console.error("Error al eliminar la noticia: ", error);
+                    });
+            }
+        }
+
+        // Ocultar/mostrar header al hacer scroll
+        let lastScrollTop = 0;
+        window.addEventListener("scroll", function() {
+            let currentScroll = window.pageYOffset || document.documentElement.scrollTop;
+            if (currentScroll > lastScrollTop) {
+                document.getElementById("header").classList.add("hidden");
+            } else {
+                document.getElementById("header").classList.remove("hidden");
+            }
+            lastScrollTop = currentScroll <= 0 ? 0 : currentScroll;
+        }, false);
+
+        // Inicialización
+        document.addEventListener('DOMContentLoaded', () => {
+            initializeCategoriesAndPages();
+            loadNews();
+            if (localStorage.getItem('isLoggedIn') === 'true') {
+                isLoggedIn = true;
+                document.getElementById("adminPanel").style.display = "block";
+                loginBtn.innerHTML = '<i class="fas fa-sign-out-alt"></i> Cerrar sesión';
+                loginBtn.classList.remove("login-button");
+                loginBtn.classList.add("logout-button");
+            }
+        });
     </script>
 </body>
 </html>
