@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mundo - Perú Noticias</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+    
+    /* Estilos adicionales para la visualización en bloques */
+    .noticia {
+        margin-bottom: 30px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .noticia img {
+        width: 100%;
+        max-width: 400px;  /* Reducir el tamaño de las imágenes */
+        height: auto;
+        border-radius: 8px;
+        margin-bottom: 15px;
+    }
+
+    .noticia h2 {
+        font-size: 22px;
+        font-weight: bold;
+        color: #333;
+        text-align: center;
+    }
+
+    .noticia p {
+        font-size: 16px;
+        line-height: 1.6;
+        color: #666;
+        text-align: justify;
+    }
+
+    .descripcion {
+        font-size: 14px;
+        color: #444;
+    }
+
+    .reseña {
+        font-style: italic;
+        font-size: 14px;
+        color: #555;
+    }
+
+    /* Estilo para la distribución de las noticias en bloques */
+    .news-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 20px;
+    }
+    </style>
+<head>
+<body>
+    <div class="top-bar">
+        <div class="container">
+            <div class="social-icons">
+                <a href="https://www.facebook.com/TuPaginaDeFacebook" target="_blank" rel="noopener noreferrer">
+                    <i class="fab fa-facebook-f"></i>
+                </a>
+                <a href="https://twitter.com/TuUsuarioDeTwitter" target="_blank" rel="noopener noreferrer">
+                    <i class="fab fa-twitter"></i>
+                </a>
+                <a href="https://www.youtube.com/channel/TuCanalDeYoutube" target="_blank" rel="noopener noreferrer">
+                    <i class="fab fa-youtube"></i>
+                </a>
+                <a href="https://www.instagram.com/elas.89/" target="_blank" rel="noopener noreferrer">
+                    <i class="fab fa-instagram"></i>
+                </a>
+                <a href="https://www.tiktok.com/@TuUsuarioDeTikTok" target="_blank" rel="noopener noreferrer">
+                    <i class="fab fa-tiktok"></i>
+                </a>
+            </div>
+            <div class="current-date">
+                <span>Últimas noticias del Perú y el mundo</span>
+                <span id="current-date"></span>
+            </div>
+            <div class="theme-toggle">
+                <i class="fas fa-moon"></i>
+            </div>
+        </div>
+    </div>
+
+    <header>
+        <div class="container">
+            <button class="menu-toggle">
+                <i class="fas fa-bars"></i>
+            </button>
+            <div class="logo">
+                <a href="mundo.html">
+                    <h1>Perú Noticias</h1>
+                </a>
+            </div>
+            
+        </div>
+    </header>
+
+    <nav class="main-nav">
+        <div class="container">
+            <ul>
+                <li><a href="index.html">Inicio</a></li>
+                <li><a href="politica.html">Política</a></li>
+                <li><a href="deportes.html">Deportes</a></li>
+                <li><a href="espectaculos.html">Espectáculos</a></li>
+                <li><a href="mundo.html">Mundo</a></li>
+                <li><a href="economia.html">Economía</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="container">
+        <h1 class="category-title">Mundo</h1>
+        <div class="news-grid" id="mundoNews">
+            <!-- Las noticias del mundo se cargarán dinámicamente aquí -->
+
+            <!-- Noticia 1 -->
+            <div class="news-item">
+                <img src="https://www.elnuevodia.com/resizer/v2/EHTZGTFQMNAL5JUOJMTWDIQM2U.jpg?auth=be8428eeb6cb41e71ecac68976bacd40704f5ffcc762bd301f41f8b5c8e17b1c&quality=75&width=829&focal=1805%2C1685">
+                <h2>El fiscal pide que se desestime el caso contra Trump por el asalto al Capitolio</h2>
+                <p>El fiscal especial Jack Smith le pidió el lunes a un juez federal que desestime el caso en que se le acusa al presidente electo Donald Trump de tramar para revertir las elecciones de 2020, debido a las normas del Departamento de Justicia según las cuales no se puede procesar penalmente a un presidente en funciones. 
+                Tras consultarlo con la Oficina de Asesoría Jurídica, Smith concluyó que “la acusación debe ser desestimada antes de que el acusado tome posesión”. 
+                La medida anunciada en documentos judiciales marca el fin de los intentos del Departamento de Justicia de llevar a Trump a justicia por lo que según los fiscales fue una conspiración criminal para aferrarse al poder previo al asalto al Capitolio perpetrado por seguidores suyos. 
+                La jueza que lleva el caso, Tanya Chutkan, del tribunal federal del Distrito de Columbia, concedió el pasado 8 de noviembre una pausa al caso después de que así se lo solicitara el fiscal para tener tiempo para analizar las consecuencias del resultado electoral del pasado 5 de noviembre. </p>
+            </div>
+
+            <!-- Noticia 2 -->
+            <div class="news-item">
+                <img src="https://www.hrw.org/sites/default/files/media_2024/01/202401eca_ukraine_mariupol_cyclist.jpg">
+                <h2>Guerra entre Rusia y Ucrania</h2>
+                <p>El 24 de febrero de 2022, Rusia inició una invasión militar a gran escala de Ucrania, llevando a cabo ataques que han causado muertos y heridos entre la población civil, así como daños en edificios civiles, como hospitales, escuelas y viviendas. Se han producido ataques indiscriminados en violación de las leyes de guerra que pueden constituir crímenes de guerra. Al final de la primera semana de hostilidades, más de un millón de personas en Ucrania habían huido de sus hogares, muchas de ellas buscando refugio fuera del país. En Rusia, la censura alcanzó nuevas dimensiones cuando las autoridades bloquearon el acceso a múltiples sitios de medios de comunicación independientes por sus publicaciones sobre la guerra, y los principales medios independientes cerraron. Miles de manifestantes contra la guerra en toda Rusia fueron detenidos arbitrariamente durante la primera semana de la guerra. La Unión Europea y sus Estados miembros deben hacer todo lo posible para garantizar un paso seguro y un trato justo a todos los civiles que huyen de Ucrania.</p>
+            </div> 
+    </main>
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-left">
+                    <img src="iconperu.png" alt="Logo Perú Noticias">
+                    <p>&copy; 2024 Perú Noticias - Todos los derechos reservados</p>
+                </div>
+                <div class="footer-right">
+                    <p>Síguenos en nuestras redes sociales:</p>
+                    <div class="social-icons">
+                        <a href="https://www.facebook.com/TuPaginaDeFacebook" target="_blank" rel="noopener noreferrer">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="https://twitter.com/TuUsuarioDeTwitter" target="_blank" rel="noopener noreferrer">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="https://www.youtube.com/channel/TuCanalDeYoutube" target="_blank" rel="noopener noreferrer">
+                            <i class="fab fa-youtube"></i>
+                        </a>
+                        <a href="https://www.instagram.com/elas.89/" target="_blank" rel="noopener noreferrer">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="https://www.tiktok.com/@TuUsuarioDeTikTok" target="_blank" rel="noopener noreferrer">
+                            <i class="fab fa-tiktok"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <script src="script.js"></script>
+    <script>
+        // Mostrar la fecha actual
+        const currentDateElement = document.getElementById('current-date');
+        const currentDate = new Date();
+        currentDateElement.textContent = currentDate.toLocaleDateString('es-PE', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+    </script>
+
+    
+
+
+</body>
+</html>
