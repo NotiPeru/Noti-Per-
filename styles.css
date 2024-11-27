@@ -287,7 +287,8 @@ header .container {
 }
 
 .modal-content {
-  background-color: #444;
+  background-color: #444
+;
   padding: 30px;
   border-radius: 5px;
   width: 90%;
@@ -491,3 +492,4 @@ footer {
 body, h1, h2, h3, p, a, .news-description h3, .news-description p, .most-viewed h3, .most-viewed-item p {
     color: #ffffff !important;
 }
+

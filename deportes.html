@@ -1,186 +1,587 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <!-- Meta tags y enlaces a hojas de estilo -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Deportes - Perú Noticias</title>
-    <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-
+    <title>Aymi Perú - Deportes</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-            /* Estilos adicionales para la visualización en bloques */
-    .noticia {
-        margin-bottom: 30px;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-    }
+        :root {
+            --primary-color: #d62c1f;
+            --secondary-color: #ffd700;
+            --text-color: #333;
+            --bg-color: #f4f4f4;
+            --white: #ffffff;
+        }
 
-    .noticia img {
-        width: 100%;
-        max-width: 400px;  /* Reducir el tamaño de las imágenes */
-        height: auto;
-        border-radius: 8px;
-        margin-bottom: 15px;
-    }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-    .noticia h2 {
-        font-size: 22px;
-        font-weight: bold;
-        color: #333;
-        text-align: center;
-    }
+        body {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--bg-color);
+        }
 
-    .noticia p {
-        font-size: 16px;
-        line-height: 1.6;
-        color: #666;
-        text-align: justify;
-    }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
 
-    .descripcion {
-        font-size: 14px;
-        color: #444;
-    }
+        /* Header Styles */
+        header {
+            background-color: var(--primary-color);
+            color: var(--white);
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
 
-    .reseña {
-        font-style: italic;
-        font-size: 14px;
-        color: #555;
-    }
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
 
-    /* Estilo para la distribución de las noticias en bloques */
-    .news-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-        gap: 20px;
-    }
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            text-decoration: none;
+            color: var(--white);
+            transition: color 0.3s ease;
+        }
+
+        .logo:hover {
+            color: var(--secondary-color);
+        }
+
+        /* Navigation Styles */
+        nav ul {
+            list-style: none;
+            display: flex;
+        }
+
+        nav ul li {
+            margin-left: 1.5rem;
+        }
+
+        nav ul li a {
+            color: var(--white);
+            text-decoration: none;
+            font-weight: bold;
+            transition: color 0.3s ease;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+        }
+
+        nav ul li a:hover,
+        nav ul li a.active {
+            color: var(--secondary-color);
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        /* Hamburger Menu */
+        .menu-toggle {
+            display: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        /* Social Media Icons */
+        .social-media {
+            display: flex;
+            align-items: center;
+        }
+
+        .social-media a {
+            color: var(--white);
+            font-size: 1.2rem;
+            margin-left: 1rem;
+            transition: color 0.3s ease;
+        }
+
+        .social-media a:hover {
+            color: var(--secondary-color);
+        }
+
+        /* News Carousel */
+        .news-carousel {
+            position: relative;
+            height: 500px;
+            overflow: hidden;
+            margin-top: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .carousel-item {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+        }
+
+        .carousel-item.active {
+            opacity: 1;
+        }
+
+        .carousel-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .carousel-caption {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
+            color: var(--white);
+            padding: 2rem;
+        }
+
+        .carousel-caption h2 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .carousel-caption p {
+            font-size: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .carousel-nav {
+            position: absolute;
+            bottom: 1rem;
+            right: 1rem;
+        }
+
+        .carousel-nav button {
+            background-color: rgba(255, 255, 255, 0.5);
+            border: none;
+            color: var(--text-color);
+            font-size: 1.5rem;
+            padding: 0.5rem 1rem;
+            margin-left: 0.5rem;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            border-radius: 5px;
+        }
+
+        .carousel-nav button:hover {
+            background-color: rgba(255, 255, 255, 0.8);
+        }
+
+        /* News Sections */
+        .news-section {
+            margin: 3rem 0;
+        }
+
+        .section-title {
+            font-size: 2rem;
+            color: var(--primary-color);
+            border-bottom: 2px solid var(--primary-color);
+            padding-bottom: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .news-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .news-item {
+            background-color: var(--white);
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .news-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .news-item img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .news-item-content {
+            padding: 1.5rem;
+        }
+
+        .news-item h3 {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+            color: var(--primary-color);
+        }
+
+        .news-item p {
+            font-size: 0.9rem;
+            color: #666;
+            margin-bottom: 1rem;
+        }
+
+        .read-more {
+            display: inline-block;
+            background-color: var(--primary-color);
+            color: var(--white);
+            padding: 0.5rem 1rem;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        .read-more:hover {
+            background-color: #b5241a;
+        }
+
+        /* Footer Styles */
+        footer {
+            background-color: #333;
+            color: var(--white);
+            text-align: center;
+            padding: 2rem 0;
+            margin-top: 3rem;
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            flex-wrap: wrap;
+        }
+
+        .footer-section {
+            flex: 1;
+            margin: 1rem;
+            min-width: 200px;
+        }
+
+        .footer-section h3 {
+            color: var(--secondary-color);
+            margin-bottom: 1rem;
+        }
+
+        .footer-section ul {
+            list-style: none;
+        }
+
+        .footer-section ul li {
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-section ul li a {
+            color: var(--white);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-section ul li a:hover {
+            color: var(--secondary-color);
+        }
+
+        .footer-bottom {
+            margin-top: 2rem;
+            padding-top: 1rem;
+            border-top: 1px solid #555;
+        }
+
+        /* Responsive Design */
+        @media screen and (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            nav {
+                margin-top: 1rem;
+                width: 100%;
+            }
+
+            nav ul {
+                flex-direction: column;
+                display: none;
+            }
+
+            nav ul.show {
+                display: flex;
+            }
+
+            nav ul li {
+                margin: 0.5rem 0;
+            }
+
+            .menu-toggle {
+                display: block;
+                position: absolute;
+                top: 1rem;
+                right: 1rem;
+            }
+
+            .social-media {
+                margin-top: 1rem;
+            }
+
+            .news-carousel {
+                height: 300px;
+            }
+
+            .carousel-caption h2 {
+                font-size: 1.5rem;
+            }
+
+            .carousel-caption p {
+                font-size: 0.9rem;
+            }
+
+            .footer-content {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .footer-section {
+                width: 100%;
+                text-align: center;
+                margin: 1rem 0;
+            }
+        }
     </style>
 </head>
 <body>
-    <!-- Barra superior -->
-    <div class="top-bar">
-        <div class="container">
-            <div class="social-icons">
-                <a href="https://www.facebook.com/TuPaginaDeFacebook" target="_blank" rel="noopener noreferrer">
-                    <i class="fab fa-facebook-f"></i>
-                </a>
-                <a href="https://twitter.com/TuUsuarioDeTwitter" target="_blank" rel="noopener noreferrer">
-                    <i class="fab fa-twitter"></i>
-                </a>
-                <a href="https://www.youtube.com/channel/TuCanalDeYoutube" target="_blank" rel="noopener noreferrer">
-                    <i class="fab fa-youtube"></i>
-                </a>
-                <a href="https://www.instagram.com/elas.89/" target="_blank" rel="noopener noreferrer">
-                    <i class="fab fa-instagram"></i>
-                </a>
-                <a href="https://www.tiktok.com/@TuUsuarioDeTikTok" target="_blank" rel="noopener noreferrer">
-                    <i class="fab fa-tiktok"></i>
-                </a>
-            </div>
-            <div class="current-date">
-                <span>Últimas noticias del Perú y el mundo</span>
-                <span id="current-date"></span>
-            </div>
-            <div class="theme-toggle">
-                <i class="fas fa-moon"></i>
-            </div>
-        </div>
-    </div>
-
-    <!-- Cabecera (Header) -->
     <header>
         <div class="container">
-            <button class="menu-toggle">
-                <i class="fas fa-bars"></i>
-            </button>
-            <div class="logo">
-                <a href="index.html">
-                    <h1>Perú Noticias</h1>
-                </a>
+            <div class="header-content">
+                <a href="index.html" class="logo">Aymi Perú</a>
+                <nav>
+                    <div class="menu-toggle" id="mobile-menu">
+                        <i class="fas fa-bars"></i>
+                    </div>
+                    <ul>
+                        <li><a href="index.html">Inicio</a></li>
+                        <li><a href="index.html#politica">Política</a></li>
+                        <li><a href="#" class="active">Deportes</a></li>
+                        <li><a href="index.html#espectaculos">Espectáculos</a></li>
+                        <li><a href="index.html#mundo">Mundo</a></li>
+                        <li><a href="index.html#economia">Economía</a></li>
+                    </ul>
+                </nav>
+                <div class="social-media">
+                    <a href="#" target="_blank" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" target="_blank" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                    <a href="#" target="_blank" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+                </div>
             </div>
-            
         </div>
     </header>
 
-    <!-- Barra de navegación principal -->
-    <nav class="main-nav">
-        <div class="container">
-            <ul>
-                <li><a href="index.html">Inicio</a></li>
-                <li><a href="politica.html">Política</a></li>
-                <li><a href="deportes.html">Deportes</a></li>
-                <li><a href="espectaculos.html">Espectáculos</a></li>
-                <li><a href="mundo.html">Mundo</a></li>
-                <li><a href="economia.html">Economía</a></li>
-            </ul>
-        </div>
-    </nav>
-
-    <!-- Sección principal (Noticias de deportes) -->
     <main class="container">
-        <h1 class="category-title">Deportes</h1>
-        
-        <!-- Noticias de Deportes -->
-        <div class="news-grid" id="deportesNews">
-            <!-- Bloque de noticias 1 -->
-            <div class="news-item">
-                <img src="https://imgmedia.libero.pe/652x365/libero/original/2024/11/25/674475c604c8a118b77a5232.webp ">
-                <div class="news-description">
-                    <h3>Alianza Lima busca nuevo entrenador: los candidatos que suenan fuerte en Matute</h3>
-                    <p>Alianza Lima se encuentra en la búsqueda de un nuevo entrenador tras la salida de Mariano Soso. Conoce los principales nombres que suenan para llegar a Matute. 
-                    Alianza Lima empezó con su plan de reestructuración tras oficializar al flamante director deportivo del club, Franco Navarro. Por su parte, ahora su labor será definir junto a José Bellina, al nuevo técnico para el 2025. Y más aún, poder concretar a los refuerzos que tendrá el club blanquiazul con miras a la Liga 1 y Copa Conmebol Libertadores
-                    </p>
+        <section class="news-carousel">
+            <div class="carousel-item active">
+                <img src="https://imgmedia.libero.pe/652x365/libero/original/2024/11/25/674475c604c8a118b77a5232.webp" alt="Noticia Deportiva Destacada 1">
+                <div class="carousel-caption">
+                    <h2>Alianza Lima busca nuevo entrenador: los candidatos que suenan fuerte en Matute</h2>
+                    <p>lianza Lima se encuentra en la búsqueda de un nuevo entrenador tras la salida de Mariano Soso</p>
+                </div>
+            </div>
+            <div class="carousel-item">
+                <img src="https://depor.com/resizer/v2/6JPIOQ3KBRFILGNAQL6JQPODMU.jpg?auth=1a6622d8b360d89c753aea7eefdc9c93d4afb9afa397ccf3ae0f6704591cc03b&width=1200&height=677&quality=90&smart=true" alt="Noticia Deportiva Destacada 2">
+                <div class="carousel-caption">
+                    <h2>Cuatro voces desde Argentina detallan el caso: ¿cuál es la situación de Bryan Reyna en Belgrano?</h2>
+                    <p>La llegada de Bryan Reyna a Argentina, a inicio de año, parecía ser una suerte de revancha personal, tras su fallida experiencia por la filial de Mallorca de España.</p>
+                    <a href="#" class="read-more">Leer más</a>
                 </div>
             </div>
             
-            <!-- Bloque de noticias 2 -->
-            <div class="news-item">
-                <img src="https://depor.com/resizer/v2/6JPIOQ3KBRFILGNAQL6JQPODMU.jpg?auth=1a6622d8b360d89c753aea7eefdc9c93d4afb9afa397ccf3ae0f6704591cc03b&width=1200&height=677&quality=90&smart=true">
-                <div class="news-description">
-                    <h3>Cuatro voces desde Argentina detallan el caso: ¿cuál es la situación de Bryan Reyna en Belgrano?</h3>
-                    <p>La llegada de Bryan Reyna a Argentina, a inicio de año, parecía ser una suerte de revancha personal, tras su fallida experiencia por la filial de Mallorca de España. Desde la campaña pasada con Alianza Lima, el deseo del jugador nacional era volver al extranjero, por lo que recaer en Belgrano de Córdoba era un nuevo primer paso para mantenerse afuera. La historia comenzó como un cuento de hadas, todo lucía perfecto, con goles, asistencias y protagonismo del ‘Picante’, como lo apodaron allá; hasta el presidente del club lo llenaba de elogios.
-                    </p>
+            
+            <div class="carousel-item">
+                <img src="https://via.placeholder.com/1200x500.png?text=Noticia+Deportiva+Destacada+3" alt="Noticia Deportiva Destacada 3">
+                <div class="carousel-caption">
+                    <h2>Récord histórico: Peruana gana medalla de oro en Juegos Panamericanos</h2>
+                    <p>La atleta peruana sorprende al mundo con su destacada actuación en atletismo...</p>
+                    <a href="#" class="read-more">Leer más</a>
                 </div>
             </div>
-        </div>
+            <div class="carousel-nav">
+                <button class="prev" aria-label="Noticia anterior">&lt;</button>
+                <button class="next" aria-label="Siguiente noticia">&gt;</button>
+            </div>
+        </section>
+
+        <section class="news-section">
+            <h2 class="section-title">Fútbol Nacional</h2>
+            <div class="news-grid">
+                <article class="news-item">
+                    <img src="https://imgmedia.libero.pe/652x365/libero/original/2024/11/25/674475c604c8a118b77a5232.webp" alt="Noticia Fútbol Nacional 1">
+                    <div class="news-item-content">
+                        <h3>Alianza Lima busca nuevo entrenador: los candidatos que suenan fuerte en Matute</h3>
+                        <p>Alianza Lima se encuentra en la búsqueda de un nuevo entrenador tras la salida de Mariano Soso. Conoce los principales nombres que suenan para llegar a Matute. Alianza Lima empezó con su plan de reestructuración tras oficializar al flamante director deportivo del club, Franco Navarro. Por su parte, ahora su labor será definir junto a José Bellina, al nuevo técnico para el 2025. Y más aún, poder concretar a los refuerzos que tendrá el club blanquiazul con miras a la Liga 1 y Copa Conmebol Libertadores</p>
+                    </div>
+                </article>
+                <article class="news-item">
+                    <img src="https://depor.com/resizer/v2/6JPIOQ3KBRFILGNAQL6JQPODMU.jpg?auth=1a6622d8b360d89c753aea7eefdc9c93d4afb9afa397ccf3ae0f6704591cc03b&width=1200&height=677&quality=90&smart=true" alt="Noticia Fútbol Nacional 2">
+                    <div class="news-item-content">
+                        <h3>Cuatro voces desde Argentina detallan el caso: ¿cuál es la situación de Bryan Reyna en Belgrano?</h3>
+                        <p>La llegada de Bryan Reyna a Argentina, a inicio de año, parecía ser una suerte de revancha personal, tras su fallida experiencia por la filial de Mallorca de España. Desde la campaña pasada con Alianza Lima, el deseo del jugador nacional era volver al extranjero, por lo que recaer en Belgrano de Córdoba era un nuevo primer paso para mantenerse afuera. La historia comenzó como un cuento de hadas, todo lucía perfecto, con goles, asistencias y protagonismo del ‘Picante’, como lo apodaron allá; hasta el presidente del club lo llenaba de elogios.</p>
+                    </div>
+                </article>
+                
+                
+                <article class="news-item">
+                    <img src="https://via.placeholder.com/400x300.png?text=Fútbol+Nacional+3" alt="Noticia Fútbol Nacional 3">
+                    <div class="news-item-content">
+                        <h3>Cienciano regresa a la Primera División</h3>
+                        <p>El equipo cusqueño logra el ascenso y vuelve a la máxima categoría del fútbol peruano...</p>
+                        <a href="#" class="read-more">Leer más</a>
+                    </div>
+                </article>
+            </div>
+        </section>
+
+        <section class="news-section">
+            <h2 class="section-title">Fútbol Internacional</h2>
+            <div class="news-grid">
+                <article class="news-item">
+                    <img src="https://via.placeholder.com/400x300.png?text=Fútbol+Internacional+1" alt="Noticia Fútbol Internacional 1">
+                    <div class="news-item-content">
+                        <h3>Lapadula brilla en la Serie A italiana</h3>
+                        <p>El delantero peruano anota un hat-trick y se convierte en figura de su equipo...</p>
+                        <a href="#" class="read-more">Leer más</a>
+                    </div>
+                </article>
+                <article class="news-item">
+                    <img src="https://via.placeholder.com/400x300.png?text=Fútbol+Internacional+2" alt="Noticia Fútbol Internacional 2">
+                    <div class="news-item-content">
+                        <h3>Perú enfrentará a Brasil en amistoso internacional</h3>
+                        <p>La selección peruana se medirá ante la 'Canarinha' en un partido de preparación...</p>
+                        <a href="#" class="read-more">Leer más</a>
+                    </div>
+                </article>
+                <article class="news-item">
+                    <img src="https://via.placeholder.com/400x300.png?text=Fútbol+Internacional+3" alt="Noticia Fútbol Internacional 3">
+                    <div class="news-item-content">
+                        <h3>Jugador peruano fichado por club de la Premier League</h3>
+                        <p>Joven promesa del fútbol peruano da el salto al fútbol inglés...</p>
+                        <a href="#" class="read-more">Leer más</a>
+                    </div>
+                </article>
+            </div>
+        </section>
+
+        <section class="news-section">
+            <h2 class="section-title">Otros Deportes</h2>
+            <div class="news-grid">
+                <article class="news-item">
+                    <img src="https://via.placeholder.com/400x300.png?text=Otros+Deportes+1" alt="Noticia Otros Deportes 1">
+                    <div class="news-item-content">
+                        <h3>Perú obtiene medallas en Juegos Bolivarianos</h3>
+                        <p>Delegación peruana destaca en varias disciplinas en competencia regional...</p>
+                        <a href="#" class="read-more">Leer más</a>
+                    </div>
+                </article>
+                <article class="news-item">
+                    <img src="https://via.placeholder.com/400x300.png?text=Otros+Deportes+2" alt="Noticia Otros Deportes 2">
+                    <div class="news-item-content">
+                        <h3>Surfista peruana clasifica a los Juegos Olímpicos</h3>
+                        <p>Talentosa deportista asegura su participación en París 2024...</p>
+                        <a href="#" class="read-more">Leer más</a>
+                    </div>
+                </article>
+                <article class="news-item">
+                    <img src="https://via.placeholder.com/400x300.png?text=Otros+Deportes+3" alt="Noticia Otros Deportes 3">
+                    <div class="news-item-content">
+                        <h3>Equipo peruano de vóley sub-20 gana torneo sudamericano</h3>
+                        <p>Las jóvenes voleibolistas se coronan campeonas en emocionante final...</p>
+                        <a href="#" class="read-more">Leer más</a>
+                    </div>
+                </article>
+            </div>
+        </section>
     </main>
 
     <footer>
         <div class="container">
             <div class="footer-content">
-                <div class="footer-left">
-                    <img src="iconperu.png" alt="Logo Perú Noticias">
-                    <p>&copy; 2024 Perú Noticias - Todos los derechos reservados</p>
+                <div class="footer-section">
+                    <h3>Sobre Nosotros</h3>
+                    <p>Noticias Perú es tu fuente confiable de información deportiva actualizada sobre el país y el mundo.</p>
                 </div>
-                <div class="footer-right">
-                    <p>Síguenos en nuestras redes sociales:</p>
-                    <div class="social-icons">
-                        <a href="https://www.facebook.com/TuPaginaDeFacebook" target="_blank" rel="noopener noreferrer">
-                            <i class="fab fa-facebook-f"></i>
-                        </a>
-                        <a href="https://twitter.com/TuUsuarioDeTwitter" target="_blank" rel="noopener noreferrer">
-                            <i class="fab fa-twitter"></i>
-                        </a>
-                        <a href="https://www.youtube.com/channel/TuCanalDeYoutube" target="_blank" rel="noopener noreferrer">
-                            <i class="fab fa-youtube"></i>
-                        </a>
-                        <a href="https://www.instagram.com/elas.89/" target="_blank" rel="noopener noreferrer">
-                            <i class="fab fa-instagram"></i>
-                        </a>
-                        <a href="https://www.tiktok.com/@TuUsuarioDeTikTok" target="_blank" rel="noopener noreferrer">
-                            <i class="fab fa-tiktok"></i>
-                        </a>
-                    </div>
+                <div class="footer-section">
+                    <h3>Enlaces Rápidos</h3>
+                    <ul>
+                        <li><a href="index.html">Inicio</a></li>
+                        <li><a href="index.html#politica">Política</a></li>
+                        <li><a href="#">Deportes</a></li>
+                        <li><a href="index.html#espectaculos">Espectáculos</a></li>
+                        <li><a href="index.html#mundo">Mundo</a></li>
+                        <li><a href="index.html#economia">Economía</a></li>
+                    </ul>
                 </div>
+                <div class="footer-section">
+                    <h3>Contacto</h3>
+                    <p>Email: deportes@noticiasperu.com</p>
+                    <p>Teléfono: +51 1 234 5678</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 Noticias Perú. Todos los derechos reservados.</p>
             </div>
         </div>
     </footer>
+
     <script>
-        // Script para actualizar la fecha actual en la barra superior
-        document.getElementById("current-date").textContent = new Date().toLocaleDateString('es-PE', {
-            weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
+        // JavaScript para el menú hamburguesa y el carrusel de noticias
+        document.addEventListener('DOMContentLoaded', function() {
+            // Menú hamburguesa
+            const mobileMenu = document.getElementById('mobile-menu');
+            const navMenu = document.querySelector('nav ul');
+
+            mobileMenu.addEventListener('click', function() {
+                navMenu.classList.toggle('show');
+            });
+
+            // Carrusel de noticias
+            const carouselItems = document.querySelectorAll('.carousel-item');
+            const prevBtn = document.querySelector('.carousel-nav .prev');
+            const nextBtn = document.querySelector('.carousel-nav .next');
+            let currentItem = 0;
+
+            function showItem(index) {
+                carouselItems[currentItem].classList.remove('active');
+                carouselItems[index].classList.add('active');
+                currentItem = index;
+            }
+
+            function nextItem() {
+                let index = (currentItem + 1) % carouselItems.length;
+                showItem(index);
+            }
+
+            function prevItem() {
+                let index = (currentItem - 1 + carouselItems.length) % carouselItems.length;
+                showItem(index);
+            }
+
+            nextBtn.addEventListener('click', nextItem);
+            prevBtn.addEventListener('click', prevItem);
+
+            // Cambiar automáticamente cada 5 segundos
+            setInterval(nextItem, 5000);
         });
     </script>
 </body>
