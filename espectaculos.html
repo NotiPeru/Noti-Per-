@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aymi Perú - Espectáculos</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #d62c1f;
+            --secondary-color: #ffd700;
+            --text-color: #333;
+            --bg-color: #f4f4f4;
+            --white: #ffffff;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--bg-color);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header Styles */
+        header {
+            background-color: var(--primary-color);
+            color: var(--white);
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            text-decoration: none;
+            color: var(--white);
+            transition: color 0.3s ease;
+        }
+
+        .logo:hover {
+            color: var(--secondary-color);
+        }
+
+        /* Navigation Styles */
+        nav ul {
+            list-style: none;
+            display: flex;
+        }
+
+        nav ul li {
+            margin-left: 1.5rem;
+        }
+
+        nav ul li a {
+            color: var(--white);
+            text-decoration: none;
+            font-weight: bold;
+            transition: color 0.3s ease;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+        }
+
+        nav ul li a:hover,
+        nav ul li a.active {
+            color: var(--secondary-color);
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        /* Hamburger Menu */
+        .menu-toggle {
+            display: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        /* Social Media Icons */
+        .social-media {
+            display: flex;
+            align-items: center;
+        }
+
+        .social-media a {
+            color: var(--white);
+            font-size: 1.2rem;
+            margin-left: 1rem;
+            transition: color 0.3s ease;
+        }
+
+        .social-media a:hover {
+            color: var(--secondary-color);
+        }
+
+        /* News Carousel */
+        .news-carousel {
+            position: relative;
+            height: 500px;
+            overflow: hidden;
+            margin-top: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .carousel-item {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+        }
+
+        .carousel-item.active {
+            opacity: 1;
+        }
+
+        .carousel-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .carousel-caption {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
+            color: var(--white);
+            padding: 2rem;
+        }
+
+        .carousel-caption h2 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .carousel-caption p {
+            font-size: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .carousel-nav {
+            position: absolute;
+            bottom: 1rem;
+            right: 1rem;
+        }
+
+        .carousel-nav button {
+            background-color: rgba(255, 255, 255, 0.5);
+            border: none;
+            color: var(--text-color);
+            font-size: 1.5rem;
+            padding: 0.5rem 1rem;
+            margin-left: 0.5rem;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            border-radius: 5px;
+        }
+
+        .carousel-nav button:hover {
+            background-color: rgba(255, 255, 255, 0.8);
+        }
+
+        /* News Sections */
+        .news-section {
+            margin: 3rem 0;
+        }
+
+        .section-title {
+            font-size: 2rem;
+            color: var(--primary-color);
+            border-bottom: 2px solid var(--primary-color);
+            padding-bottom: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .news-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .news-item {
+            background-color: var(--white);
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .news-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .news-item img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .news-item-content {
+            padding: 1.5rem;
+        }
+
+        .news-item h3 {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+            color: var(--primary-color);
+        }
+
+        .news-item p {
+            font-size: 0.9rem;
+            color: #666;
+            margin-bottom: 1rem;
+        }
+
+        .read-more {
+            display: inline-block;
+            background-color: var(--primary-color);
+            color: var(--white);
+            padding: 0.5rem 1rem;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        .read-more:hover {
+            background-color: #b5241a;
+        }
+
+        /* Footer Styles */
+        footer {
+            background-color: #333;
+            color: var(--white);
+            text-align: center;
+            padding: 2rem 0;
+            margin-top: 3rem;
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            flex-wrap: wrap;
+        }
+
+        .footer-section {
+            flex: 1;
+            margin: 1rem;
+            min-width: 200px;
+        }
+
+        .footer-section h3 {
+            color: var(--secondary-color);
+            margin-bottom: 1rem;
+        }
+
+        .footer-section ul {
+            list-style: none;
+        }
+
+        .footer-section ul li {
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-section ul li a {
+            color: var(--white);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-section ul li a:hover {
+            color: var(--secondary-color);
+        }
+
+        .footer-bottom {
+            margin-top: 2rem;
+            padding-top: 1rem;
+            border-top: 1px solid #555;
+        }
+
+        /* Responsive Design */
+        @media screen and (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            nav {
+                margin-top: 1rem;
+                width: 100%;
+            }
+
+            nav ul {
+                flex-direction: column;
+                display: none;
+            }
+
+            nav ul.show {
+                display: flex;
+            }
+
+            nav ul li {
+                margin: 0.5rem 0;
+            }
+
+            .menu-toggle {
+                display: block;
+                position: absolute;
+                top: 1rem;
+                right: 1rem;
+            }
+
+            .social-media {
+                margin-top: 1rem;
+            }
+
+            .news-carousel {
+                height: 300px;
+            }
+
+            .carousel-caption h2 {
+                font-size: 1.5rem;
+            }
+
+            .carousel-caption p {
+                font-size: 0.9rem;
+            }
+
+            .footer-content {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .footer-section {
+                width: 100%;
+                text-align: center;
+                margin: 1rem 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <a href="index.html" class="logo">Aymi Perú</a>
+                <nav>
+                    <div class="menu-toggle" id="mobile-menu">
+                        <i class="fas fa-bars"></i>
+                    </div>
+                    <ul>
+                        <li><a href="index.html">Inicio</a></li>
+                        <li><a href="index.html#politica">Política</a></li>
+                        <li><a href="deportes.html">Deportes</a></li>
+                        <li><a href="#" class="active">Espectáculos</a></li>
+                        <li><a href="index.html#mundo">Mundo</a></li>
+                        <li><a href="index.html#economia">Economía</a></li>
+                    </ul>
+                </nav>
+                <div class="social-media">
+                    <a href="#" target="_blank" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" target="_blank" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                    <a href="#" target="_blank" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        <section class="news-carousel">
+            <div class="carousel-item active">
+                <img src="https://via.placeholder.com/1200x500.png?text=Noticia+Espectáculos+Destacada+1" alt="Noticia Espectáculos Destacada 1">
+                <div class="carousel-caption">
+                    <h2>Estreno de película peruana bate récords de taquilla</h2>
+                    <p>La nueva producción nacional supera todas las expectativas en su primer fin de semana...</p>
+                    <a href="#" class="read-more">Leer más</a>
+                </div>
+            </div>
+            <div class="carousel-item">
+                <img src="https://via.placeholder.com/1200x500.png?text=Noticia+Espectáculos+Destacada+2" alt="Noticia Espectáculos Destacada 2">
+                <div class="carousel-caption">
+                    <h2>Cantante peruana triunfa en festival internacional</h2>
+                    <p>La artista nacional se lleva el primer lugar en prestigioso concurso de canto...</p>
+                    <a href="#" class="read-more">Leer más</a>
+                </div>
+            </div>
+            <div class="carousel-item">
+                <img src="https://via.placeholder.com/1200x500.png?text=Noticia+Espectáculos+Destacada+3" alt="Noticia Espectáculos Destacada 3">
+                <div class="carousel-caption">
+                    <h2>Gran expectativa por concierto de artista internacional en Lima</h2>
+                    <p>Fans hacen largas colas para conseguir entradas para el esperado show...</p>
+                    <a href="#" class="read-more">Leer más</a>
+                </div>
+            </div>
+            <div class="carousel-nav">
+                <button class="prev" aria-label="Noticia anterior">&lt;</button>
+                <button class="next" aria-label="Siguiente noticia">&gt;</button>
+            </div>
+        </section>
+
+        <section class="news-section">
+            <h2 class="section-title">Cine y TV</h2>
+            <div class="news-grid">
+                <article class="news-item">
+                    <img src="https://via.placeholder.com/400x300.png?text=Cine+y+TV+1" alt="Noticia Cine y TV 1">
+                    <div class="news-item-content">
+                        <h3>Nueva serie peruana se estrena en plataforma de streaming</h3>
+                        <p>La producción nacional gana reconocimiento internacional...</p>
+                        <a href="#" class="read-more">Leer más</a>
+                    </div>
+                </article>
+                <article class="news-item">
+                    <img src="https://via.placeholder.com/400x300.png?text=Cine+y+TV+2" alt="Noticia Cine y TV 2">
+                    <div class="news-item-content">
+                        <h3>Actor peruano es nominado a prestigioso premio de actuación</h3>
+                        <p>Su destacada interpretación en película extranjera le vale reconocimiento...</p>
+                        <a href="#" class="read-more">Leer más</a>
+                    </div>
+                </article>
+                <article class="news-item">
+                    <img src="https://via.placeholder.com/400x300.png?text=Cine+y+TV+3" alt="Noticia Cine y TV 3">
+                    <div class="news-item-content">
+                        <h3>Documental peruano gana premio en festival internacional</h3>
+                        <p>La obra que retrata la biodiversidad amazónica recibe elogios de la crítica...</p>
+                        <a href="#" class="read-more">Leer más</a>
+                    </div>
+                </article>
+            </div>
+        </section>
+
+        <section class="news-section">
+            <h2 class="section-title">Música</h2>
+            <div class="news-grid">
+                <article class="news-item">
+                    <img src="https://via.placeholder.com/400x300.png?text=Música+1" alt="Noticia Música 1">
+                    <div class="news-item-content">
+                        <h3>Grupo de cumbia anuncia gira internacional</h3>
+                        <p>La banda peruana llevará sus éxitos a varios países de Latinoamérica...</p>
+                        <a href="#" class="read-more">Leer más</a>
+                    </div>
+                </article>
+                <article class="news-item">
+                    <img src="https://via.placeholder.com/400x300.png?text=Música+2" alt="Noticia Música 2">
+                    <div class="news-item-content">
+                        <h3>Joven cantante peruana lanza su primer álbum</h3>
+                        <p>El disco fusiona ritmos andinos con pop contemporáneo...</p>
+                        <a href="#" class="read-more">Leer más</a>
+                    </div>
+                </article>
+                <article class="news-item">
+                    <img src="https://via.placeholder.com/400x300.png?text=Música+3" alt="Noticia Música 3">
+                    <div class="news-item-content">
+                        <h3>Festival de música independiente anuncia line-up</h3>
+                        <p>El evento reunirá a lo mejor de la escena alternativa peruana...</p>
+                        <a href="#" class="read-more">Leer más</a>
+                    </div>
+                </article>
+            </div>
+        </section>
+
+        <section class="news-section">
+            <h2 class="section-title">Farándula</h2>
+            <div class="news-grid">
+                <article class="news-item">
+                    <img src="https://via.placeholder.com/400x300.png?text=Farándula+1" alt="Noticia Farándula 1">
+                    <div class="news-item-content">
+                        <h3>Famosa pareja de actores anuncia su compromiso</h3>
+                        <p>Los artistas sorprenden a sus fans con la noticia en redes sociales...</p>
+                        <a href="#" class="read-more">Leer más</a>
+                    </div>
+                </article>
+                <article class="news-item">
+                    <img src="https://via.placeholder.com/400x300.png?text=Farándula+2" alt="Noticia Farándula 2">
+                    <div class="news-item-content">
+                        <h3>Reconocido chef peruano abrirá restaurante en Nueva York</h3>
+                        <p>El cocinero llevará los sabores peruanos a la Gran Manzana...</p>
+                        <a href="#" class="read-more">Leer más</a>
+                    </div>
+                </article>
+                <article class="news-item">
+                    <img src="https://via.placeholder.com/400x300.png?text=Farándula+3" alt="Noticia Farándula 3">
+                    <div class="news-item-content">
+                        <h3>Influencer peruana lanza línea de moda sostenible</h3>
+                        <p>La colección utiliza materiales reciclados y apoya a comunidades locales...</p>
+                        <a href="#" class="read-more">Leer más</a>
+                    </div>
+                </article>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Sobre Nosotros</h3>
+                    <p>Noticias Perú es tu fuente confiable de información de espectáculos y entretenimiento en el país y el mundo.</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Enlaces Rápidos</h3>
+                    <ul>
+                        <li><a href="index.html">Inicio</a></li>
+                        <li><a href="index.html#politica">Política</a></li>
+                        <li><a href="deportes.html">Deportes</a></li>
+                        <li><a href="#">Espectáculos</a></li>
+                        <li><a href="index.html#mundo">Mundo</a></li>
+                        <li><a href="index.html#economia">Economía</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Contacto</h3>
+                    <p>Email: espectaculos@noticiasperu.com</p>
+                    <p>Teléfono: +51 1 234 5678</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 Noticias Perú. Todos los derechos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // JavaScript para el menú hamburguesa y el carrusel de noticias
+        document.addEventListener('DOMContentLoaded', function() {
+            // Menú hamburguesa
+            const mobileMenu = document.getElementById('mobile-menu');
+            const navMenu = document.querySelector('nav ul');
+
+            mobileMenu.addEventListener('click', function() {
+                navMenu.classList.toggle('show');
+            });
+
+            // Carrusel de noticias
+            const carouselItems = document.querySelectorAll('.carousel-item');
+            const prevBtn = document.querySelector('.carousel-nav .prev');
+            const nextBtn = document.querySelector('.carousel-nav .next');
+            let currentItem = 0;
+
+            function showItem(index) {
+                carouselItems[currentItem].classList.remove('active');
+                carouselItems[index].classList.add('active');
+                currentItem = index;
+            }
+
+            function nextItem() {
+                let index = (currentItem + 1) % carouselItems.length;
+                showItem(index);
+            }
+
+            function prevItem() {
+                let index = (currentItem - 1 + carouselItems.length) % carouselItems.length;
+                showItem(index);
+            }
+
+            nextBtn.addEventListener('click', nextItem);
+            prevBtn.addEventListener('click', prevItem);
+
+            // Cambiar automáticamente cada 5 segundos
+            setInterval(nextItem, 5000);
+        });
+    </script>
+</body>
+</html>

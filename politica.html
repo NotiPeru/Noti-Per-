@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aymi - Política</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #d62c1f;
+            --secondary-color: #ffd700;
+            --text-color: #333;
+            --bg-color: #f4f4f4;
+            --white: #ffffff;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--bg-color);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header Styles */
+        header {
+            background-color: var(--primary-color);
+            color: var(--white);
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            text-decoration: none;
+            color: var(--white);
+            transition: color 0.3s ease;
+        }
+
+        .logo:hover {
+            color: var(--secondary-color);
+        }
+
+        /* Navigation Styles */
+        nav ul {
+            list-style: none;
+            display: flex;
+        }
+
+        nav ul li {
+            margin-left: 1.5rem;
+        }
+
+        nav ul li a {
+            color: var(--white);
+            text-decoration: none;
+            font-weight: bold;
+            transition: color 0.3s ease;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+        }
+
+        nav ul li a:hover,
+        nav ul li a.active {
+            color: var(--secondary-color);
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        /* Hamburger Menu */
+        .menu-toggle {
+            display: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        /* Social Media Icons */
+        .social-media {
+            display: flex;
+            align-items: center;
+        }
+
+        .social-media a {
+            color: var(--white);
+            font-size: 1.2rem;
+            margin-left: 1rem;
+            transition: color 0.3s ease;
+        }
+
+        .social-media a:hover {
+            color: var(--secondary-color);
+        }
+
+        /* News Carousel */
+        .news-carousel {
+            position: relative;
+            height: 500px;
+            overflow: hidden;
+            margin-top: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .carousel-item {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+        }
+
+        .carousel-item.active {
+            opacity: 1;
+        }
+
+        .carousel-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .carousel-caption {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
+            color: var(--white);
+            padding: 2rem;
+        }
+
+        .carousel-caption h2 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .carousel-caption p {
+            font-size: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .carousel-nav {
+            position: absolute;
+            bottom: 1rem;
+            right: 1rem;
+        }
+
+        .carousel-nav button {
+            background-color: rgba(255, 255, 255, 0.5);
+            border: none;
+            color: var(--text-color);
+            font-size: 1.5rem;
+            padding: 0.5rem 1rem;
+            margin-left: 0.5rem;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            border-radius: 5px;
+        }
+
+        .carousel-nav button:hover {
+            background-color: rgba(255, 255, 255, 0.8);
+        }
+
+        /* News Sections */
+        .news-section {
+            margin: 3rem 0;
+        }
+
+        .section-title {
+            font-size: 2rem;
+            color: var(--primary-color);
+            border-bottom: 2px solid var(--primary-color);
+            padding-bottom: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .news-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .news-item {
+            background-color: var(--white);
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .news-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .news-item img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .news-item-content {
+            padding: 1.5rem;
+        }
+
+        .news-item h3 {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+            color: var(--primary-color);
+        }
+
+        .news-item p {
+            font-size: 0.9rem;
+            color: #666;
+            margin-bottom: 1rem;
+        }
+
+        .read-more {
+            display: inline-block;
+            background-color: var(--primary-color);
+            color: var(--white);
+            padding: 0.5rem 1rem;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        .read-more:hover {
+            background-color: #b5241a;
+        }
+
+        /* Footer Styles */
+        footer {
+            background-color: #333;
+            color: var(--white);
+            text-align: center;
+            padding: 2rem 0;
+            margin-top: 3rem;
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            flex-wrap: wrap;
+        }
+
+        .footer-section {
+            flex: 1;
+            margin: 1rem;
+            min-width: 200px;
+        }
+
+        .footer-section h3 {
+            color: var(--secondary-color);
+            margin-bottom: 1rem;
+        }
+
+        .footer-section ul {
+            list-style: none;
+        }
+
+        .footer-section ul li {
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-section ul li a {
+            color: var(--white);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-section ul li a:hover {
+            color: var(--secondary-color);
+        }
+
+        .footer-bottom {
+            margin-top: 2rem;
+            padding-top: 1rem;
+            border-top: 1px solid #555;
+        }
+
+        /* Responsive Design */
+        @media screen and (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            nav {
+                margin-top: 1rem;
+                width: 100%;
+            }
+
+            nav ul {
+                flex-direction: column;
+                display: none;
+            }
+
+            nav ul.show {
+                display: flex;
+            }
+
+            nav ul li {
+                margin: 0.5rem 0;
+            }
+
+            .menu-toggle {
+                display: block;
+                position: absolute;
+                top: 1rem;
+                right: 1rem;
+            }
+
+            .social-media {
+                margin-top: 1rem;
+            }
+
+            .news-carousel {
+                height: 300px;
+            }
+
+            .carousel-caption h2 {
+                font-size: 1.5rem;
+            }
+
+            .carousel-caption p {
+                font-size: 0.9rem;
+            }
+
+            .footer-content {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .footer-section {
+                width: 100%;
+                text-align: center;
+                margin: 1rem 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <a href="index.html" class="logo">Aymi Perú</a>
+                <nav>
+                    <div class="menu-toggle" id="mobile-menu">
+                        <i class="fas fa-bars"></i>
+                    </div>
+                    <ul>
+                        <li><a href="index.html">Inicio</a></li>
+                        <li><a href="politica.html" class="active">Política</a></li>
+                        <li><a href="deportes.html">Deportes</a></li>
+                        <li><a href="espectaculos.html">Espectáculos</a></li>
+                        <li><a href="mundo.html">Mundo</a></li>
+                        <li><a href="economia.html">Economía</a></li>
+                    </ul>
+                </nav>
+                <div class="social-media">
+                    <a href="#" target="_blank" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" target="_blank" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                    <a href="#" target="_blank" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        <section class="news-carousel">
+            <div class="carousel-item active">
+                <img src="https://via.placeholder.com/1200x500.png?text=Noticia+Política+Destacada+1" alt="Noticia Política Destacada 1">
+                <div class="carousel-caption">
+                    <h2>Congreso aprueba nueva ley de reforma electoral</h2>
+                    <p>La medida busca mejorar la transparencia en los procesos electorales del país...</p>
+                    <a href="#" class="read-more">Leer más</a>
+                </div>
+            </div>
+            <div class="carousel-item">
+                <img src="https://via.placeholder.com/1200x500.png?text=Noticia+Política+Destacada+2" alt="Noticia Política Destacada 2">
+                <div class="carousel-caption">
+                    <h2>Presidente anuncia plan de reactivación económica</h2>
+                    <p>El gobierno presenta medidas para impulsar el crecimiento y generar empleo...</p>
+                    <a href="#" class="read-more">Leer más</a>
+                </div>
+            </div>
+            <div class="carousel-item">
+                <img src="https://via.placeholder.com/1200x500.png?text=Noticia+Política+Destacada+3" alt="Noticia Política Destacada 3">
+                <div class="carousel-caption">
+                    <h2>Oposición propone moción de censura contra ministro</h2>
+                    <p>La controversia surge tras las recientes declaraciones del funcionario...</p>
+                    <a href="#" class="read-more">Leer más</a>
+                </div>
+            </div>
+            <div class="carousel-nav">
+                <button class="prev" aria-label="Noticia anterior">&lt;</button>
+                <button class="next" aria-label="Siguiente noticia">&gt;</button>
+            </div>
+        </section>
+
+        <section class="news-section">
+            <h2 class="section-title">Últimas Noticias Políticas</h2>
+            <div class="news-grid">
+                <article class="news-item">
+                    <img src="https://caretas.pe/wp-content/uploads/2024/11/nicanor-boluarte-585x329.jpeg">
+                    <div class="news-item-content">
+                        <h3>Nicanor Boluarte</h3>
+                        <p>Gustavo Adrianzén y otros miembros del Gabinete han cuestionado los 36 meses de prisión contra el hermano de Dina Boluarte. Diversos integrantes del Gabinete ministerial, incluyendo a Gustavo Adrianzén y miembros representantes de diferentes sectores, se han pronunciado en contra de la orden de prisión preseventiva dictada contra el hermano de Dina Boluarte, Nicanor Boluarte, quien sigue prófugo de la justicia desde el martes</p>
+                    </div>
+                </article>
+                <article class="news-item">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRltLy0LAU5avz5CqtgM7cPJbKTbxVWuwMgFQ&s" alt="Noticia Política 2">
+                    <div class="news-item-content">
+                        <h3>Ex Militantes de Perú Libre</h3>
+                        <p>Ex militantes denuncia que tras negarse a seguir contribuyendo económicamente al partido político han sido victimas de actos de violentos y lideres amenaza de muerte por parte de lideres y miembros del Perú libre confirma que el partido utilizo carteles de tren de Aragua para intimidarlo por no alinearse con la exigencia de la organización</p>
+                    </div>
+                </article>
+                <article class="news-item">
+                    <img src="https://fpp.org.pe/wp-content/uploads/2024/10/PORTADA-ATQUE-7.png" alt="Noticia Política 3">
+                    <div class="news-item-content">
+                        <h3>Enfrenta a extorsionadores y ahora teme por su vida</h3>
+                        <p>Testimonio desgarrador: dueño de botica se enfrenta a extorsionadores y ahora teme por su vida El dueño de una botica, ubicada en la cuadra 13 de la avenida Perú en San Martín de Porres, ha denunciado públicamente que es víctima de extorsionadores. Con voz entrecortada y lágrimas en los ojos, el empresario, quien lleva 25 años trabajando en la zona, expresó su desesperación y temor ante la posibilidad de una venganza en su contra por haberse negado a seguir pagando los cupos exigidos por estos criminales. "Lo único que quiero es auxilio, que se fijen en mi caso, antes de que termine en un ataúd", declaró el dueño del negocio, quien lleva seis meses pagando 1000 soles semanales a una banda de criminales. Según la víctima, estos sujetos, a quienes identifica como colombianos, comenzaron exigiendo 30 000 soles para dejarlo trabajar en paz. Al no acceder, lo coaccionaron para que pagara la suma de 1 000 soles de manera continua y puntual todos los sábados. El último sábado, luego de meses de soportar las amenazas, el empresario decidió enfrentarse a los extorsionadores. "Me cansé, no les di nada, les dije que me maten si querían", relató. Las cámaras de seguridad de la botica captaron el momento en que el boticario, visiblemente agotado, se defendió de los criminales. "Agarré un serrucho y les dije que, si me iban a matar, que lo hagan, pero no les voy a dar el gusto de cerrar mi local", recordó.</p>
+                    </div>
+                </article>
+
+                <article class="news-item">
+                    <img src="https://img.epicentro.tv/upload/2024/06/17161D504C43426D17100F55594945741F17161859414271.jpg" alt="Noticia Política 3">
+                    <div class="news-item-content">
+                        <h3>EL fraude electoral tras declaración de Salatiel Marrufo</h3>
+                        <p>Las revelaciones del exjefe de asesores del Ministerio de Vivienda han desatado una ola de interrogantes sobre el supuesto fraude en la segunda vuelta del 2021. Marrufo acusa a Perú Libre y a Dina Boluarte de manipular votos en el Jurado JNE para asegurar la victoria de Pedro Castillo. La teoría de un presunto fraude electoral ha resurgido en el país luego de la publicación de las declaraciones de Salatiel Marrufo, exjefe del Gabinete de Asesores del Ministerio de Vivienda durante el gobierno de Pedro Castillo, quien ha señalado que Perú Libre, a través de Dina Boluarte, habría manipulado las impugnaciones presentadas tras la segunda vuelta electoral por Fuerza Popular en el Jurado Nacional de Elecciones (JNE) para ganar las últimas elecciones presidenciales. Marrufo es investigado por el caso ´Fondo Mi Vivienda´, por presuntamente haber recibido 4 millones de soles de la empresaria Sada Goray. Un juez había dictado contra él prisión preventiva pero a fines de mayo pasado salió en libertad, presuntamente acogido a proceso de colaboración eficaz. Ahora, tras la publicación de su declaración en el programa Punto Final, el fantasma del fraude ha vuelto a rondar. 6 y 7 de junio del 2021 Para comprender mejor debemos remontarnos a la segunda vuelta de las elecciones presidenciales, el 6 de junio del 2021, cuando tras una diferencia mínima de votos, Pedro Castillo superó a Keiko Fujimori. Sin embargo, la lideresa de Fuerza Popular denunció la existencia de fraude , por lo que dio inicio a un proceso de revisión y pedido de anulación de actas. Perú Libre hizo lo propio, pero con una cantidad menor de solicitudes</p>
+                    </div>
+                </article>
+
+                <article class="news-item">
+                    <img src="https://statics.exitosanoticias.pe/2024/11/674461dfad16f.jpg">
+                    <div class="news-item-content">
+                        <h3>Denuncian que Freddy Hinojosa, vocero de Dina Boluarte, usa auto presidencial de manera irregular</h3>
+                        <p>Según Punto final, el auto sería utilizado como movilidad personal del vocero presidencial, pese a que hay una normativa que se lo prohíbe. El vocero del despacho presidencial, Fredy Hinojosa, utiliza un auto exclusivo para la Presidencia de la República como su movilidad personal que lo traslada desde su domicilio hasta Palacio de Gobierno. Así lo informó este domingo el programa Punto final. En un reportaje emitido por el dominical, se mostró que Hinojosa fue trasladado en dicho auto los días 11 de octubre, 16 de octubre, 5 de noviembre, 8 de noviembre, 14 de noviembre, 20 de noviembre y el 21 de noviembre. Esto pese a que, según la directiva N°008-2017 de los lineamientos para la administración de vehículos en el despacho presidencial, no le corresponde al vocero usar esta unidad para que lo lleve a su centro de labores</p>
+                    </div>
+                </article>
+
+                <article class="news-item">
+                    <img src="https://larazon.pe/wp-content/uploads/2024/03/Peru-Dina-Boluarte-scaled-1.jpg">
+                    <div class="news-item-content">
+                        <h3>Dina Corrupta</h3>
+                        <p>etcetera</p>
+                    </div>
+                </article>
+            </div>
+        </section>
+
+        <section class="news-section">
+            <h2 class="section-title">Análisis Político</h2>
+            <div class="news-grid">
+                <article class="news-item">
+                    <img src="https://via.placeholder.com/400x300.png?text=Análisis+Político+1" alt="Análisis Político 1">
+                    <div class="news-item-content">
+                        <h3>El impacto de la crisis política en la economía peruana</h3>
+                        <p>Expertos analizan cómo la inestabilidad política afecta el crecimiento económico del país...</p>
+                        <a href="#" class="read-more">Leer más</a>
+                    </div>
+                </article>
+                <article class="news-item">
+                    <img src="https://via.placeholder.com/400x300.png?text=Análisis+Político+2" alt="Análisis Político 2">
+                    <div class="news-item-content">
+                        <h3>La polarización política en el Perú: causas y consecuencias</h3>
+                        <p>Un estudio profundo sobre los factores que contribuyen a la división política en la sociedad peruana...</p>
+                        <a href="#" class="read-more">Leer más</a>
+                    </div>
+                </article>
+                <article class="news-item">
+                    <img src="https://via.placeholder.com/400x300.png?text=Análisis+Político+3" alt="Análisis Político 3">
+                    <div class="news-item-content">
+                        <h3>Reformas necesarias para fortalecer la democracia en Perú</h3>
+                        <p>Propuestas de especialistas para mejorar el sistema político y electoral del país...</p>
+                        <a href="#" class="read-more">Leer más</a>
+                    </div>
+                </article>
+            </div>
+        </section>
+
+        <section class="news-section">
+            <h2 class="section-title">Entrevistas Políticas</h2>
+            <div class="news-grid">
+                <article class="news-item">
+                    <img src="https://via.placeholder.com/400x300.png?text=Entrevista+Política+1" alt="Entrevista Política 1">
+                    <div class="news-item-content">
+                        <h3>Entrevista exclusiva con el Presidente del Congreso</h3>
+                        <p>El líder del Poder Legislativo habla sobre los desafíos y proyectos para el próximo año...</p>
+                        <a href="#" class="read-more">Leer más</a>
+                    </div>
+                </article>
+                <article class="news-item">
+                    <img src="https://via.placeholder.com/400x300.png?text=Entrevista+Política+2" alt="Entrevista Política 2">
+                    <div class="news-item-content">
+                        <h3>Líderes de la oposición presentan su visión para el país</h3>
+                        <p>Representantes de los principales partidos opositores comparten sus propuestas y críticas...</p>
+                        <a href="#" class="read-more">Leer más</a>
+                    </div>
+                </article>
+                <article class="news-item">
+                    <img src="https://via.placeholder.com/400x300.png?text=Entrevista+Política+3" alt="Entrevista Política 3">
+                    <div class="news-item-content">
+                        <h3>Ministro de Economía analiza la situación fiscal del Perú</h3>
+                        <p>El funcionario explica las medidas económicas y responde a las preocupaciones sobre la deuda pública...</p>
+                        <a href="#" class="read-more">Leer más</a>
+                    </div>
+                </article>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Sobre Nosotros</h3>
+                    <p>Noticias Perú es tu fuente confiable de información actualizada sobre el país y el mundo.</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Enlaces Rápidos</h3>
+                    <ul>
+                        <li><a href="index.html">Inicio</a></li>
+                        <li><a href="politica.html">Política</a></li>
+                        <li><a href="deportes.html">Deportes</a></li>
+                        <li><a href="espectaculos.html">Espectáculos</a></li>
+                        <li><a href="mundo.html">Mundo</a></li>
+                        <li><a href="economia.html">Economía</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Contacto</h3>
+                    <p>Email: info@noticiasperu.com</p>
+                    <p>Teléfono: +51 1 234 5678</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 Noticias Perú. Todos los derechos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // JavaScript para el menú hamburguesa y el carrusel de noticias
+        document.addEventListener('DOMContentLoaded', function() {
+            // Menú hamburguesa
+            const mobileMenu = document.getElementById('mobile-menu');
+            const navMenu = document.querySelector('nav ul');
+
+            mobileMenu.addEventListener('click', function() {
+                navMenu.classList.toggle('show');
+            });
+
+            // Carrusel de noticias
+            const carouselItems = document.querySelectorAll('.carousel-item');
+            const prevBtn = document.querySelector('.carousel-nav .prev');
+            const nextBtn = document.querySelector('.carousel-nav .next');
+            let currentItem = 0;
+
+            function showItem(index) {
+                carouselItems[currentItem].classList.remove('active');
+                carouselItems[index].classList.add('active');
+                currentItem = index;
+            }
+
+            function nextItem() {
+                let index = (currentItem + 1) % carouselItems.length;
+                showItem(index);
+            }
+
+            function prevItem() {
+                let index = (currentItem - 1 + carouselItems.length) % carouselItems.length;
+                showItem(index);
+            }
+
+            nextBtn.addEventListener('click', nextItem);
+            prevBtn.addEventListener('click', prevItem);
+
+            // Cambiar automáticamente cada 5 segundos
+            setInterval(nextItem, 5000);
+        });
+    </script>
+</body>
+</html>
