@@ -1,7 +1,4 @@
 document.addEventListener('DOMContentLoaded', function() {
-    // Inicializa EmailJS con tu clave pública
-    emailjs.init("jD1Hs7P5wwDsHzM2m");
-
     const contactForm = document.getElementById('contact-form');
     
     if (contactForm) {
@@ -13,27 +10,31 @@ document.addEventListener('DOMContentLoaded', function() {
             submitButton.textContent = 'Enviando...';
             submitButton.disabled = true;
 
-            const templateParams = {
-                from_name: document.getElementById('name').value,
-                from_email: document.getElementById('email').value,
-                subject: document.getElementById('subject').value,
-                message: document.getElementById('message').value
-            };
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const subject = document.getElementById('subject').value;
+            const message = document.getElementById('message').value;
 
-            // Asegúrate de que estos IDs sean correctos y coincidan con tu cuenta de EmailJS
-            emailjs.send("service_gts1f5z", "template_9m9lo6q", templateParams)
-                .then(function(response) {
-                    console.log('Correo enviado con éxito:', response);
-                    alert('¡Mensaje enviado con éxito!');
-                    contactForm.reset();
-                }, function(error) {
-                    console.error('Error al enviar el correo:', error);
-                    alert('Hubo un error al enviar el mensaje. Por favor, inténtalo de nuevo más tarde.');
-                })
-                .finally(function() {
-                    submitButton.textContent = originalButtonText;
-                    submitButton.disabled = false;
-                });
+            // Crear el mensaje para WhatsApp
+            const whatsappMessage = `Nuevo mensaje de contacto:%0A%0A` +
+                                    `Nombre: ${name}%0A` +
+                                    `Email: ${email}%0A` +
+                                    `Asunto: ${subject}%0A` +
+                                    `Mensaje: ${message}`;
+
+            // Crear el enlace de WhatsApp
+            const whatsappLink = `https://wa.me/51934498803?text=${whatsappMessage}`;
+
+            // Abrir WhatsApp en una nueva ventana
+            window.open(whatsappLink, '_blank');
+
+            // Resetear el formulario y el botón
+            contactForm.reset();
+            submitButton.textContent = originalButtonText;
+            submitButton.disabled = false;
+
+            // Mostrar mensaje de éxito
+            alert('¡Gracias! Se abrirá WhatsApp para enviar tu mensaje.');
         });
     }
 });

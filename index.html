@@ -10,7 +10,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
-    <link rel="icon" href="https://cdn-icons-png.flaticon.com/512/10169/10169718.png" type="image/png"> <!-- Ícono de código -->
+    <link rel="icon" href="https://cdn-icons-png.flaticon.com/512/10169/10169718.png" type="image/png">
 </head>
 <body>
     <div id="stars-container"></div>
@@ -36,7 +36,8 @@
 
     <main>
         <section class="hero">
-            <h1>Alex Saez</h1>
+            <img src="imagenes/logo.png" alt="Logo Alex Saez Developer" class="logo-img" style="width: 300px; height: 200px; margin-right: 1px;">
+
             <p class="subtitle">Desarrollador de Sistemas y Diseñador Web</p>
             <p class="description">Creando soluciones digitales innovadoras y atractivas</p>
             <div class="cta-buttons">
@@ -49,22 +50,107 @@
             <h2>Proyectos Destacados</h2>
             <div class="project-grid">
                 <div class="project-card">
-                    <img src="https://scontent-lim1-1.xx.fbcdn.net/v/t39.30808-6/470150358_122130512798461367_6470381275855874934_n.jpg?stp=cp6_dst-jpg_tt6&_nc_cat=107&ccb=1-7&_nc_sid=cc71e4&_nc_ohc=TX1FpS32QXEQ7kNvgFONafM&_nc_zt=23&_nc_ht=scontent-lim1-1.xx&_nc_gid=AQ-ECpjHqWGH1GHmYj_cJOs&oh=00_AYBZIvEFTRak8-b2aczsVudJjj8y9vOe5GE_1v6EL7LIXw&oe=676FD8B8" alt="E-commerce React" loading="lazy">
-                    <h3>E-commerce React</h3>
-                    <p>Plataforma de comercio electrónico desarrollada con React y Node.js, incluyendo carrito de compras e integración de pagos.</p>
-                    <a href="proyectos.html#ecommerce" class="btn view-project">Ver detalles</a>
+                    <img src="imagenes/imagen14.jpg" alt="Sistema de Ventas Principal" loading="lazy">
+                    <h3>Sistema de Punto de Venta</h3>
+                    <p>Sistema integral de gestión comercial con módulos de inventario, ventas, clientes, proveedores y reportes de ganancias. Desarrollado para optimizar operaciones comerciales diarias.</p>
+                    <a href="proyectos.html#sistema-ventas" class="btn view-project">Ver detalles</a>
                 </div>
                 <div class="project-card">
-                    <img src="https://scontent-lim1-1.xx.fbcdn.net/v/t39.30808-6/470218294_122130704654461367_4692837832903953326_n.jpg?_nc_cat=104&ccb=1-7&_nc_sid=127cfc&_nc_ohc=wthZdWO96S0Q7kNvgF0qxuc&_nc_zt=23&_nc_ht=scontent-lim1-1.xx&_nc_gid=AhEqnxGqaA8HraiNlF27NhL&oh=00_AYCLUMRXO47ejtd6zjQxPAI0X2Jfp9itE4Pw4Rjx4iKrYQ&oe=676FBD20" alt="App de Gestión Vue.js" loading="lazy">
-                    <h3>App de Gestión Vue.js</h3>
-                    <p>Aplicación de gestión de tareas construida con Vue.js y Firebase, con autenticación de usuarios y almacenamiento en tiempo real.</p>
-                    <a href="proyectos.html#taskmanager" class="btn view-project">Ver detalles</a>
+                    <img src="imagenes/imagen1.jpg" alt="Búsqueda de Productos" loading="lazy">
+                    <h3>Sistema de Búsqueda Avanzada</h3>
+                    <p>Módulo de búsqueda inteligente que permite encontrar productos por nombre o descripción, mostrando información detallada de stock y precios en tiempo real.</p>
+                    <a href="proyectos.html#busqueda" class="btn view-project">Ver detalles</a>
                 </div>
                 <div class="project-card">
-                    <img src="https://scontent-lim1-1.xx.fbcdn.net/v/t39.30808-6/470003603_122130311834461367_4858349386552094861_n.jpg?_nc_cat=101&ccb=1-7&_nc_sid=127cfc&_nc_ohc=1MBH59IXOxkQ7kNvgHnRCP3&_nc_zt=23&_nc_ht=scontent-lim1-1.xx&_nc_gid=ACWNAdjQvOLjhD1FiBNT1vK&oh=00_AYDW3jFiFXXm9vKV9GLjPZ9WGmr8m1b6WTB6u2x3pdQgHw&oe=676FCFC3" alt="Diseño Web Responsivo" loading="lazy">
-                    <h3>Diseño Web Responsivo</h3>
-                    <p>Sitio web responsivo para un restaurante local, creado con HTML5, CSS3 y JavaScript para una experiencia de usuario atractiva.</p>
-                    <a href="proyectos.html#responsive" class="btn view-project">Ver detalles</a>
+                    <img src="imagenes/imagen2.jpg" alt="Gestión de Inventario" loading="lazy">
+                    <h3>Control de Inventario</h3>
+                    <p>Sistema completo de gestión de inventario farmacéutico con seguimiento de productos, fechas de vencimiento y control de stock.</p>
+                    <a href="proyectos.html#inventario" class="btn view-project">Ver detalles</a>
+                </div>
+                <div class="project-card">
+                    <img src="imagenes/imagen3.jpg" alt="Desarrollo Frontend" loading="lazy">
+                    <h3>Desarrollo Frontend Moderno</h3>
+                    <p>Implementación de tecnologías modernas como React, Next.js y TypeScript para crear interfaces de usuario robustas y escalables.</p>
+                    <a href="proyectos.html#frontend" class="btn view-project">Ver detalles</a>
+                </div>
+                <div class="project-card">
+                    <img src="imagenes/imagen4.jpg" alt="Control de Vencimientos" loading="lazy">
+                    <h3>Sistema de Alertas de Vencimiento</h3>
+                    <p>Módulo especializado para el control y seguimiento de productos próximos a vencer, ayudando a optimizar la gestión de inventario.</p>
+                    <a href="proyectos.html#vencimientos" class="btn view-project">Ver detalles</a>
+                </div>
+                <div class="project-card">
+                    <img src="imagenes/imagen5.jpg" alt="Registro de Ventas" loading="lazy">
+                    <h3>Sistema de Registro de Ventas</h3>
+                    <p>Control detallado de transacciones con registro de ventas, filtros por fecha y generación de reportes personalizados.</p>
+                    <a href="proyectos.html#ventas" class="btn view-project">Ver detalles</a>
+                </div>
+                <div class="project-card">
+                    <img src="imagenes/imagen15.jpg" alt="Sistema de Gestión de Zapatillas" loading="lazy">
+                    <h3>Sistema de Gestión de Calzado</h3>
+                    <p>Aplicación especializada para el control de inventario de zapatillas con interfaz moderna y funcionalidades específicas para el sector retail.</p>
+                    <a href="proyectos.html#calzado" class="btn view-project">Ver detalles</a>
+                </div>
+                <div class="project-card">
+                    <img src="imagenes/imagen10.jpg" alt="Sistema de Login" loading="lazy">
+                    <h3>Sistema de Autenticación</h3>
+                    <p>Implementación de sistema de login seguro con interfaz personalizada y validación de usuarios para proteger el acceso a los sistemas.</p>
+                    <a href="proyectos.html#autenticacion" class="btn view-project">Ver detalles</a>
+                </div>
+                <div class="project-card">
+                    <img src="imagenes/imagen12.jpg" alt="Sistema de Facturación" loading="lazy">
+                    <h3>Sistema de Facturación</h3>
+                    <p>Módulo completo de facturación con generación automática de boletas y facturas, incluyendo gestión de productos y cálculo de totales.</p>
+                    <a href="proyectos.html#facturacion" class="btn view-project">Ver detalles</a>
+                </div>
+                <!-- Agregando las nuevas tarjetas de proyecto -->
+                <div class="project-card">
+                    <img src="imagenes/imagen16.jpg" alt="Sitio Web Kindergarten" loading="lazy">
+                    <h3>Portal Educativo</h3>
+                    <p>Diseño y desarrollo de sitio web moderno para Kindergarten Santa Luisa de Marillac, con sistema de gestión académica integrado.</p>
+                    <a href="proyectos.html#educacion" class="btn view-project">Ver detalles</a>
+                </div>
+
+                <div class="project-card">
+                    <img src="imagenes/imagen17.jpg" alt="Sitio Web REMARSA" loading="lazy">
+                    <h3>Portal Industrial REMARSA</h3>
+                    <p>Desarrollo de sitio web corporativo para empresa de soluciones industriales, con diseño moderno y responsive.</p>
+                    <a href="proyectos.html#industrial" class="btn view-project">Ver detalles</a>
+                </div>
+
+                <div class="project-card">
+                    <img src="imagenes/imagen18.jpg" alt="Sistema de Control de Ventas" loading="lazy">
+                    <h3>Sistema de Control de Ventas</h3>
+                    <p>Sistema completo para gestión de ventas con registro de clientes, productos y control de transacciones en tiempo real.</p>
+                    <a href="proyectos.html#control-ventas" class="btn view-project">Ver detalles</a>
+                </div>
+
+                <div class="project-card">
+                    <img src="imagenes/imagen19.jpg" alt="Sistema de Control de Almacén" loading="lazy">
+                    <h3>Gestión de Almacén</h3>
+                    <p>Sistema especializado para control de inventario de cosméticos con categorización y gestión de stock mínimo.</p>
+                    <a href="proyectos.html#almacen" class="btn view-project">Ver detalles</a>
+                </div>
+
+                <div class="project-card">
+                    <img src="imagenes/imagen20.jpg" alt="Sistema de Facturación Ferretería" loading="lazy">
+                    <h3>Facturación Ferretería</h3>
+                    <p>Sistema de facturación electrónica para Ferretería El Golf con gestión de productos y control de ventas.</p>
+                    <a href="proyectos.html#facturacion-ferreteria" class="btn view-project">Ver detalles</a>
+                </div>
+
+                <div class="project-card">
+                    <img src="imagenes/imagen21.jpg" alt="App The Great Wings" loading="lazy">
+                    <h3>App Restaurant Wings</h3>
+                    <p>Aplicación móvil para cadena de restaurantes The Great Wings con sistema de pedidos y gestión de menú.</p>
+                    <a href="proyectos.html#app-restaurant" class="btn view-project">Ver detalles</a>
+                </div>
+
+                <div class="project-card">
+                    <img src="imagenes/imagen22.jpg" alt="Sistema de Menú Digital" loading="lazy">
+                    <h3>Menú Digital Interactivo</h3>
+                    <p>Sistema de menú digital para restaurante con categorías de productos y gestión de carta dinámica.</p>
+                    <a href="proyectos.html#menu-digital" class="btn view-project">Ver detalles</a>
                 </div>
             </div>
         </section>
@@ -73,8 +159,8 @@
     <footer>
         <div class="footer-content">
             <div class="social-icons">
-                <a href="https://www.instagram.com" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
-                <a href="https://www.facebook.com" target="_blank" rel="noopener noreferrer" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
+                <a href="https://www.instagram.com/alexsaez.24/" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                <a href="https://www.facebook.com/AlexSaezLara" target="_blank" rel="noopener noreferrer" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
                 <a href="https://wa.me/934498803" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
             </div>
             <p>&copy; 2024 Alex Saez. Todos los derechos reservados.</p>
@@ -85,4 +171,3 @@
     <script src="scripts/main.js"></script>
 </body>
 </html>
-
